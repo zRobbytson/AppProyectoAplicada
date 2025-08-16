@@ -8,6 +8,7 @@
         public int MesaId { get; set; }
         public int HorarioId { get; set; }
 
+
         public DateOnly Fecha { get; set; }
         public int NumPersonas { get; set; }
         public string Estado { get; set; } = "Confirmada";

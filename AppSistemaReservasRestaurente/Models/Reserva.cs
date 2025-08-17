@@ -15,6 +15,6 @@
 
         public Cliente? Cliente { get; set; }
         public Mesa? Mesa { get; set; }
-        public Horario? Horario { get; set; }
+        public Horario? Horario { get; set; } 
     }
 }

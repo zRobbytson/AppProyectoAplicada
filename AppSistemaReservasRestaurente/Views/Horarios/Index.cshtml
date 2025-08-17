@@ -8,7 +8,7 @@
     .calendar-container {
         background-color: #f8f9fa;
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 6%;
         margin-bottom: 20px;
     }
 
@@ -74,16 +74,20 @@
 
     .schedule-container {
         background-color: white;
-        border-radius: 10px;
+        border-radius: 7%;
         padding: 20px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        
     }
+   
 
     .schedule-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        
     }
+    
 
         .schedule-table th {
             background-color: #6c757d;
@@ -92,6 +96,7 @@
             text-align: center;
             font-size: 14px;
             font-weight: bold;
+            border: 2px solid black;
         }
 
         .schedule-table td {
@@ -100,6 +105,9 @@
             border: 1px solid #dee2e6;
             font-size: 12px;
         }
+    th{
+        border-radius: 5%;
+    }
 
     .time-slot {
         background-color: #f8f9fa;
@@ -213,25 +221,40 @@
         height: 100px;
         width:auto;
     }
+    #borrarBtn{
+        border-radius: 5%;
+    }
+    #hoyBtn{
+        border-radius: 5%;
+    }
+    #buscarBtn{
+        border-radius: 5%;
+    }
 </style>
 
 <div class="container-fluid">
-    <h1 class="main-title">Disponibilidad de horarios</h1>
+    <br /> <br />
+   
 
     <div class="row">
         <div class="col-md-4">
             <div class="calendar-container">
-                <h4 class="text-center mb-3">Viendo mesas Disponibles del:</h4>
+                <h4 class="text-center mb-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">Viendo Fecha:</h4>
 
-                <div class="date-input-container">
+                <div class="date-input-container" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
                     <input type="date" id="selectedDate" class="date-input form-control" value="2025-08-05" />
                 </div>
 
                 <div class="text-center">
-                    <button class="btn btn-link" id="borrarBtn">Borrar</button>
-                    <button class="btn btn-link" id="hoyBtn">Hoy</button>
-                    <button class="btn btn-primary" id="buscarBtn">Buscar Horarios
-                        <img src="~/lib/Imagenes/Pedido - Restaurant.png" alt="Buscar" class="btn-icon" />
+                    <br/> <br /> <hr/>
+                    <button id="borrarBtn">
+                        <img src="~/lib/Imagenes/Reloj-Derretido.png" title="Borrar Fecha" />
+                    </button>
+                    <button id="hoyBtn">
+                        <img src="~/lib/Imagenes/Reloj - HOY.png" title="Día de Actual"/>
+                    </button>
+                    <button id="buscarBtn">
+                        <img src="~/lib/Imagenes/Horaro-Tabla.png" alt="Buscar" class="btn-icon" title="Buscar Horarios" />
                     </button>
                 </div>
             </div>
@@ -239,6 +262,7 @@
 
         <div class="col-md-8">
             <div class="schedule-container">
+                <h1 class="main-title" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">DISPONIBILIDAD DE HORARIOS</h1>
                 <table class="schedule-table">
                     <thead>
                         <tr>
@@ -365,6 +389,7 @@
             </div>
         </div>
     </div>
+    <br/>  <br /> <br /> <br/>
 </div>
 
 <script>
@@ -515,9 +540,10 @@
             }
         }
 
+
         // Botón "Hoy"
         document.getElementById('hoyBtn').addEventListener('click', function() {
-            const today = new Date(n);
+            const today = new Date();
             const todayString = today.toISOString().split('T')[0];
             dateInput.value = todayString;
             selectedDate = todayString;

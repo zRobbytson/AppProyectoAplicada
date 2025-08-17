@@ -1,42 +1,545 @@
-﻿@model IEnumerable<AppSistemaReservasRestaurente.Models.Horario>
-
+﻿
+@model IEnumerable<AppSistemaReservasRestaurente.Models.Horario>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Disponibilidad de horarios";
 }
 
-<h1>Index</h1>
-<h3>YNCIL</h3>
+<style>
+    .calendar-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HoraInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoraFin)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoraInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoraFin)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.HorarioId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.HorarioId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.HorarioId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .calendar-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .calendar-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        margin-bottom: 20px;
+    }
+
+    .calendar-day-header {
+        background-color: #6c757d;
+        color: white;
+        text-align: center;
+        padding: 8px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .calendar-day {
+        background-color: white;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        padding: 10px 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .calendar-day:hover {
+            background-color: #e9ecef;
+        }
+
+        .calendar-day.selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .calendar-day.other-month {
+            color: #adb5bd;
+            background-color: #f8f9fa;
+        }
+
+        .calendar-day.today {
+            background-color: #28a745;
+            color: white;
+        }
+
+    .schedule-container {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .schedule-table th {
+            background-color: #6c757d;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .schedule-table td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+            font-size: 12px;
+        }
+
+    .time-slot {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        width: 80px;
+    }
+
+    .status-libre {
+        background-color: #d4edda;
+        color: #155724;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .status-libre:hover {
+            background-color: #c3e6cb;
+        }
+
+    .status-ocupado {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-gaspar {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-diego {
+        background-color: #ffeaa7;
+        color: #2d3436;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        justify-content: space-between;
+    }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s;
+    }
+
+        .btn-volver:hover {
+            background-color: #5a6268;
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-agregar {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s;
+    }
+
+        .btn-agregar:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+    .date-input-container {
+        margin-bottom: 20px;
+    }
+
+    .date-input {
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .reservation-note {
+        background-color: #e7f3ff;
+        border-left: 4px solid #007bff;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 4px;
+    }
+
+        .reservation-note h5 {
+            margin: 0 0 10px 0;
+            color: #0056b3;
+        }
+
+    .main-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2c3e50;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    img{
+        height: 100px;
+        width:auto;
+    }
+</style>
+
+<div class="container-fluid">
+    <h1 class="main-title">Disponibilidad de horarios</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="calendar-container">
+                <h4 class="text-center mb-3">Viendo mesas Disponibles del:</h4>
+
+                <div class="date-input-container">
+                    <input type="date" id="selectedDate" class="date-input form-control" value="2025-08-05" />
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-link" id="borrarBtn">Borrar</button>
+                    <button class="btn btn-link" id="hoyBtn">Hoy</button>
+                    <button class="btn btn-primary" id="buscarBtn">Buscar Horarios</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="schedule-container">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Horarios</th>
+                            <th>Mesa 1</th>
+                            <th>Mesa 2</th>
+                            <th>Mesa 3</th>
+                            <th>Mesa 4</th>
+                            <th>Mesa 8</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-slot">11:00</td>
+                            <td class="status-libre" data-mesa="1" data-hora="11:00">Libre</td>
+                            <td class="status-libre" data-mesa="2" data-hora="11:00">Libre</td>
+                            <td class="status-libre" data-mesa="3" data-hora="11:00">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="11:00">Libre</td>
+                            <td class="status-libre" data-mesa="8" data-hora="11:00">Libre</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">11:30</td>
+                            <td class="status-libre" data-mesa="1" data-hora="11:30">Libre</td>
+                            <td class="status-libre" data-mesa="2" data-hora="11:30">Libre</td>
+                            <td class="status-ocupado" data-mesa="3" data-hora="11:30">Ocupado</td>
+                            <td class="status-libre" data-mesa="4" data-hora="11:30">Libre</td>
+                            <td class="status-ocupado" data-mesa="8" data-hora="11:30">Ocupado</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">12:00</td>
+                            <td class="status-libre" data-mesa="1" data-hora="12:00">Libre</td>
+                            <td class="status-libre" data-mesa="2" data-hora="12:00">Libre</td>
+                            <td class="status-ocupado" data-mesa="3" data-hora="12:00">Ocupado</td>
+                            <td class="status-libre" data-mesa="4" data-hora="12:00">Libre</td>
+                            <td class="status-ocupado" data-mesa="8" data-hora="12:00">Ocupado</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">12:30</td>
+                            <td class="status-libre" data-mesa="1" data-hora="12:30">Libre</td>
+                            <td class="status-libre" data-mesa="2" data-hora="12:30">Libre</td>
+                            <td class="status-libre" data-mesa="3" data-hora="12:30">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="12:30">Libre</td>
+                            <td class="status-diego" data-mesa="8" data-hora="12:30">Diego</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">1:00</td>
+                            <td class="status-libre" data-mesa="1" data-hora="13:00">Libre</td>
+                            <td class="status-libre" data-mesa="2" data-hora="13:00">Libre</td>
+                            <td class="status-libre" data-mesa="3" data-hora="13:00">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="13:00">Libre</td>
+                            <td class="status-libre" data-mesa="8" data-hora="13:00">Libre</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">1:30</td>
+                            <td class="status-libre" data-mesa="1" data-hora="13:30">Libre</td>
+                            <td class="status-ocupado" data-mesa="2" data-hora="13:30">Ocupado</td>
+                            <td class="status-libre" data-mesa="3" data-hora="13:30">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="13:30">Libre</td>
+                            <td class="status-libre" data-mesa="8" data-hora="13:30">Libre</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">2:00</td>
+                            <td class="status-libre" data-mesa="1" data-hora="14:00">Libre</td>
+                            <td class="status-ocupado" data-mesa="2" data-hora="14:00">Ocupado</td>
+                            <td class="status-libre" data-mesa="3" data-hora="14:00">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="14:00">Libre</td>
+                            <td class="status-libre" data-mesa="8" data-hora="14:00">Libre</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">2:30</td>
+                            <td class="status-libre" data-mesa="1" data-hora="14:30">Libre</td>
+                            <td class="status-ocupado" data-mesa="2" data-hora="14:30">Ocupado</td>
+                            <td class="status-libre" data-mesa="3" data-hora="14:30">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="14:30">Libre</td>
+                            <td class="status-ocupado" data-mesa="8" data-hora="14:30">Ocupado</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">3:00</td>
+                            <td class="status-ocupado" data-mesa="1" data-hora="15:00">Ocupado</td>
+                            <td class="status-gaspar" data-mesa="2" data-hora="15:00">Gaspar</td>
+                            <td class="status-ocupado" data-mesa="3" data-hora="15:00">Ocupado</td>
+                            <td class="status-ocupado" data-mesa="4" data-hora="15:00">Ocupado</td>
+                            <td class="status-ocupado" data-mesa="8" data-hora="15:00">Ocupado</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">3:30</td>
+                            <td class="status-ocupado" data-mesa="1" data-hora="15:30">Ocupado</td>
+                            <td class="status-libre" data-mesa="2" data-hora="15:30">Libre</td>
+                            <td class="status-ocupado" data-mesa="3" data-hora="15:30">Ocupado</td>
+                            <td class="status-ocupado" data-mesa="4" data-hora="15:30">Ocupado</td>
+                            <td class="status-libre" data-mesa="8" data-hora="15:30">Libre</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">4:00</td>
+                            <td class="status-ocupado" data-mesa="1" data-hora="16:00">Ocupado</td>
+                            <td class="status-libre" data-mesa="2" data-hora="16:00">Libre</td>
+                            <td class="status-ocupado" data-mesa="3" data-hora="16:00">Ocupado</td>
+                            <td class="status-ocupado" data-mesa="4" data-hora="16:00">Ocupado</td>
+                            <td class="status-libre" data-mesa="8" data-hora="16:00">Libre</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">4:30</td>
+                            <td class="status-libre" data-mesa="1" data-hora="16:30">Libre</td>
+                            <td class="status-libre" data-mesa="2" data-hora="16:30">Libre</td>
+                            <td class="status-libre" data-mesa="3" data-hora="16:30">Libre</td>
+                            <td class="status-libre" data-mesa="4" data-hora="16:30">Libre</td>
+                            <td class="status-libre" data-mesa="8" data-hora="16:30">Libre</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="button-container">
+                    <a href="@Url.Action("Index", "Home")" >
+                        <img src="~/lib/Imagenes/Casita - Restaurant.png" alt="Volver al Inicio" title="Pagina Principal" />
+                    </a>
+
+                    
+                    <a href="@Url.Action("Index", "Reservas")" id="agregarReservaBtn"> 
+                        <img src="~/lib/Imagenes/Reserva.png" alt="Agregar Reserva" title="Nueva Reserva" />
+
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let selectedTimeSlot = null;
+        let selectedMesa = null;
+        let selectedDate = '2025-08-05';
+
+        // Función para cargar horarios desde el servidor
+        function cargarHorarios(fecha) {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const scheduleTable = document.getElementById('scheduleTable');
+
+            // Mostrar indicador de carga
+            loadingIndicator.style.display = 'block';
+            scheduleTable.style.display = 'none';
+
+            // Llamada AJAX al controlador
+            fetch(`@Url.Action("GetHorarios", "Horarios")?fecha=${fecha}`)
+                .then(response => response.json())
+                .then(data => {
+                    actualizarTablaHorarios(data);
+                    loadingIndicator.style.display = 'none';
+                    scheduleTable.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error al cargar horarios:', error);
+                    loadingIndicator.style.display = 'none';
+                    scheduleTable.style.display = 'block';
+                    alert('Error al cargar los horarios. Por favor, intente nuevamente.');
+                });
+        }
+
+        // Función para actualizar la tabla con los nuevos datos
+        function actualizarTablaHorarios(horarios) {
+            const tbody = document.querySelector('.schedule-table tbody');
+
+            // Limpiar la tabla actual
+            tbody.innerHTML = '';
+
+            // Horarios base (puedes ajustar según tus necesidades)
+            const horariosBase = [
+                '11:00', '11:30', '12:00', '12:30', '13:00',
+                '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
+            ];
+
+            // Mesas disponibles
+            const mesas = [1, 2, 3, 4, 8];
+
+            // Generar filas de la tabla
+            horariosBase.forEach(hora => {
+                const row = document.createElement('tr');
+
+                // Celda de hora
+                const timeCell = document.createElement('td');
+                timeCell.className = 'time-slot';
+                timeCell.textContent = hora;
+                row.appendChild(timeCell);
+
+                // Celdas de mesas
+                mesas.forEach(mesa => {
+                    const cell = document.createElement('td');
+                    cell.setAttribute('data-mesa', mesa);
+                    cell.setAttribute('data-hora', hora);
+
+                    // Buscar el estado de esta mesa y hora en los datos recibidos
+                    const reserva = horarios.find(h =>
+                        h.mesa == mesa &&
+                        h.hora === hora
+                    );
+
+                    if (reserva) {
+                        // Mesa ocupada o reservada
+                        cell.className = `status-${reserva.estado.toLowerCase()}`;
+                        cell.textContent = reserva.estado;
+                    } else {
+                        // Mesa libre
+                        cell.className = 'status-libre';
+                        cell.textContent = 'Libre';
+                    }
+
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            // Re-aplicar event listeners a las nuevas celdas
+            aplicarEventListeners();
+        }
+
+        // Función para aplicar event listeners a las celdas
+        function aplicarEventListeners() {
+            selectedTimeSlot = null;
+            selectedMesa = null;
+
+            const availableSlots = document.querySelectorAll('.status-libre');
+            availableSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    // Remover selección anterior
+                    availableSlots.forEach(s => {
+                        s.style.backgroundColor = '';
+                        s.style.color = '';
+                    });
+
+                    // Agregar selección actual
+                    this.style.backgroundColor = '#007bff';
+                    this.style.color = 'white';
+
+                    selectedTimeSlot = this.dataset.hora;
+                    selectedMesa = this.dataset.mesa;
+
+                    // Activar botón de agregar reserva
+                    updateAgregarReservaButton();
+
+                    console.log(`Mesa ${selectedMesa} seleccionada para las ${selectedTimeSlot}`);
+                });
+            });
+        }
+
+        // Event listener para el input de fecha
+        const dateInput = document.getElementById('selectedDate');
+        dateInput.addEventListener('change', function() {
+            selectedDate = this.value;
+        });
+
+        // Event listener para el botón de buscar
+        const buscarBtn = document.getElementById('buscarBtn');
+        buscarBtn.addEventListener('click', function() {
+            if (selectedDate) {
+                cargarHorarios(selectedDate);
+            } else {
+                alert('Por favor seleccione una fecha');
+            }
+        });
+
+        // Función para activar/desactivar el botón de agregar reserva
+        function updateAgregarReservaButton() {
+            const agregarBtn = document.getElementById('agregarReservaBtn');
+            if (selectedTimeSlot && selectedMesa) {
+                agregarBtn.style.opacity = '1';
+                agregarBtn.style.pointerEvents = 'auto';
+       
+               
+            } else {
+                agregarBtn.style.opacity = '0.5';
+                agregarBtn.style.pointerEvents = 'none';
+            }
+        }
+
+        // Botón "Hoy"
+        document.getElementById('hoyBtn').addEventListener('click', function() {
+            const today = new Date(n);
+            const todayString = today.toISOString().split('T')[0];
+            dateInput.value = todayString;
+            selectedDate = todayString;
+            cargarHorarios(selectedDate);
+        });
+
+        // Botón "Borrar"
+        document.getElementById('borrarBtn').addEventListener('click', function() {
+            // Limpiar selecciones
+            selectedTimeSlot = null;
+            selectedMesa = null;
+            const availableSlots = document.querySelectorAll('.status-libre');
+            availableSlots.forEach(s => {
+                s.style.backgroundColor = '';
+                s.style.color = '';
+            });
+            updateAgregarReservaButton();
+        });
+
+        // Inicializar estado del botón y cargar horarios iniciales
+        updateAgregarReservaButton();
+        aplicarEventListeners();
+
+        // Cargar horarios para la fecha inicial
+        cargarHorarios(selectedDate);
+    });
+</script>

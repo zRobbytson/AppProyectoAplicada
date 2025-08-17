@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\Imagenes\Avion.png" />
+    <None Include="wwwroot\lib\Imagenes\Casita - Restaurant.png" />
+    <None Include="wwwroot\lib\Imagenes\Check.png" />
+    <None Include="wwwroot\lib\Imagenes\Horaro-Tabla.png" />
+    <None Include="wwwroot\lib\Imagenes\Pedido - Restaurant.png" />
+    <None Include="wwwroot\lib\Imagenes\Reserva.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
       <PrivateAssets>all</PrivateAssets>

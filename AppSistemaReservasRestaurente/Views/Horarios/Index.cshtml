@@ -28,7 +28,7 @@
     }
 
     .header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        background: linear-gradient(#5C2285,#7B4482);
         color: white;
         padding: 30px;
         text-align: center;
@@ -42,7 +42,7 @@
 
     .controls {
         padding: 30px;
-        background: #f8f9fa;
+        background: linear-gradient(#C49FC4, #9C71A3);
         border-bottom: 1px solid #e9ecef;
         display: flex;
         gap: 30px;
@@ -248,12 +248,14 @@
 
     .modal-body {
         padding: 30px;
+        background: -webkit-linear-gradient(#A978CC, #92609E);
     }
 
     .detail-item {
         margin-bottom: 20px;
         padding-bottom: 15px;
         border-bottom: 1px solid #e9ecef;
+        color: white;
     }
 
         .detail-item:last-child {
@@ -268,7 +270,7 @@
     }
 
     .detail-value {
-        color: #6c757d;
+        color: white;
         font-size: 14px;
     }
 
@@ -372,16 +374,16 @@
  
     
 </style>
+<br /> <br />
 
 <div class="container">
     <div class="header">
-        <h1>Disponibilidad de Horarios</h1>
-        <p>Vista del Dueño del Restaurante</p>
+        <h1 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ">Disponibilidad de Horarios</h1>
+       
     </div>
-
     <div class="controls">
         <div class="control-group">
-            <label for="dateInput">Ver detalles del Día:</label>
+            <label for="dateInput" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">Ver detalles del Día:</label>
             <input type="date" id="dateInput" value="2025-08-05">
         </div>
         <div class="control-group">
@@ -393,30 +395,7 @@
             </select>
         </div>
     </div>
-
-    <div class="legend">
-        <div class="legend-item">
-            <span class="status-indicator" style="background: #e8f5e8;"></span>
-            Libre
-        </div>
-        <div class="legend-item">
-            <span class="status-indicator" style="background: #87ceeb;"></span>
-            Pendiente
-        </div>
-        <div class="legend-item">
-            <span class="status-indicator" style="background: #4169e1;"></span>
-            Completado
-        </div>
-        <div class="legend-item">
-            <span class="status-indicator" style="background: #fff3cd;"></span>
-            No Asistió
-        </div>
-        <div class="legend-item">
-            <span class="status-indicator" style="background: #28a745;"></span>
-            Seleccionado
-        </div>
-    </div>
-
+   
     <div class="schedule-table">
         <table id="scheduleTable">
             <thead>
@@ -529,61 +508,70 @@
         <button class="btn btn-primary" id="viewDetailsBtn" disabled>Ver Detalles</button>
     </div>
 </div>
-
-<!-- Modal para detalles de reserva -->
-<div id="reservationModal" class="modal">
+<br />
+<br />
+<!--Diseño de superposicion-->
+<div tabindex="-1" id="reservationModal" class="modal" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
     <div class="modal-content">
-        <div class="modal-header">
-            <h2>Detalles de Reserva</h2>
-            <span class="close">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="detail-item">
-                <div class="detail-label">Viendo:</div>
-                <div class="detail-value" id="modalTable">Mesa 2</div>
+        <div class="modal-content" style="background-color: rgba(102,51,153,0.8); color: #fff;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Detalles de la Reserva</h5>
+                <span class="close">&times;</span>
             </div>
-            <div class="detail-item">
-                <div class="detail-label">Hora:</div>
-                <div class="detail-value" id="modalTime">1:00 p.m.</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Estado:</div>
-                <div class="detail-value" id="modalStatus">Pendiente</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Descripción:</div>
-                <div class="detail-value" id="modalDescription">Mesa Reservada por Auron Novoa</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">N° Personas:</div>
-                <div class="detail-value" id="modalPeople">4</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Zona:</div>
-                <div class="detail-value" id="modalZone">Salón Principal</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Teléfono:</div>
-                <div class="detail-value" id="modalPhone">974108486</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Email:</div>
-                <div class="detail-value" id="modalEmail">auron.ab@gmail.com</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-label">Código de la Reserva:</div>
-                <div class="detail-value" id="modalCode">00156</div>
-            </div>
+            <div class="modal-body">
+                <div class="detail-item">
+                    <div class="detail-label">Viendo:</div>
+                    <div class="detail-value" id="modalTable">Mesa 2</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Hora:</div>
+                    <div class="detail-value" id="modalTime">1:00 p.m.</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Estado:</div>
+                    <div class="detail-value" id="modalStatus">Pendiente</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Descripción:</div>
+                    <div class="detail-value" id="modalDescription">Mesa Reservada por Auron Novoa</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">N° Personas:</div>
+                    <div class="detail-value" id="modalPeople">4</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Zona:</div>
+                    <div class="detail-value" id="modalZone">Salón Principal</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Teléfono:</div>
+                    <div class="detail-value" id="modalPhone">974108486</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Email:</div>
+                    <div class="detail-value" id="modalEmail">auron.ab@gmail.com</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Código de la Reserva:</div>
+                    <div class="detail-value" id="modalCode">00156</div>
+                </div>
 
-            <div class="modal-buttons">
-                <button class="btn-modal btn-completado" id="completarBtn">Completado</button>
-                <button class="btn-modal btn-no-asistio" id="noAsistioBtn">No Asistió</button>
-                <button class="btn-modal btn-editar" id="editarBtn">Editar</button>
-                <button class="btn-modal btn-borrar" id="borrarBtn">Borrar</button>
+                <div class="modal-buttons">
+                    <button class="btn-modal btn-completado" id="completarBtn">Completado</button>
+                    <button class="btn-modal btn-no-asistio" id="noAsistioBtn">No Asistió</button>
+                    <button class="btn-modal btn-editar" id="editarBtn">Editar</button>
+                    <button class="btn-modal btn-borrar" id="borrarBtn">Borrar</button>
+                </div>
             </div>
+            
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <script>
     let selectedCell = null;

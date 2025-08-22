@@ -9,6 +9,7 @@ builder.Services.AddDbContext<BDContexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BDContexto") ?? throw new InvalidOperationException("Cadena de conexion 'conexionSqlServer' no existe.")));
 
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

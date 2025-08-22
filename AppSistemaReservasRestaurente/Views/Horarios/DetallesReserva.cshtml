@@ -1,0 +1,30 @@
+﻿@model AppSistemaReservasRestaurente.Models.Reserva
+
+<div>
+    <p><b>Cliente:</b> @Model.Cliente?.Nombre</p>
+    <p><b>Email:</b> @Model.Cliente?.Email</p>
+    <p><b>Teléfono:</b> @Model.Cliente?.Telefono</p>
+    <p><b>Mesa:</b> @Model.Mesa?.Numero (@Model.Mesa?.Zona)</p>
+    <p><b>Horario:</b> @Model.Horario?.HoraInicio - @Model.Horario?.HoraFin</p>
+    <p><b>Personas:</b> @Model.NumPersonas</p>
+    <p><b>Estado:</b> @Model.Estado</p>
+</div>
+
+<div class="d-flex justify-content-between mt-3">
+    <form method="post" asp-action="CambiarEstado" asp-route-id="@Model.ReservaId">
+        <input type="hidden" name="nuevoEstado" value="Completada" />
+        <button type="submit" class="btn btn-success">Completado</button>
+    </form>
+
+    <form method="post" asp-action="CambiarEstado" asp-route-id="@Model.ReservaId">
+        <input type="hidden" name="nuevoEstado" value="No asistió" />
+        <button type="submit" class="btn btn-warning">No asistió</button>
+    </form>
+
+    <a asp-action="Edit" asp-route-id="@Model.ReservaId" class="btn btn-primary">Editar</a>
+
+    <form method="post" asp-action="Borrar" asp-route-id="@Model.ReservaId">
+        <button type="submit" class="btn btn-danger">Borrar</button>
+    </form>
+</div>
+

@@ -20,6 +20,75 @@ namespace AppSistemaReservasRestaurente.Controllers
         }
 
         // GET: Horarios
+        public IActionResult Index(DateTime? fecha, string zona)
+        {
+            var fechaSeleccionada = fecha ?? DateTime.Today;
+
+            var reservas = _context.Reservas
+               .Include(r => r.Cliente)
+               .Include(r => r.Mesa)
+               .Include(r => r.Horario)
+               .Where(r => r.Fecha.Date == fechaSeleccionada.Date);
+
+            if (!string.IsNullOrEmpty(zona))
+            {
+                reservas = reservas.Where(r => r.Mesa!.Zona == zona);
+            }
+
+            return View(reservas.ToList());
+        }
+
+        // GET: Detalles de una reserva
+        public IActionResult Detalles(int id)
+        {
+            var reserva = _context.Reservas
+                 .Include(r => r.Cliente)
+                 .Include(r => r.Mesa)
+                 .Include(r => r.Horario)
+                 .FirstOrDefault(r => r.ReservaId == id);
+
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_DetallesReserva", reserva);
+        }
+        [HttpPost]
+        public IActionResult CambiarEstado(int id, string nuevoEstado)
+        {
+            var reserva = _context.Reservas.Find(id);
+            if (reserva == null) return NotFound();
+
+            reserva.Estado = nuevoEstado;
+            _context.SaveChanges();
+
+            return Ok(new { success = true, estado = nuevoEstado });
+        }
+
+        // Borrar reserva (dejar mesa libre)
+        [HttpPost]
+        public IActionResult Borrar(int id)
+        {
+            var reserva = _context.Reservas.Find(id);
+            if (reserva == null) return NotFound();
+
+            _context.Reservas.Remove(reserva);
+            _context.SaveChanges();
+
+            return Ok(new { success = true });
+        }
+    }
+}
+        
+        /*private readonly BDContexto _context;
+
+        public HorariosController(BDContexto context)
+        {
+            _context = context;
+        }
+
+        // GET: Horarios
         public async Task<IActionResult> Index()
         {
             return View(await _context.Horarios.ToListAsync());
@@ -155,4 +224,4 @@ namespace AppSistemaReservasRestaurente.Controllers
         }
         
     }
-}
+}*/

@@ -13,7 +13,7 @@ namespace AppSistemaReservasRestaurente.Data
         public DbSet<Cliente> Clientes { get; set; } = default!;
         public DbSet<Mesa> Mesas { get; set; } = default!;
         public DbSet<Horario> Horarios { get; set; } = default!;
-        public DbSet<Reserva> Reservas { get; set; } = default!;
+        public DbSet<Reserva> Reservas { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

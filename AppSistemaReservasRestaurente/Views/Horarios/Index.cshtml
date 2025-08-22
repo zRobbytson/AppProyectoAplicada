@@ -1,760 +1,96 @@
 ﻿
-@model IEnumerable<AppSistemaReservasRestaurente.Models.Horario>
+@model IEnumerable<AppSistemaReservasRestaurente.Models.Reserva>
+
 @{
-    ViewData["Title"] = "Disponibilidad de horarios";
+    ViewData["Title"] = "Horario de Reservas";
 }
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+<h2>Horario de Reservas</h2>
 
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .header {
-        background: linear-gradient(#5C2285,#7B4482);
-        color: white;
-        padding: 30px;
-        text-align: center;
-    }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-    .controls {
-        padding: 30px;
-        background: linear-gradient(#C49FC4, #9C71A3);
-        border-bottom: 1px solid #e9ecef;
-        display: flex;
-        gap: 30px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .control-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-        .control-group label {
-            font-weight: 600;
-            color: #495057;
-            font-size: 14px;
-        }
-
-        .control-group input,
-        .control-group select {
-            padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-            .control-group input:focus,
-            .control-group select:focus {
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            }
-
-    .schedule-table {
-        margin: 30px;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px 10px;
-        text-align: center;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    td {
-        padding: 12px 10px;
-        text-align: center;
-        border-bottom: 1px solid #e9ecef;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-        td:hover {
-            background: #f8f9fa;
-            transform: scale(1.02);
-        }
-
-    .time-column {
-        background: #f8f9fa !important;
-        font-weight: 600;
-        color: #495057;
-        cursor: default !important;
-    }
-
-        .time-column:hover {
-            transform: none !important;
-        }
-
-    /* Estados de las mesas */
-    .libre {
-        background: #e8f5e8;
-        color: #2d5016;
-    }
-
-    .pendiente {
-        background: #87ceeb;
-        color: #0f4c75;
-        font-weight: 600;
-    }
-
-    .completado {
-        background: #4169e1;
-        color: white;
-        font-weight: 600;
-    }
-
-    .no-asistio {
-        background: #fff3cd;
-        color: #856404;
-        font-weight: 600;
-    }
-
-    .seleccionado {
-        background: #28a745;
-        color: white;
-        font-weight: 600;
-    }
-
-    .selected-cell {
-        outline: 3px solid #ffc107;
-        outline-offset: -3px;
-    }
-
-    .action-buttons {
-        margin: 30px;
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-    }
-
-    .btn {
-        padding: 12px 24px;
-        border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        }
-
-    /* Modal para detalles */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(5px);
-        animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-        background: white;
-        margin: 5% auto;
-        padding: 0;
-        border-radius: 20px;
-        width: 90%;
-        max-width: 500px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        animation: slideIn 0.3s ease;
-        overflow: hidden;
-    }
-
-    .modal-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        color: white;
-        padding: 25px;
-        position: relative;
-    }
-
-        .modal-header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 300;
-        }
-
-    .close {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        color: white;
-        transition: transform 0.3s ease;
-    }
-
-        .close:hover {
-            transform: scale(1.1);
-        }
-
-    .modal-body {
-        padding: 30px;
-        background: -webkit-linear-gradient(#A978CC, #92609E);
-    }
-
-    .detail-item {
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #e9ecef;
-        color: white;
-    }
-
-        .detail-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-    .detail-label {
-        font-weight: 600;
-        color: #495057;
-        margin-bottom: 5px;
-    }
-
-    .detail-value {
-        color: white;
-        font-size: 14px;
-    }
-
-    .modal-buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 25px;
-    }
-
-    .btn-completado {
-        background: #28a745;
-        color: white;
-    }
-
-    .btn-no-asistio {
-        background: #ffc107;
-        color: #212529;
-    }
-
-    .btn-editar {
-        background: #17a2b8;
-        color: white;
-    }
-
-    .btn-borrar {
-        background: #dc3545;
-        color: white;
-    }
-
-    .btn-modal {
-        padding: 12px 20px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-        .btn-modal:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-    .status-indicator {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        margin-right: 8px;
-    }
-
-    .legend {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin: 20px 30px;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 12px;
-    }
-
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        color: #495057;
-    }
-
-    @@keyframes slideIn {
-        from {
-            transform: translateY(-50px);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    @@media (max-width: 768px) {
-        .controls {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .modal-buttons {
-            grid-template-columns: 1fr;
-        }
-
-        .legend {
-            flex-direction: column;
-            gap: 10px;
-        }
-    }
-
-    
-
- 
-    
-</style>
-<br /> <br />
-
-<div class="container">
-    <div class="header">
-        <h1 style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ">Disponibilidad de Horarios</h1>
-       
-    </div>
-    <div class="controls">
-        <div class="control-group">
-            <label for="dateInput" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">Ver detalles del Día:</label>
-            <input type="date" id="dateInput" value="2025-08-05">
-        </div>
-        <div class="control-group">
-            <label for="zoneSelect">Zona del Restaurante:</label>
-            <select id="zoneSelect">
-                <option value="salon-principal" selected>Salón Principal</option>
-                <option value="terraza">Terraza</option>
-                <option value="balcon">Balcón</option>
-            </select>
-        </div>
-    </div>
-   
-    <div class="schedule-table">
-        <table id="scheduleTable">
-            <thead>
-                <tr>
-                    <th>Hora</th>
-                    <th>Mesa 1</th>
-                    <th>Mesa 2</th>
-                    <th>Mesa 3</th>
-                    <th>Mesa 4</th>
-                    <th>Mesa 5</th>
-                    <th>Mesa 6</th>
-                    <th>Mesa 7</th>
-                    <th>Mesa 8</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="time-column">11:00</td>
-                    <td class="libre" data-table="1" data-time="11:00">Libre</td>
-                    <td class="seleccionado" data-table="2" data-time="11:00">Agusto</td>
-                    <td class="libre" data-table="3" data-time="11:00">Libre</td>
-                    <td class="libre" data-table="4" data-time="11:00">Libre</td>
-                    <td class="libre" data-table="5" data-time="11:00">Libre</td>
-                    <td class="libre" data-table="6" data-time="11:00">Libre</td>
-                    <td class="libre" data-table="7" data-time="11:00">Libre</td>
-                    <td class="libre" data-table="8" data-time="11:00">Libre</td>
-                </tr>
-                <tr>
-                    <td class="time-column">11:30</td>
-                    <td class="seleccionado" data-table="1" data-time="11:30">Valeria</td>
-                    <td class="seleccionado" data-table="2" data-time="11:30">Agusto</td>
-                    <td class="libre" data-table="3" data-time="11:30">Libre</td>
-                    <td class="libre" data-table="4" data-time="11:30">Libre</td>
-                    <td class="libre" data-table="5" data-time="11:30">Libre</td>
-                    <td class="pendiente" data-table="6" data-time="11:30">Diego</td>
-                    <td class="libre" data-table="7" data-time="11:30">Libre</td>
-                    <td class="completado" data-table="8" data-time="11:30">Diego</td>
-                </tr>
-                <tr>
-                    <td class="time-column">12:00</td>
-                    <td class="seleccionado" data-table="1" data-time="12:00">Valeria</td>
-                    <td class="libre" data-table="2" data-time="12:00">Libre</td>
-                    <td class="libre" data-table="3" data-time="12:00">Libre</td>
-                    <td class="libre" data-table="4" data-time="12:00">Libre</td>
-                    <td class="libre" data-table="5" data-time="12:00">Libre</td>
-                    <td class="pendiente" data-table="6" data-time="12:00">Diego</td>
-                    <td class="libre" data-table="7" data-time="12:00">Libre</td>
-                    <td class="completado" data-table="8" data-time="12:00">Diego</td>
-                </tr>
-                <tr>
-                    <td class="time-column">12:30</td>
-                    <td class="libre" data-table="1" data-time="12:30">Libre</td>
-                    <td class="libre" data-table="2" data-time="12:30">Libre</td>
-                    <td class="seleccionado" data-table="3" data-time="12:30">Seleccionado</td>
-                    <td class="libre" data-table="4" data-time="12:30">Libre</td>
-                    <td class="libre" data-table="5" data-time="12:30">Libre</td>
-                    <td class="libre" data-table="6" data-time="12:30">Libre</td>
-                    <td class="libre" data-table="7" data-time="12:30">Libre</td>
-                    <td class="completado" data-table="8" data-time="12:30">Diego</td>
-                </tr>
-                <tr>
-                    <td class="time-column">13:00</td>
-                    <td class="libre" data-table="1" data-time="13:00">Libre</td>
-                    <td class="pendiente" data-table="2" data-time="13:00">Auron</td>
-                    <td class="libre" data-table="3" data-time="13:00">Libre</td>
-                    <td class="libre" data-table="4" data-time="13:00">Libre</td>
-                    <td class="libre" data-table="5" data-time="13:00">Libre</td>
-                    <td class="libre" data-table="6" data-time="13:00">Libre</td>
-                    <td class="libre" data-table="7" data-time="13:00">Libre</td>
-                    <td class="libre" data-table="8" data-time="13:00">Libre</td>
-                </tr>
-                <tr>
-                    <td class="time-column">13:30</td>
-                    <td class="libre" data-table="1" data-time="13:30">Libre</td>
-                    <td class="pendiente" data-table="2" data-time="13:30">Auron</td>
-                    <td class="libre" data-table="3" data-time="13:30">Libre</td>
-                    <td class="libre" data-table="4" data-time="13:30">Libre</td>
-                    <td class="pendiente" data-table="5" data-time="13:30">Roselly</td>
-                    <td class="libre" data-table="6" data-time="13:30">Libre</td>
-                    <td class="libre" data-table="7" data-time="13:30">Libre</td>
-                    <td class="libre" data-table="8" data-time="13:30">Libre</td>
-                </tr>
-                <tr>
-                    <td class="time-column">14:00</td>
-                    <td class="libre" data-table="1" data-time="14:00">Libre</td>
-                    <td class="pendiente" data-table="2" data-time="14:00">Auron</td>
-                    <td class="libre" data-table="3" data-time="14:00">Libre</td>
-                    <td class="libre" data-table="4" data-time="14:00">Libre</td>
-                    <td class="pendiente" data-table="5" data-time="14:00">Roselly</td>
-                    <td class="libre" data-table="6" data-time="14:00">Libre</td>
-                    <td class="libre" data-table="7" data-time="14:00">Libre</td>
-                    <td class="libre" data-table="8" data-time="14:00">Libre</td>
-                </tr>
-                <tr>
-                    <td class="time-column">14:30</td>
-                    <td class="libre" data-table="1" data-time="14:30">Libre</td>
-                    <td class="seleccionado" data-table="2" data-time="14:30">Gaspar</td>
-                    <td class="libre" data-table="3" data-time="14:30">Libre</td>
-                    <td class="libre" data-table="4" data-time="14:30">Libre</td>
-                    <td class="pendiente" data-table="5" data-time="14:30">Tiago</td>
-                    <td class="libre" data-table="6" data-time="14:30">Libre</td>
-                    <td class="pendiente" data-table="7" data-time="14:30">Julieta</td>
-                    <td class="completado" data-table="8" data-time="14:30">Kurt</td>
-                </tr>
-            </tbody>
-        </table>
+<form method="get" asp-action="Index">
+    <div class="form-group mb-3">
+        <label>Seleccionar fecha:</label>
+        <input type="date" name="fecha" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
     </div>
 
-    <div class="action-buttons">
-        <button class="btn btn-primary" id="viewDetailsBtn" disabled>Ver Detalles</button>
+    <div class="form-group mb-3">
+        <label>Zona:</label>
+        <select name="zona" class="form-control">
+            <option value="">-- Todas --</option>
+            <option value="Salón principal">Salón Principal</option>
+            <option value="Terraza">Terraza</option>
+            <option value="Balcón">Balcón</option>
+        </select>
     </div>
-</div>
-<br />
-<br />
-<!--Diseño de superposicion-->
-<div tabindex="-1" id="reservationModal" class="modal" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
-    <div class="modal-content">
-        <div class="modal-content" style="background-color: rgba(102,51,153,0.8); color: #fff;">
+
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+<hr />
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Mesa</th>
+            <th>Zona</th>
+            <th>Horario</th>
+            <th>Cliente</th>
+            <th>Personas</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reserva in Model)
+        {
+            string color = reserva.Estado switch
+            {
+                "Confirmada" => "background-color: lightblue; color: black;",
+                "Completada" => "background-color: blue; color: white;",
+                "No asistió" => "background-color: yellow; color: black;",
+                _ => "background-color: lightgray; color: black;"
+            };
+
+            <tr style="@color">
+                <td>@reserva.Mesa?.Numero</td>
+                <td>@reserva.Mesa?.Zona</td>
+                <td>@reserva.Horario?.HoraInicio - @reserva.Horario?.HoraFin</td>
+                <td>@reserva.Cliente?.Nombre</td>
+                <td>@reserva.NumPersonas</td>
+                <td>@reserva.Estado</td>
+                <td>
+                    <button class="btn btn-info btn-sm ver-detalles" data-id="@reserva.ReservaId">Ver detalles</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalConfirmacionLabel">Detalles de la Reserva</h5>
-                <span class="close">&times;</span>
+                <h5 class="modal-title" id="modalLabel">Detalles de la Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-            <div class="modal-body">
-                <div class="detail-item">
-                    <div class="detail-label">Viendo:</div>
-                    <div class="detail-value" id="modalTable">Mesa 2</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Hora:</div>
-                    <div class="detail-value" id="modalTime">1:00 p.m.</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Estado:</div>
-                    <div class="detail-value" id="modalStatus">Pendiente</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Descripción:</div>
-                    <div class="detail-value" id="modalDescription">Mesa Reservada por Auron Novoa</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">N° Personas:</div>
-                    <div class="detail-value" id="modalPeople">4</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Zona:</div>
-                    <div class="detail-value" id="modalZone">Salón Principal</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Teléfono:</div>
-                    <div class="detail-value" id="modalPhone">974108486</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Email:</div>
-                    <div class="detail-value" id="modalEmail">auron.ab@gmail.com</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Código de la Reserva:</div>
-                    <div class="detail-value" id="modalCode">00156</div>
-                </div>
-
-                <div class="modal-buttons">
-                    <button class="btn-modal btn-completado" id="completarBtn">Completado</button>
-                    <button class="btn-modal btn-no-asistio" id="noAsistioBtn">No Asistió</button>
-                    <button class="btn-modal btn-editar" id="editarBtn">Editar</button>
-                    <button class="btn-modal btn-borrar" id="borrarBtn">Borrar</button>
-                </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Aquí cargaremos con AJAX -->
             </div>
-            
         </div>
     </div>
 </div>
 
-
-
-
-
-
-<script>
-    let selectedCell = null;
-    let selectedTable = null;
-    let selectedTime = null;
-
-    // Datos de ejemplo para las reservas
-    const reservationsData = {
-        '2-11:00': {
-            name: 'Agusto',
-            people: 3,
-            phone: '987654321',
-            email: 'agusto@gmail.com',
-            code: '00154',
-            status: 'seleccionado'
-        },
-        '2-13:00': {
-            name: 'Auron Novoa',
-            people: 4,
-            phone: '974108486',
-            email: 'auron.ab@gmail.com',
-            code: '00156',
-            status: 'pendiente'
-        },
-        '6-11:30': {
-            name: 'Diego',
-            people: 2,
-            phone: '956789123',
-            email: 'diego@gmail.com',
-            code: '00157',
-            status: 'pendiente'
-        }
-    };
-
-    // Event listeners para las celdas de la tabla
-    document.addEventListener('DOMContentLoaded', function() {
-        const tableCells = document.querySelectorAll('td[data-table]');
-        const viewDetailsBtn = document.getElementById('viewDetailsBtn');
-        const modal = document.getElementById('reservationModal');
-        const closeBtn = document.querySelector('.close');
-
-        // Selección de celdas
-        tableCells.forEach(cell => {
-            cell.addEventListener('click', function() {
-                // Remover selección anterior
-                if (selectedCell) {
-                    selectedCell.classList.remove('selected-cell');
-                }
-
-                // Seleccionar nueva celda
-                selectedCell = this;
-                selectedTable = this.getAttribute('data-table');
-                selectedTime = this.getAttribute('data-time');
-
-                this.classList.add('selected-cell');
-                viewDetailsBtn.disabled = false;
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".ver-detalles").click(function () {
+                var id = $(this).data("id");
+                $.get("/Horarios/Detalles/" + id, function (data) {
+                    $("#modalBody").html(data);
+                    $("#modalDetalles").modal("show");
+                });
             });
         });
-
-        // Mostrar modal de detalles
-        viewDetailsBtn.addEventListener('click', function() {
-            if (selectedTable && selectedTime) {
-                showReservationDetails(selectedTable, selectedTime);
-                modal.style.display = 'block';
-            }
-        });
-
-        // Cerrar modal
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Botones del modal
-        document.getElementById('completarBtn').addEventListener('click', function() {
-            changeReservationStatus('completado');
-        });
-
-        document.getElementById('noAsistioBtn').addEventListener('click', function() {
-            changeReservationStatus('no-asistio');
-        });
-
-        document.getElementById('editarBtn').addEventListener('click', function() {
-            alert('Funcionalidad de editar - Próximamente implementada');
-        });
-
-        document.getElementById('borrarBtn').addEventListener('click', function() {
-            if (confirm('¿Está seguro de que desea borrar esta reserva?')) {
-                changeReservationStatus('libre');
-            }
-        });
-
-        // Cambio de zona
-        document.getElementById('zoneSelect').addEventListener('change', function() {
-            // Aquí se implementaría la lógica para cambiar de zona
-            alert('Cambiando a zona: ' + this.options[this.selectedIndex].text);
-        });
-
-        // Cambio de fecha
-        document.getElementById('dateInput').addEventListener('change', function() {
-            // Aquí se implementaría la lógica para cambiar de fecha
-            alert('Cambiando a fecha: ' + this.value);
-        });
-    });
-
-    function showReservationDetails(table, time) {
-        const key = `${table}-${time}`;
-        const reservation = reservationsData[key];
-
-        document.getElementById('modalTable').textContent = `Mesa ${table}`;
-        document.getElementById('modalTime').textContent = convertTime(time);
-
-        if (reservation) {
-            document.getElementById('modalStatus').textContent = getStatusText(reservation.status);
-            document.getElementById('modalDescription').textContent = `Mesa Reservada por ${reservation.name}`;
-            document.getElementById('modalPeople').textContent = reservation.people;
-            document.getElementById('modalPhone').textContent = reservation.phone;
-            document.getElementById('modalEmail').textContent = reservation.email;
-            document.getElementById('modalCode').textContent = reservation.code;
-        } else {
-            // Datos por defecto para celdas libres
-            document.getElementById('modalStatus').textContent = 'Libre';
-            document.getElementById('modalDescription').textContent = 'Mesa disponible';
-            document.getElementById('modalPeople').textContent = '-';
-            document.getElementById('modalPhone').textContent = '-';
-            document.getElementById('modalEmail').textContent = '-';
-            document.getElementById('modalCode').textContent = '-';
-        }
-
-        document.getElementById('modalZone').textContent = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
-    }
-
-    function changeReservationStatus(newStatus) {
-        if (selectedCell) {
-            // Remover clases de estado anteriores
-            selectedCell.classList.remove('libre', 'pendiente', 'completado', 'no-asistio', 'seleccionado');
-
-            // Aplicar nuevo estado
-            selectedCell.classList.add(newStatus);
-
-            // Actualizar texto de la celda
-            if (newStatus === 'libre') {
-                selectedCell.textContent = 'Libre';
-            } else if (newStatus === 'completado') {
-                // Mantener el nombre pero cambiar el estilo
-                selectedCell.classList.add('completado');
-            } else if (newStatus === 'no-asistio') {
-                selectedCell.classList.add('no-asistio');
-            }
-
-            // Cerrar modal
-            document.getElementById('reservationModal').style.display = 'none';
-
-            // Actualizar datos de reserva
-            const key = `${selectedTable}-${selectedTime}`;
-            if (reservationsData[key]) {
-                reservationsData[key].status = newStatus;
-            }
-
-            alert(`Estado de la reserva actualizado a: ${getStatusText(newStatus)}`);
-        }
-    }
-
-    function getStatusText(status) {
-        const statusMap = {
-            'libre': 'Libre',
-            'pendiente': 'Pendiente',
-            'completado': 'Completado',
-            'no-asistio': 'No Asistió',
-            'seleccionado': 'Seleccionado'
-        };
-        return statusMap[status] || 'Desconocido';
-    }
-
-    function convertTime(time24) {
-        const [hours, minutes] = time24.split(':');
-        const hour12 = hours > 12 ? hours - 12 : hours;
-        const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
-        return `${hour12}:${minutes} ${ampm}`;
-    }
-</script>
+    </script>
+}

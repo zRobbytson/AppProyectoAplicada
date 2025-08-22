@@ -5,569 +5,768 @@
 }
 
 <style>
-    .calendar-container {
-        background-color: #f8f9fa;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
         padding: 20px;
-        border-radius: 6%;
-        margin-bottom: 20px;
     }
 
-    .calendar-header {
-        text-align: center;
-        margin-bottom: 20px;
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
     }
 
-    .calendar-navigation {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 5px;
-        margin-bottom: 20px;
-    }
-
-    .calendar-day-header {
-        background-color: #6c757d;
+    .header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         color: white;
+        padding: 30px;
         text-align: center;
-        padding: 8px;
-        font-weight: bold;
+    }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+    .controls {
+        padding: 30px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+        .control-group label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+            .control-group input:focus,
+            .control-group select:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+    .schedule-table {
+        margin: 30px;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 10px;
+        text-align: center;
+        font-weight: 600;
         font-size: 14px;
     }
 
-    .calendar-day {
-        background-color: white;
-        border: 1px solid #dee2e6;
+    td {
+        padding: 12px 10px;
         text-align: center;
-        padding: 10px 5px;
+        border-bottom: 1px solid #e9ecef;
         cursor: pointer;
-        transition: background-color 0.3s;
-        min-height: 40px;
+        transition: all 0.3s ease;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+        td:hover {
+            background: #f8f9fa;
+            transform: scale(1.02);
+        }
+
+    .time-column {
+        background: #f8f9fa !important;
+        font-weight: 600;
+        color: #495057;
+        cursor: default !important;
+    }
+
+        .time-column:hover {
+            transform: none !important;
+        }
+
+    /* Estados de las mesas */
+    .libre {
+        background: #e8f5e8;
+        color: #2d5016;
+    }
+
+    .pendiente {
+        background: #87ceeb;
+        color: #0f4c75;
+        font-weight: 600;
+    }
+
+    .completado {
+        background: #4169e1;
+        color: white;
+        font-weight: 600;
+    }
+
+    .no-asistio {
+        background: #fff3cd;
+        color: #856404;
+        font-weight: 600;
+    }
+
+    .seleccionado {
+        background: #28a745;
+        color: white;
+        font-weight: 600;
+    }
+
+    .selected-cell {
+        outline: 3px solid #ffc107;
+        outline-offset: -3px;
+    }
+
+    .action-buttons {
+        margin: 30px;
         display: flex;
-        align-items: center;
+        gap: 15px;
         justify-content: center;
     }
 
-        .calendar-day:hover {
-            background-color: #e9ecef;
-        }
-
-        .calendar-day.selected {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .calendar-day.other-month {
-            color: #adb5bd;
-            background-color: #f8f9fa;
-        }
-
-        .calendar-day.today {
-            background-color: #28a745;
-            color: white;
-        }
-
-    .schedule-container {
-        background-color: white;
-        border-radius: 7%;
-        padding: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-   
 
-    .schedule-table {
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+    /* Modal para detalles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        
-    }
-    
-
-        .schedule-table th {
-            background-color: #6c757d;
-            color: white;
-            padding: 12px 8px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            border: 2px solid black;
-        }
-
-        .schedule-table td {
-            padding: 8px;
-            text-align: center;
-            border: 1px solid #dee2e6;
-            font-size: 12px;
-        }
-    th{
-        border-radius: 5%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        animation: fadeIn 0.3s ease;
     }
 
-    .time-slot {
-        background-color: #f8f9fa;
-        font-weight: bold;
-        width: 80px;
+    .modal-content {
+        background: white;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.3s ease;
+        overflow: hidden;
     }
 
-    .status-libre {
-        background-color: #d4edda;
-        color: #155724;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-        .status-libre:hover {
-            background-color: #c3e6cb;
-        }
-
-    .status-ocupado {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-
-    .status-gaspar {
-        background-color: #fff3cd;
-        color: #856404;
-    }
-
-    .status-diego {
-        background-color: #ffeaa7;
-        color: #2d3436;
-    }
-
-    .button-container {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
-        justify-content: space-between;
-    }
-
-    .btn-volver {
-        background-color: #6c757d;
+    .modal-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         color: white;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        text-decoration: none;
-        display: inline-block;
-        transition: background-color 0.3s;
+        padding: 25px;
+        position: relative;
     }
 
-        .btn-volver:hover {
-            background-color: #5a6268;
-            color: white;
-            text-decoration: none;
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 300;
         }
 
-    .btn-agregar {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        text-decoration: none;
-        display: inline-block;
-        transition: background-color 0.3s;
-    }
-
-        .btn-agregar:hover {
-            background-color: #0056b3;
-            color: white;
-            text-decoration: none;
-        }
-
-    .date-input-container {
-        margin-bottom: 20px;
-    }
-
-    .date-input {
-        padding: 8px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    .reservation-note {
-        background-color: #e7f3ff;
-        border-left: 4px solid #007bff;
-        padding: 15px;
-        margin-top: 20px;
-        border-radius: 4px;
-    }
-
-        .reservation-note h5 {
-            margin: 0 0 10px 0;
-            color: #0056b3;
-        }
-
-    .main-title {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #2c3e50;
+    .close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
         font-size: 28px;
         font-weight: bold;
+        cursor: pointer;
+        color: white;
+        transition: transform 0.3s ease;
     }
-    img{
-        height: 100px;
-        width:auto;
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+    .modal-body {
+        padding: 30px;
     }
-    #borrarBtn{
-        border-radius: 5%;
+
+    .detail-item {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e9ecef;
     }
-    #hoyBtn{
-        border-radius: 5%;
+
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+    .detail-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 5px;
     }
-    #buscarBtn{
-        border-radius: 5%;
+
+    .detail-value {
+        color: #6c757d;
+        font-size: 14px;
     }
+
+    .modal-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .btn-completado {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-no-asistio {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-editar {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .btn-borrar {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-modal {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .btn-modal:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .status-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+    .legend {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #495057;
+    }
+
+    @@keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .modal-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .legend {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+
+    
+
+ 
+    
 </style>
 
-<div class="container-fluid">
-    <br /> <br />
-   
+<div class="container">
+    <div class="header">
+        <h1>Disponibilidad de Horarios</h1>
+        <p>Vista del Dueño del Restaurante</p>
+    </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="calendar-container">
-                <h4 class="text-center mb-3" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">Viendo Fecha:</h4>
-
-                <div class="date-input-container" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
-                    <input type="date" id="selectedDate" class="date-input form-control" value="2025-08-05" />
-                </div>
-
-                <div class="text-center">
-                    <br/> <br /> <hr/>
-                    <button id="borrarBtn">
-                        <img src="~/lib/Imagenes/Reloj-Derretido.png" title="Borrar Fecha" />
-                    </button>
-                    <button id="hoyBtn">
-                        <img src="~/lib/Imagenes/Reloj - HOY.png" title="Día de Actual"/>
-                    </button>
-                    <button id="buscarBtn">
-                        <img src="~/lib/Imagenes/Horaro-Tabla.png" alt="Buscar" class="btn-icon" title="Buscar Horarios" />
-                    </button>
-                </div>
-            </div>
+    <div class="controls">
+        <div class="control-group">
+            <label for="dateInput">Ver detalles del Día:</label>
+            <input type="date" id="dateInput" value="2025-08-05">
         </div>
+        <div class="control-group">
+            <label for="zoneSelect">Zona del Restaurante:</label>
+            <select id="zoneSelect">
+                <option value="salon-principal" selected>Salón Principal</option>
+                <option value="terraza">Terraza</option>
+                <option value="balcon">Balcón</option>
+            </select>
+        </div>
+    </div>
 
-        <div class="col-md-8">
-            <div class="schedule-container">
-                <h1 class="main-title" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">DISPONIBILIDAD DE HORARIOS</h1>
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Horarios</th>
-                            <th>Mesa 1</th>
-                            <th>Mesa 2</th>
-                            <th>Mesa 3</th>
-                            <th>Mesa 4</th>
-                            <th>Mesa 8</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="time-slot">11:00</td>
-                            <td class="status-libre" data-mesa="1" data-hora="11:00">Libre</td>
-                            <td class="status-libre" data-mesa="2" data-hora="11:00">Libre</td>
-                            <td class="status-libre" data-mesa="3" data-hora="11:00">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="11:00">Libre</td>
-                            <td class="status-libre" data-mesa="8" data-hora="11:00">Libre</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">11:30</td>
-                            <td class="status-libre" data-mesa="1" data-hora="11:30">Libre</td>
-                            <td class="status-libre" data-mesa="2" data-hora="11:30">Libre</td>
-                            <td class="status-ocupado" data-mesa="3" data-hora="11:30">Ocupado</td>
-                            <td class="status-libre" data-mesa="4" data-hora="11:30">Libre</td>
-                            <td class="status-ocupado" data-mesa="8" data-hora="11:30">Ocupado</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">12:00</td>
-                            <td class="status-libre" data-mesa="1" data-hora="12:00">Libre</td>
-                            <td class="status-libre" data-mesa="2" data-hora="12:00">Libre</td>
-                            <td class="status-ocupado" data-mesa="3" data-hora="12:00">Ocupado</td>
-                            <td class="status-libre" data-mesa="4" data-hora="12:00">Libre</td>
-                            <td class="status-ocupado" data-mesa="8" data-hora="12:00">Ocupado</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">12:30</td>
-                            <td class="status-libre" data-mesa="1" data-hora="12:30">Libre</td>
-                            <td class="status-libre" data-mesa="2" data-hora="12:30">Libre</td>
-                            <td class="status-libre" data-mesa="3" data-hora="12:30">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="12:30">Libre</td>
-                            <td class="status-diego" data-mesa="8" data-hora="12:30">Diego</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">1:00</td>
-                            <td class="status-libre" data-mesa="1" data-hora="13:00">Libre</td>
-                            <td class="status-libre" data-mesa="2" data-hora="13:00">Libre</td>
-                            <td class="status-libre" data-mesa="3" data-hora="13:00">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="13:00">Libre</td>
-                            <td class="status-libre" data-mesa="8" data-hora="13:00">Libre</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">1:30</td>
-                            <td class="status-libre" data-mesa="1" data-hora="13:30">Libre</td>
-                            <td class="status-ocupado" data-mesa="2" data-hora="13:30">Ocupado</td>
-                            <td class="status-libre" data-mesa="3" data-hora="13:30">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="13:30">Libre</td>
-                            <td class="status-libre" data-mesa="8" data-hora="13:30">Libre</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">2:00</td>
-                            <td class="status-libre" data-mesa="1" data-hora="14:00">Libre</td>
-                            <td class="status-ocupado" data-mesa="2" data-hora="14:00">Ocupado</td>
-                            <td class="status-libre" data-mesa="3" data-hora="14:00">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="14:00">Libre</td>
-                            <td class="status-libre" data-mesa="8" data-hora="14:00">Libre</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">2:30</td>
-                            <td class="status-libre" data-mesa="1" data-hora="14:30">Libre</td>
-                            <td class="status-ocupado" data-mesa="2" data-hora="14:30">Ocupado</td>
-                            <td class="status-libre" data-mesa="3" data-hora="14:30">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="14:30">Libre</td>
-                            <td class="status-ocupado" data-mesa="8" data-hora="14:30">Ocupado</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">3:00</td>
-                            <td class="status-ocupado" data-mesa="1" data-hora="15:00">Ocupado</td>
-                            <td class="status-gaspar" data-mesa="2" data-hora="15:00">Gaspar</td>
-                            <td class="status-ocupado" data-mesa="3" data-hora="15:00">Ocupado</td>
-                            <td class="status-ocupado" data-mesa="4" data-hora="15:00">Ocupado</td>
-                            <td class="status-ocupado" data-mesa="8" data-hora="15:00">Ocupado</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">3:30</td>
-                            <td class="status-ocupado" data-mesa="1" data-hora="15:30">Ocupado</td>
-                            <td class="status-libre" data-mesa="2" data-hora="15:30">Libre</td>
-                            <td class="status-ocupado" data-mesa="3" data-hora="15:30">Ocupado</td>
-                            <td class="status-ocupado" data-mesa="4" data-hora="15:30">Ocupado</td>
-                            <td class="status-libre" data-mesa="8" data-hora="15:30">Libre</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">4:00</td>
-                            <td class="status-ocupado" data-mesa="1" data-hora="16:00">Ocupado</td>
-                            <td class="status-libre" data-mesa="2" data-hora="16:00">Libre</td>
-                            <td class="status-ocupado" data-mesa="3" data-hora="16:00">Ocupado</td>
-                            <td class="status-ocupado" data-mesa="4" data-hora="16:00">Ocupado</td>
-                            <td class="status-libre" data-mesa="8" data-hora="16:00">Libre</td>
-                        </tr>
-                        <tr>
-                            <td class="time-slot">4:30</td>
-                            <td class="status-libre" data-mesa="1" data-hora="16:30">Libre</td>
-                            <td class="status-libre" data-mesa="2" data-hora="16:30">Libre</td>
-                            <td class="status-libre" data-mesa="3" data-hora="16:30">Libre</td>
-                            <td class="status-libre" data-mesa="4" data-hora="16:30">Libre</td>
-                            <td class="status-libre" data-mesa="8" data-hora="16:30">Libre</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="legend">
+        <div class="legend-item">
+            <span class="status-indicator" style="background: #e8f5e8;"></span>
+            Libre
+        </div>
+        <div class="legend-item">
+            <span class="status-indicator" style="background: #87ceeb;"></span>
+            Pendiente
+        </div>
+        <div class="legend-item">
+            <span class="status-indicator" style="background: #4169e1;"></span>
+            Completado
+        </div>
+        <div class="legend-item">
+            <span class="status-indicator" style="background: #fff3cd;"></span>
+            No Asistió
+        </div>
+        <div class="legend-item">
+            <span class="status-indicator" style="background: #28a745;"></span>
+            Seleccionado
+        </div>
+    </div>
 
-                <div class="button-container">
-                    <a href="@Url.Action("Index", "Home")" >
-                        <img src="~/lib/Imagenes/Casita - Restaurant.png" alt="Volver al Inicio" title="Pagina Principal" />
-                    </a>
+    <div class="schedule-table">
+        <table id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Mesa 1</th>
+                    <th>Mesa 2</th>
+                    <th>Mesa 3</th>
+                    <th>Mesa 4</th>
+                    <th>Mesa 5</th>
+                    <th>Mesa 6</th>
+                    <th>Mesa 7</th>
+                    <th>Mesa 8</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-column">11:00</td>
+                    <td class="libre" data-table="1" data-time="11:00">Libre</td>
+                    <td class="seleccionado" data-table="2" data-time="11:00">Agusto</td>
+                    <td class="libre" data-table="3" data-time="11:00">Libre</td>
+                    <td class="libre" data-table="4" data-time="11:00">Libre</td>
+                    <td class="libre" data-table="5" data-time="11:00">Libre</td>
+                    <td class="libre" data-table="6" data-time="11:00">Libre</td>
+                    <td class="libre" data-table="7" data-time="11:00">Libre</td>
+                    <td class="libre" data-table="8" data-time="11:00">Libre</td>
+                </tr>
+                <tr>
+                    <td class="time-column">11:30</td>
+                    <td class="seleccionado" data-table="1" data-time="11:30">Valeria</td>
+                    <td class="seleccionado" data-table="2" data-time="11:30">Agusto</td>
+                    <td class="libre" data-table="3" data-time="11:30">Libre</td>
+                    <td class="libre" data-table="4" data-time="11:30">Libre</td>
+                    <td class="libre" data-table="5" data-time="11:30">Libre</td>
+                    <td class="pendiente" data-table="6" data-time="11:30">Diego</td>
+                    <td class="libre" data-table="7" data-time="11:30">Libre</td>
+                    <td class="completado" data-table="8" data-time="11:30">Diego</td>
+                </tr>
+                <tr>
+                    <td class="time-column">12:00</td>
+                    <td class="seleccionado" data-table="1" data-time="12:00">Valeria</td>
+                    <td class="libre" data-table="2" data-time="12:00">Libre</td>
+                    <td class="libre" data-table="3" data-time="12:00">Libre</td>
+                    <td class="libre" data-table="4" data-time="12:00">Libre</td>
+                    <td class="libre" data-table="5" data-time="12:00">Libre</td>
+                    <td class="pendiente" data-table="6" data-time="12:00">Diego</td>
+                    <td class="libre" data-table="7" data-time="12:00">Libre</td>
+                    <td class="completado" data-table="8" data-time="12:00">Diego</td>
+                </tr>
+                <tr>
+                    <td class="time-column">12:30</td>
+                    <td class="libre" data-table="1" data-time="12:30">Libre</td>
+                    <td class="libre" data-table="2" data-time="12:30">Libre</td>
+                    <td class="seleccionado" data-table="3" data-time="12:30">Seleccionado</td>
+                    <td class="libre" data-table="4" data-time="12:30">Libre</td>
+                    <td class="libre" data-table="5" data-time="12:30">Libre</td>
+                    <td class="libre" data-table="6" data-time="12:30">Libre</td>
+                    <td class="libre" data-table="7" data-time="12:30">Libre</td>
+                    <td class="completado" data-table="8" data-time="12:30">Diego</td>
+                </tr>
+                <tr>
+                    <td class="time-column">13:00</td>
+                    <td class="libre" data-table="1" data-time="13:00">Libre</td>
+                    <td class="pendiente" data-table="2" data-time="13:00">Auron</td>
+                    <td class="libre" data-table="3" data-time="13:00">Libre</td>
+                    <td class="libre" data-table="4" data-time="13:00">Libre</td>
+                    <td class="libre" data-table="5" data-time="13:00">Libre</td>
+                    <td class="libre" data-table="6" data-time="13:00">Libre</td>
+                    <td class="libre" data-table="7" data-time="13:00">Libre</td>
+                    <td class="libre" data-table="8" data-time="13:00">Libre</td>
+                </tr>
+                <tr>
+                    <td class="time-column">13:30</td>
+                    <td class="libre" data-table="1" data-time="13:30">Libre</td>
+                    <td class="pendiente" data-table="2" data-time="13:30">Auron</td>
+                    <td class="libre" data-table="3" data-time="13:30">Libre</td>
+                    <td class="libre" data-table="4" data-time="13:30">Libre</td>
+                    <td class="pendiente" data-table="5" data-time="13:30">Roselly</td>
+                    <td class="libre" data-table="6" data-time="13:30">Libre</td>
+                    <td class="libre" data-table="7" data-time="13:30">Libre</td>
+                    <td class="libre" data-table="8" data-time="13:30">Libre</td>
+                </tr>
+                <tr>
+                    <td class="time-column">14:00</td>
+                    <td class="libre" data-table="1" data-time="14:00">Libre</td>
+                    <td class="pendiente" data-table="2" data-time="14:00">Auron</td>
+                    <td class="libre" data-table="3" data-time="14:00">Libre</td>
+                    <td class="libre" data-table="4" data-time="14:00">Libre</td>
+                    <td class="pendiente" data-table="5" data-time="14:00">Roselly</td>
+                    <td class="libre" data-table="6" data-time="14:00">Libre</td>
+                    <td class="libre" data-table="7" data-time="14:00">Libre</td>
+                    <td class="libre" data-table="8" data-time="14:00">Libre</td>
+                </tr>
+                <tr>
+                    <td class="time-column">14:30</td>
+                    <td class="libre" data-table="1" data-time="14:30">Libre</td>
+                    <td class="seleccionado" data-table="2" data-time="14:30">Gaspar</td>
+                    <td class="libre" data-table="3" data-time="14:30">Libre</td>
+                    <td class="libre" data-table="4" data-time="14:30">Libre</td>
+                    <td class="pendiente" data-table="5" data-time="14:30">Tiago</td>
+                    <td class="libre" data-table="6" data-time="14:30">Libre</td>
+                    <td class="pendiente" data-table="7" data-time="14:30">Julieta</td>
+                    <td class="completado" data-table="8" data-time="14:30">Kurt</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-                    
-                    <a href="@Url.Action("Index", "Reservas")" id="agregarReservaBtn"> 
-                        <img src="~/lib/Imagenes/Reserva.png" alt="Agregar Reserva" title="Nueva Reserva" />
+    <div class="action-buttons">
+        <button class="btn btn-primary" id="viewDetailsBtn" disabled>Ver Detalles</button>
+    </div>
+</div>
 
-                        
-                    </a>
-                </div>
+<!-- Modal para detalles de reserva -->
+<div id="reservationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detalles de Reserva</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="detail-item">
+                <div class="detail-label">Viendo:</div>
+                <div class="detail-value" id="modalTable">Mesa 2</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Hora:</div>
+                <div class="detail-value" id="modalTime">1:00 p.m.</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Estado:</div>
+                <div class="detail-value" id="modalStatus">Pendiente</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Descripción:</div>
+                <div class="detail-value" id="modalDescription">Mesa Reservada por Auron Novoa</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">N° Personas:</div>
+                <div class="detail-value" id="modalPeople">4</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Zona:</div>
+                <div class="detail-value" id="modalZone">Salón Principal</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Teléfono:</div>
+                <div class="detail-value" id="modalPhone">974108486</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Email:</div>
+                <div class="detail-value" id="modalEmail">auron.ab@gmail.com</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Código de la Reserva:</div>
+                <div class="detail-value" id="modalCode">00156</div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-modal btn-completado" id="completarBtn">Completado</button>
+                <button class="btn-modal btn-no-asistio" id="noAsistioBtn">No Asistió</button>
+                <button class="btn-modal btn-editar" id="editarBtn">Editar</button>
+                <button class="btn-modal btn-borrar" id="borrarBtn">Borrar</button>
             </div>
         </div>
     </div>
-    <br/>  <br /> <br /> <br/>
 </div>
 
 <script>
+    let selectedCell = null;
+    let selectedTable = null;
+    let selectedTime = null;
+
+    // Datos de ejemplo para las reservas
+    const reservationsData = {
+        '2-11:00': {
+            name: 'Agusto',
+            people: 3,
+            phone: '987654321',
+            email: 'agusto@gmail.com',
+            code: '00154',
+            status: 'seleccionado'
+        },
+        '2-13:00': {
+            name: 'Auron Novoa',
+            people: 4,
+            phone: '974108486',
+            email: 'auron.ab@gmail.com',
+            code: '00156',
+            status: 'pendiente'
+        },
+        '6-11:30': {
+            name: 'Diego',
+            people: 2,
+            phone: '956789123',
+            email: 'diego@gmail.com',
+            code: '00157',
+            status: 'pendiente'
+        }
+    };
+
+    // Event listeners para las celdas de la tabla
     document.addEventListener('DOMContentLoaded', function() {
-        let selectedTimeSlot = null;
-        let selectedMesa = null;
-        let selectedDate = '2025-08-05';
+        const tableCells = document.querySelectorAll('td[data-table]');
+        const viewDetailsBtn = document.getElementById('viewDetailsBtn');
+        const modal = document.getElementById('reservationModal');
+        const closeBtn = document.querySelector('.close');
 
-        // Función para cargar horarios desde el servidor
-        function cargarHorarios(fecha) {
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const scheduleTable = document.getElementById('scheduleTable');
+        // Selección de celdas
+        tableCells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                // Remover selección anterior
+                if (selectedCell) {
+                    selectedCell.classList.remove('selected-cell');
+                }
 
-            // Mostrar indicador de carga
-            loadingIndicator.style.display = 'block';
-            scheduleTable.style.display = 'none';
+                // Seleccionar nueva celda
+                selectedCell = this;
+                selectedTable = this.getAttribute('data-table');
+                selectedTime = this.getAttribute('data-time');
 
-            // Llamada AJAX al controlador
-            fetch(`@Url.Action("GetHorarios", "Horarios")?fecha=${fecha}`)
-                .then(response => response.json())
-                .then(data => {
-                    actualizarTablaHorarios(data);
-                    loadingIndicator.style.display = 'none';
-                    scheduleTable.style.display = 'block';
-                })
-                .catch(error => {
-                    console.error('Error al cargar horarios:', error);
-                    loadingIndicator.style.display = 'none';
-                    scheduleTable.style.display = 'block';
-                    alert('Error al cargar los horarios. Por favor, intente nuevamente.');
-                });
-        }
-
-        // Función para actualizar la tabla con los nuevos datos
-        function actualizarTablaHorarios(horarios) {
-            const tbody = document.querySelector('.schedule-table tbody');
-
-            // Limpiar la tabla actual
-            tbody.innerHTML = '';
-
-            // Horarios base (puedes ajustar según tus necesidades)
-            const horariosBase = [
-                '11:00', '11:30', '12:00', '12:30', '13:00',
-                '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
-            ];
-
-            // Mesas disponibles
-            const mesas = [1, 2, 3, 4, 8];
-
-            // Generar filas de la tabla
-            horariosBase.forEach(hora => {
-                const row = document.createElement('tr');
-
-                // Celda de hora
-                const timeCell = document.createElement('td');
-                timeCell.className = 'time-slot';
-                timeCell.textContent = hora;
-                row.appendChild(timeCell);
-
-                // Celdas de mesas
-                mesas.forEach(mesa => {
-                    const cell = document.createElement('td');
-                    cell.setAttribute('data-mesa', mesa);
-                    cell.setAttribute('data-hora', hora);
-
-                    // Buscar el estado de esta mesa y hora en los datos recibidos
-                    const reserva = horarios.find(h =>
-                        h.mesa == mesa &&
-                        h.hora === hora
-                    );
-
-                    if (reserva) {
-                        // Mesa ocupada o reservada
-                        cell.className = `status-${reserva.estado.toLowerCase()}`;
-                        cell.textContent = reserva.estado;
-                    } else {
-                        // Mesa libre
-                        cell.className = 'status-libre';
-                        cell.textContent = 'Libre';
-                    }
-
-                    row.appendChild(cell);
-                });
-
-                tbody.appendChild(row);
+                this.classList.add('selected-cell');
+                viewDetailsBtn.disabled = false;
             });
-
-            // Re-aplicar event listeners a las nuevas celdas
-            aplicarEventListeners();
-        }
-
-        // Función para aplicar event listeners a las celdas
-        function aplicarEventListeners() {
-            selectedTimeSlot = null;
-            selectedMesa = null;
-
-            const availableSlots = document.querySelectorAll('.status-libre');
-            availableSlots.forEach(slot => {
-                slot.addEventListener('click', function() {
-                    // Remover selección anterior
-                    availableSlots.forEach(s => {
-                        s.style.backgroundColor = '';
-                        s.style.color = '';
-                    });
-
-                    // Agregar selección actual
-                    this.style.backgroundColor = '#007bff';
-                    this.style.color = 'white';
-
-                    selectedTimeSlot = this.dataset.hora;
-                    selectedMesa = this.dataset.mesa;
-
-                    // Activar botón de agregar reserva
-                    updateAgregarReservaButton();
-
-                    console.log(`Mesa ${selectedMesa} seleccionada para las ${selectedTimeSlot}`);
-                });
-            });
-        }
-
-        // Event listener para el input de fecha
-        const dateInput = document.getElementById('selectedDate');
-        dateInput.addEventListener('change', function() {
-            selectedDate = this.value;
         });
 
-        // Event listener para el botón de buscar
-        const buscarBtn = document.getElementById('buscarBtn');
-        buscarBtn.addEventListener('click', function() {
-            if (selectedDate) {
-                cargarHorarios(selectedDate);
-            } else {
-                alert('Por favor seleccione una fecha');
+        // Mostrar modal de detalles
+        viewDetailsBtn.addEventListener('click', function() {
+            if (selectedTable && selectedTime) {
+                showReservationDetails(selectedTable, selectedTime);
+                modal.style.display = 'block';
             }
         });
 
-        // Función para activar/desactivar el botón de agregar reserva
-        function updateAgregarReservaButton() {
-            const agregarBtn = document.getElementById('agregarReservaBtn');
-            if (selectedTimeSlot && selectedMesa) {
-                agregarBtn.style.opacity = '1';
-                agregarBtn.style.pointerEvents = 'auto';
-       
-               
-            } else {
-                agregarBtn.style.opacity = '0.5';
-                agregarBtn.style.pointerEvents = 'none';
-            }
-        }
-
-
-        // Botón "Hoy"
-        document.getElementById('hoyBtn').addEventListener('click', function() {
-            const today = new Date();
-            const todayString = today.toISOString().split('T')[0];
-            dateInput.value = todayString;
-            selectedDate = todayString;
-            cargarHorarios(selectedDate);
+        // Cerrar modal
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
         });
 
-        // Botón "Borrar"
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Botones del modal
+        document.getElementById('completarBtn').addEventListener('click', function() {
+            changeReservationStatus('completado');
+        });
+
+        document.getElementById('noAsistioBtn').addEventListener('click', function() {
+            changeReservationStatus('no-asistio');
+        });
+
+        document.getElementById('editarBtn').addEventListener('click', function() {
+            alert('Funcionalidad de editar - Próximamente implementada');
+        });
+
         document.getElementById('borrarBtn').addEventListener('click', function() {
-            // Limpiar selecciones
-            selectedTimeSlot = null;
-            selectedMesa = null;
-            const availableSlots = document.querySelectorAll('.status-libre');
-            availableSlots.forEach(s => {
-                s.style.backgroundColor = '';
-                s.style.color = '';
-            });
-            updateAgregarReservaButton();
+            if (confirm('¿Está seguro de que desea borrar esta reserva?')) {
+                changeReservationStatus('libre');
+            }
         });
 
-        // Inicializar estado del botón y cargar horarios iniciales
-        updateAgregarReservaButton();
-        aplicarEventListeners();
+        // Cambio de zona
+        document.getElementById('zoneSelect').addEventListener('change', function() {
+            // Aquí se implementaría la lógica para cambiar de zona
+            alert('Cambiando a zona: ' + this.options[this.selectedIndex].text);
+        });
 
-        // Cargar horarios para la fecha inicial
-        cargarHorarios(selectedDate);
+        // Cambio de fecha
+        document.getElementById('dateInput').addEventListener('change', function() {
+            // Aquí se implementaría la lógica para cambiar de fecha
+            alert('Cambiando a fecha: ' + this.value);
+        });
     });
+
+    function showReservationDetails(table, time) {
+        const key = `${table}-${time}`;
+        const reservation = reservationsData[key];
+
+        document.getElementById('modalTable').textContent = `Mesa ${table}`;
+        document.getElementById('modalTime').textContent = convertTime(time);
+
+        if (reservation) {
+            document.getElementById('modalStatus').textContent = getStatusText(reservation.status);
+            document.getElementById('modalDescription').textContent = `Mesa Reservada por ${reservation.name}`;
+            document.getElementById('modalPeople').textContent = reservation.people;
+            document.getElementById('modalPhone').textContent = reservation.phone;
+            document.getElementById('modalEmail').textContent = reservation.email;
+            document.getElementById('modalCode').textContent = reservation.code;
+        } else {
+            // Datos por defecto para celdas libres
+            document.getElementById('modalStatus').textContent = 'Libre';
+            document.getElementById('modalDescription').textContent = 'Mesa disponible';
+            document.getElementById('modalPeople').textContent = '-';
+            document.getElementById('modalPhone').textContent = '-';
+            document.getElementById('modalEmail').textContent = '-';
+            document.getElementById('modalCode').textContent = '-';
+        }
+
+        document.getElementById('modalZone').textContent = document.getElementById('zoneSelect').options[document.getElementById('zoneSelect').selectedIndex].text;
+    }
+
+    function changeReservationStatus(newStatus) {
+        if (selectedCell) {
+            // Remover clases de estado anteriores
+            selectedCell.classList.remove('libre', 'pendiente', 'completado', 'no-asistio', 'seleccionado');
+
+            // Aplicar nuevo estado
+            selectedCell.classList.add(newStatus);
+
+            // Actualizar texto de la celda
+            if (newStatus === 'libre') {
+                selectedCell.textContent = 'Libre';
+            } else if (newStatus === 'completado') {
+                // Mantener el nombre pero cambiar el estilo
+                selectedCell.classList.add('completado');
+            } else if (newStatus === 'no-asistio') {
+                selectedCell.classList.add('no-asistio');
+            }
+
+            // Cerrar modal
+            document.getElementById('reservationModal').style.display = 'none';
+
+            // Actualizar datos de reserva
+            const key = `${selectedTable}-${selectedTime}`;
+            if (reservationsData[key]) {
+                reservationsData[key].status = newStatus;
+            }
+
+            alert(`Estado de la reserva actualizado a: ${getStatusText(newStatus)}`);
+        }
+    }
+
+    function getStatusText(status) {
+        const statusMap = {
+            'libre': 'Libre',
+            'pendiente': 'Pendiente',
+            'completado': 'Completado',
+            'no-asistio': 'No Asistió',
+            'seleccionado': 'Seleccionado'
+        };
+        return statusMap[status] || 'Desconocido';
+    }
+
+    function convertTime(time24) {
+        const [hours, minutes] = time24.split(':');
+        const hour12 = hours > 12 ? hours - 12 : hours;
+        const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+        return `${hour12}:${minutes} ${ampm}`;
+    }
 </script>

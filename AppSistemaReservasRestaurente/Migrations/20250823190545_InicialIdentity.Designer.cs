@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppSistemaReservasRestaurente.Migrations
 {
     [DbContext(typeof(BDContexto))]
-    [Migration("20250822232236_InicialIdentity")]
+    [Migration("20250823190545_InicialIdentity")]
     partial class InicialIdentity
     {
         /// <inheritdoc />

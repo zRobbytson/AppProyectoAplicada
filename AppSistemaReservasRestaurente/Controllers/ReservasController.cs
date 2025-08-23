@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppSistemaReservasRestaurente.Data;
 using AppSistemaReservasRestaurente.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppSistemaReservasRestaurente.Controllers
 {
+    [Authorize]
     public class ReservasController : Controller
     {
         private readonly BDContexto _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservasController(BDContexto context)
+        public ReservasController(BDContexto context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservas
@@ -38,7 +43,7 @@ namespace AppSistemaReservasRestaurente.Controllers
                 .Include(r => r.Cliente)
                 .Include(r => r.Horario)
                 .Include(r => r.Mesa)
-                .FirstOrDefaultAsync(m => m.ReservaId == id);
+                .FirstOrDefaultAsync(m => m.ID_Reserva == id);
             if (reserva == null)
             {
                 return NotFound();
@@ -48,30 +53,77 @@ namespace AppSistemaReservasRestaurente.Controllers
         }
 
         // GET: Reservas/Create
-        public IActionResult Create()
+        //public IActionResult Create()
+        //{
+        //    ViewData["ID_Cliente"] = new SelectList(_context.Clientes, "ID_Cliente", "ID_Cliente");
+        //    ViewData["ID_Horario"] = new SelectList(_context.Horarios, "ID_Horario", "ID_Horario");
+        //    ViewData["ID_Mesa"] = new SelectList(_context.Mesas, "ID_Mesa", "ID_Mesa");
+        //    return View();
+        //}
+        public async Task<IActionResult> Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId");
-            ViewData["HorarioId"] = new SelectList(_context.Horarios, "HorarioId", "HorarioId");
-            ViewData["MesaId"] = new SelectList(_context.Mesas, "MesaId", "MesaId");
+            // Obtenemos el usuario actual
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Challenge(); // si no está logueado, redirige a login
+
+            // Obtenemos el cliente asociado
+            var cliente = await _context.Clientes
+                .FirstOrDefaultAsync(c => c.ID_Usuario == user.Id);
+
+            if (cliente == null)
+            {
+                // Caso raro: el usuario no tiene cliente
+                return RedirectToAction("Error", "Home");
+            }
+
+            // Llenamos los combos para Mesa y Horario
+            ViewData["ID_Mesa"] = new SelectList(_context.Mesas, "ID_Mesa", "Zona");
+            ViewData["ID_Horario"] = new SelectList(_context.Horarios, "ID_Horario", "Hora_Inicio");
+
+            // Mandamos los datos del cliente a la vista
+            ViewBag.Cliente = cliente;
+            ViewBag.Correo = user.Email;
+
             return View();
         }
 
         // POST: Reservas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("ID_Reserva,ID_Cliente,ID_Mesa,ID_Horario,Fecha,Cantidad_Personas,Estado")] Reserva reserva)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(reserva);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["ID_Cliente"] = new SelectList(_context.Clientes, "ID_Cliente", "ID_Cliente", reserva.ID_Cliente);
+        //    ViewData["ID_Horario"] = new SelectList(_context.Horarios, "ID_Horario", "ID_Horario", reserva.ID_Horario);
+        //    ViewData["ID_Mesa"] = new SelectList(_context.Mesas, "ID_Mesa", "ID_Mesa", reserva.ID_Mesa);
+        //    return View(reserva);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservaId,ClienteId,MesaId,HorarioId,Fecha,NumPersonas,Estado")] Reserva reserva)
+        public async Task<IActionResult> Create([Bind("ID_Reserva,ID_Mesa,ID_Horario,Fecha,Cantidad_Personas,Estado")] Reserva reserva)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ID_Usuario == user.Id);
+
+            if (cliente == null) return RedirectToAction("Error", "Home");
+
+            // Forzamos que la reserva quede vinculada al cliente logueado
+            reserva.ID_Cliente = cliente.ID_Cliente;
+
             if (ModelState.IsValid)
             {
                 _context.Add(reserva);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", reserva.ClienteId);
-            ViewData["HorarioId"] = new SelectList(_context.Horarios, "HorarioId", "HorarioId", reserva.HorarioId);
-            ViewData["MesaId"] = new SelectList(_context.Mesas, "MesaId", "MesaId", reserva.MesaId);
+
             return View(reserva);
         }
 
@@ -88,9 +140,9 @@ namespace AppSistemaReservasRestaurente.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", reserva.ClienteId);
-            ViewData["HorarioId"] = new SelectList(_context.Horarios, "HorarioId", "HorarioId", reserva.HorarioId);
-            ViewData["MesaId"] = new SelectList(_context.Mesas, "MesaId", "MesaId", reserva.MesaId);
+            ViewData["ID_Cliente"] = new SelectList(_context.Clientes, "ID_Cliente", "ID_Cliente", reserva.ID_Cliente);
+            ViewData["ID_Horario"] = new SelectList(_context.Horarios, "ID_Horario", "ID_Horario", reserva.ID_Horario);
+            ViewData["ID_Mesa"] = new SelectList(_context.Mesas, "ID_Mesa", "ID_Mesa", reserva.ID_Mesa);
             return View(reserva);
         }
 
@@ -99,9 +151,9 @@ namespace AppSistemaReservasRestaurente.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservaId,ClienteId,MesaId,HorarioId,Fecha,NumPersonas,Estado")] Reserva reserva)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_Reserva,ID_Cliente,ID_Mesa,ID_Horario,Fecha,Cantidad_Personas,Estado")] Reserva reserva)
         {
-            if (id != reserva.ReservaId)
+            if (id != reserva.ID_Reserva)
             {
                 return NotFound();
             }
@@ -115,7 +167,7 @@ namespace AppSistemaReservasRestaurente.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservaExists(reserva.ReservaId))
+                    if (!ReservaExists(reserva.ID_Reserva))
                     {
                         return NotFound();
                     }
@@ -126,9 +178,9 @@ namespace AppSistemaReservasRestaurente.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", reserva.ClienteId);
-            ViewData["HorarioId"] = new SelectList(_context.Horarios, "HorarioId", "HorarioId", reserva.HorarioId);
-            ViewData["MesaId"] = new SelectList(_context.Mesas, "MesaId", "MesaId", reserva.MesaId);
+            ViewData["ID_Cliente"] = new SelectList(_context.Clientes, "ID_Cliente", "ID_Cliente", reserva.ID_Cliente);
+            ViewData["ID_Horario"] = new SelectList(_context.Horarios, "ID_Horario", "ID_Horario", reserva.ID_Horario);
+            ViewData["ID_Mesa"] = new SelectList(_context.Mesas, "ID_Mesa", "ID_Mesa", reserva.ID_Mesa);
             return View(reserva);
         }
 
@@ -144,7 +196,7 @@ namespace AppSistemaReservasRestaurente.Controllers
                 .Include(r => r.Cliente)
                 .Include(r => r.Horario)
                 .Include(r => r.Mesa)
-                .FirstOrDefaultAsync(m => m.ReservaId == id);
+                .FirstOrDefaultAsync(m => m.ID_Reserva == id);
             if (reserva == null)
             {
                 return NotFound();
@@ -170,7 +222,7 @@ namespace AppSistemaReservasRestaurente.Controllers
 
         private bool ReservaExists(int id)
         {
-            return _context.Reservas.Any(e => e.ReservaId == id);
+            return _context.Reservas.Any(e => e.ID_Reserva == id);
         }
     }
 }

@@ -1,233 +1,65 @@
-﻿@{
-    ViewBag.Title = "Reservas Restaurante";
+﻿@model IEnumerable<AppSistemaReservasRestaurente.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="container-fluid min-vh-100" style="background-color:#e6d6f0;">
-    <div class="row">
-        <!-- BARRA LATERAL -->
-        <div class="col-lg-2 col-md-3 text-white min-vh-100 p-3 d-flex flex-column align-items-center" style="background-color: rgba(102,51,153,0.8);">
-            <!-- LOGO -->
-            <div class="mb-4 text-center">
-                <img src="~/images/logo.png" alt="Logo Restaurante" class="img-fluid mb-2 rounded-circle border border-light" style="max-width: 100px;">
-                <h5 class="fw-bold">𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝’𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚</h5>
-            </div>
+<h1>Index</h1>
 
-            <!-- ICONOS DE MENU -->
-            <div class="d-flex flex-column gap-3 mt-3 w-100">
-                <button class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center toggle-panel" data-target="#panelHorarios">
-                    <i class="bi bi-clock-history me-2"></i> Horarios
-                </button>
-
-                <button class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center toggle-panel" data-target="#panelBuscar">
-                    <i class="bi bi-search me-2"></i> Buscar
-                </button>
-
-                <button class="btn btn-light text-dark w-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalConfirmacion">
-                    <i class="bi bi-check2-circle me-2"></i> Confirmación
-                </button>
-            </div>
-
-            <!-- PANEL HORARIOS -->
-            <div id="panelHorarios" class="text-dark w-100 mt-3 p-3 rounded collapse" style="background-color: rgba(153,102,204,0.5);">
-                <h6 class="fw-bold">Horarios Disponibles</h6>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item bg-transparent text-dark border-light">12:00 pm</li>
-                    <li class="list-group-item bg-transparent text-dark border-light">1:00 pm</li>
-                    <li class="list-group-item bg-transparent text-dark border-light">2:00 pm</li>
-                    <li class="list-group-item bg-transparent text-dark border-light">8:00 pm</li>
-                </ul>
-            </div>
-
-            <!-- PANEL BUSCAR -->
-            <div id="panelBuscar" class="text-dark w-100 mt-3 p-3 rounded collapse" style="background-color: rgba(153,102,204,0.5);">
-                <h6 class="fw-bold">Consultar Reserva</h6>
-                <select id="criterio" class="form-select mb-2">
-                    <option value="mesa">Por mesa</option>
-                    <option value="zona">Por zona</option>
-                    <option value="apellido">Por apellido</option>
-                </select>
-                <input type="text" class="form-control mb-2" placeholder="Ingrese búsqueda">
-                <button class="btn btn-light w-100">Buscar</button>
-            </div>
-        </div>
-
-        <!-- CONTENIDO PRINCIPAL -->
-        <div class="col-lg-10 col-md-9 p-4">
-            <h2 class="mb-4 fw-bold text-dark">Reserva tu espacio</h2>
-
-            <!-- FORMULARIO INICIAL -->
-            <div class="card text-dark shadow-sm mb-4" style="background-color: rgba(153,102,204,0.3);">
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold">Zona</label>
-                            <select id="zona" class="form-select">
-                                <option>Selecciona zona</option>
-                                <option>Terraza</option>
-                                <option>Salón Principal</option>
-                                <option>Balcón</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold">Cantidad de personas</label>
-                            <input id="personas" type="number" class="form-control" placeholder="Ej: 4">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold">Fecha</label>
-                            <input id="fecha" type="date" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CROQUIS SIMULADO CON 8 MESAS -->
-            <div class="mb-4 position-relative" style="height:400px; background-color: rgba(204,153,255,0.2); border-radius:10px;">
-                <h5 class="fw-bold text-dark mb-3">Selecciona tu mesa</h5>
-
-                <!-- Fila 1 -->
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 1" style="top:20px; left:20px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 1">
-                    <span class="text-dark mt-1">Mesa 1</span>
-                </button>
-
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 2" style="top:20px; left:170px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 2">
-                    <span class="text-dark mt-1">Mesa 2</span>
-                </button>
-
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 3" style="top:20px; left:320px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 3">
-                    <span class="text-dark mt-1">Mesa 3</span>
-                </button>
-
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 4" style="top:20px; left:470px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 4">
-                    <span class="text-dark mt-1">Mesa 4</span>
-                </button>
-
-                <!-- Fila 2 -->
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 5" style="top:170px; left:20px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 5">
-                    <span class="text-dark mt-1">Mesa 5</span>
-                </button>
-
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 6" style="top:170px; left:170px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 6">
-                    <span class="text-dark mt-1">Mesa 6</span>
-                </button>
-
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 7" style="top:170px; left:320px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 7">
-                    <span class="text-dark mt-1">Mesa 7</span>
-                </button>
-
-                <button class="btn mesa-btn position-absolute d-flex flex-column align-items-center p-0 border-0"
-                        data-mesa="Mesa 8" style="top:170px; left:470px;">
-                    <img src="~/imagenes/mesa.jpg" class="mesa-img" style="width:120px; height:120px; border:3px solid #660066; border-radius:10px; transition: transform 0.3s, box-shadow 0.3s;" alt="Mesa 8">
-                    <span class="text-dark mt-1">Mesa 8</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL DE CONFIRMACIÓN -->
-<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="background-color: rgba(102,51,153,0.8); color: #fff;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmación de Reserva</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formConfirmacion">
-                    <div class="mb-2">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="resNombre" placeholder="Nombre completo">
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="resTelefono" placeholder="Ej: 987654321">
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="resCorreo" placeholder="correo@ejemplo.com">
-                    </div>
-                    <hr style="border-color: #ddd;">
-                    <p><strong>Zona:</strong> <span id="resZona">-</span></p>
-                    <p><strong>Fecha:</strong> <span id="resFecha">-</span></p>
-                    <p><strong>Cantidad:</strong> <span id="resPersonas">-</span></p>
-                    <p><strong>Mesa:</strong> <span id="resMesa">-</span></p>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btnConfirmarModal" class="btn btn-light text-dark w-100">Confirmar y enviar correo</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ESTILOS MESAS -->
-<style>
-    .mesa-btn .mesa-img:hover {
-        transform: scale(1.15);
-        box-shadow: 0 0 15px rgba(102,0,102,0.8);
-        cursor: pointer;
-    }
-
-    .mesa-btn .mesa-img.selected {
-        border: 3px solid #330033;
-    }
-</style>
-
-<!-- SCRIPT -->
-<script>
-    // Toggle panels (Horarios, Buscar)
-    document.querySelectorAll(".toggle-panel").forEach(btn => {
-        btn.addEventListener("click", function () {
-            let target = document.querySelector(this.dataset.target);
-            target.classList.toggle("show");
-        });
-    });
-
-    // Selección de mesa
-    let mesaSeleccionada = null;
-    document.querySelectorAll(".mesa-btn").forEach(btn => {
-        btn.addEventListener("click", function () {
-            document.querySelectorAll(".mesa-img").forEach(img => img.classList.remove("selected"));
-            this.querySelector("img").classList.add("selected");
-            mesaSeleccionada = this.dataset.mesa;
-            document.getElementById("resMesa").textContent = mesaSeleccionada;
-        });
-    });
-
-    // Confirmación modal
-    document.getElementById("btnConfirmarModal").addEventListener("click", function () {
-        let zona = document.getElementById("zona").value;
-        let fecha = document.getElementById("fecha").value;
-        let personas = document.getElementById("personas").value;
-        let nombre = document.getElementById("resNombre").value;
-        let telefono = document.getElementById("resTelefono").value;
-        let correo = document.getElementById("resCorreo").value;
-
-        document.getElementById("resZona").textContent = zona;
-        document.getElementById("resFecha").textContent = fecha;
-        document.getElementById("resPersonas").textContent = personas;
-
-        if (zona && fecha && personas && mesaSeleccionada && nombre && telefono && correo) {
-            alert("✅ Reserva confirmada y correo enviado al cliente.");
-            // Aquí se podría agregar lógica real para enviar correo
-            var modal = bootstrap.Modal.getInstance(document.getElementById('modalConfirmacion'));
-            modal.hide();
-        } else {
-            alert("⚠️ Por favor, completa todos los campos antes de confirmar.");
-        }
-    });
-</script>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Horario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cantidad_Personas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.ID_Cliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mesa.ID_Mesa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Horario.ID_Horario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cantidad_Personas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID_Reserva">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID_Reserva">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID_Reserva">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

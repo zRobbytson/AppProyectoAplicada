@@ -7,27 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppSistemaReservasRestaurente.Data;
 using AppSistemaReservasRestaurente.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace AppSistemaReservasRestaurente.Controllers
 {
-    [Authorize(Roles = "Administrador")]
-    public class HorariosController : Controller
+    public class MesasController : Controller
     {
         private readonly BDContexto _context;
 
-        public HorariosController(BDContexto context)
+        public MesasController(BDContexto context)
         {
             _context = context;
         }
 
-        // GET: Horarios
+        // GET: Mesas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Horarios.ToListAsync());
+            return View(await _context.Mesas.ToListAsync());
         }
 
-        // GET: Horarios/Details/5
+        // GET: Mesas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +33,39 @@ namespace AppSistemaReservasRestaurente.Controllers
                 return NotFound();
             }
 
-            var horario = await _context.Horarios
-                .FirstOrDefaultAsync(m => m.ID_Horario == id);
-            if (horario == null)
+            var mesa = await _context.Mesas
+                .FirstOrDefaultAsync(m => m.ID_Mesa == id);
+            if (mesa == null)
             {
                 return NotFound();
             }
 
-            return View(horario);
+            return View(mesa);
         }
 
-        // GET: Horarios/Create
+        // GET: Mesas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Horarios/Create
+        // POST: Mesas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Horario,Hora_Inicio,Hora_Final")] Horario horario)
+        public async Task<IActionResult> Create([Bind("ID_Mesa,Capacidad,Zona")] Mesa mesa)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(horario);
+                _context.Add(mesa);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(horario);
+            return View(mesa);
         }
 
-        // GET: Horarios/Edit/5
+        // GET: Mesas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +73,22 @@ namespace AppSistemaReservasRestaurente.Controllers
                 return NotFound();
             }
 
-            var horario = await _context.Horarios.FindAsync(id);
-            if (horario == null)
+            var mesa = await _context.Mesas.FindAsync(id);
+            if (mesa == null)
             {
                 return NotFound();
             }
-            return View(horario);
+            return View(mesa);
         }
 
-        // POST: Horarios/Edit/5
+        // POST: Mesas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_Horario,Hora_Inicio,Hora_Final")] Horario horario)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_Mesa,Capacidad,Zona")] Mesa mesa)
         {
-            if (id != horario.ID_Horario)
+            if (id != mesa.ID_Mesa)
             {
                 return NotFound();
             }
@@ -99,12 +97,12 @@ namespace AppSistemaReservasRestaurente.Controllers
             {
                 try
                 {
-                    _context.Update(horario);
+                    _context.Update(mesa);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HorarioExists(horario.ID_Horario))
+                    if (!MesaExists(mesa.ID_Mesa))
                     {
                         return NotFound();
                     }
@@ -115,10 +113,10 @@ namespace AppSistemaReservasRestaurente.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(horario);
+            return View(mesa);
         }
 
-        // GET: Horarios/Delete/5
+        // GET: Mesas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,34 +124,34 @@ namespace AppSistemaReservasRestaurente.Controllers
                 return NotFound();
             }
 
-            var horario = await _context.Horarios
-                .FirstOrDefaultAsync(m => m.ID_Horario == id);
-            if (horario == null)
+            var mesa = await _context.Mesas
+                .FirstOrDefaultAsync(m => m.ID_Mesa == id);
+            if (mesa == null)
             {
                 return NotFound();
             }
 
-            return View(horario);
+            return View(mesa);
         }
 
-        // POST: Horarios/Delete/5
+        // POST: Mesas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var horario = await _context.Horarios.FindAsync(id);
-            if (horario != null)
+            var mesa = await _context.Mesas.FindAsync(id);
+            if (mesa != null)
             {
-                _context.Horarios.Remove(horario);
+                _context.Mesas.Remove(mesa);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HorarioExists(int id)
+        private bool MesaExists(int id)
         {
-            return _context.Horarios.Any(e => e.ID_Horario == id);
+            return _context.Mesas.Any(e => e.ID_Mesa == id);
         }
     }
 }

@@ -1,41 +1,79 @@
 using AppSistemaReservasRestaurente.Data;
+using AppSistemaReservasRestaurente.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<BDContexto>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BDContexto") ?? throw new InvalidOperationException("Cadena de conexion 'conexionSqlServer' no existe.")));
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public static async Task Main(string[] args) // 🔹 ahora es async
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Servicios
+        builder.Services.AddControllersWithViews();
+
+        // 🔹 Conexión a la BD
+        builder.Services.AddDbContext<BDContexto>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("BDContexto")
+                ?? throw new InvalidOperationException("Cadena de conexión 'BDContexto' no existe.")));
+
+        // 🔹 Configuración de Identity
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredLength = 4;
+        })
+        .AddEntityFrameworkStores<BDContexto>()
+        .AddDefaultTokenProviders();
+
+        // 🔹 Configuración de cookies (ruta del login/logout)
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.LoginPath = "/Identity/Account/Login";
+            options.LogoutPath = "/Identity/Account/Logout";
+            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+        });
+
+        builder.Services.AddRazorPages(); // 🔹 necesario para Identity
+
+        var app = builder.Build();
+
+        // Middlewares
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var servicio = scope.ServiceProvider;
+            var contexto = servicio.GetRequiredService<BDContexto>();
+            contexto.Database.EnsureCreated();
+
+            // 🔹 Inicializa roles y usuarios
+            await BDInicio.InicializarAsync(servicio);
+        }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        // 🔹 Mapear rutas
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        // 🔹 Identity
+        app.MapRazorPages();
+
+        await app.RunAsync(); // 👈 ahora también es async
+    }
 }
-
-using (var scope = app.Services.CreateScope())
-{
-    var servicio = scope.ServiceProvider;
-    var contexto = servicio.GetRequiredService<BDContexto>();
-    contexto.Database.EnsureCreated(); // Asegura que la base de datos se crea si no existe
-    /*BDInicio.Inicializar(contexto);*/ // Inicializa la base de datos con datos predeterminados
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();

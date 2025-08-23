@@ -1,11 +1,13 @@
-﻿namespace AppSistemaReservasRestaurente.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AppSistemaReservasRestaurente.Models
 {
     public class Mesa
     {
-        public int MesaId { get; set; }
-        public int Numero { get; set; }
-        public int Capacidad { get; set; }
-        public string? Zona { get; set; }
+        [Key]
+        public int ID_Mesa { get; set; } // PK
+        public int Capacidad { get; set; }       // int
+        public string Zona { get; set; } = "";   // varchar(50)
 
         public ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
     }

@@ -1,10 +1,13 @@
-﻿namespace AppSistemaReservasRestaurente.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AppSistemaReservasRestaurente.Models
 {
     public class Horario
     {
-        public int HorarioId { get; set; }
-        public TimeOnly HoraInicio { get; set; }
-        public TimeOnly HoraFin { get; set; }
+        [Key]
+        public int ID_Horario { get; set; } // PK
+        public TimeOnly Hora_Inicio { get; set; }
+        public TimeOnly Hora_Final { get; set; }
 
         public ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
     }

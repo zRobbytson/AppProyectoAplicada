@@ -1,20 +1,25 @@
-﻿namespace AppSistemaReservasRestaurente.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AppSistemaReservasRestaurente.Models
 {
     public class Reserva
     {
-        public int ReservaId { get; set; }
+        [Key]
+        public int ID_Reserva { get; set; } // PK
 
-        public int ClienteId { get; set; }
-        public int MesaId { get; set; }
-        public int HorarioId { get; set; }
+        // Relaciones (FKs)
+        public int ID_Cliente { get; set; }
+        public Cliente Cliente { get; set; } = default!;
 
+        public int ID_Mesa { get; set; }
+        public Mesa Mesa { get; set; } = default!;
 
-        public DateTime Fecha { get; set; }
-        public int NumPersonas { get; set; }
-        public string Estado { get; set; } = "Confirmada";
+        public int ID_Horario { get; set; }
+        public Horario Horario { get; set; } = default!;
 
-        public Cliente? Cliente { get; set; }
-        public Mesa? Mesa { get; set; }
-        public Horario? Horario { get; set; } 
+        // Otros atributos
+        public DateTime Fecha { get; set; }           // datetime
+        public int Cantidad_Personas { get; set; }     // int
+        public string Estado { get; set; } = "Pendiente"; // varchar(20) (Pendiente, Confirmada, Cancelada)
     }
 }

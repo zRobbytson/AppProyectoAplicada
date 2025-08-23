@@ -1,9 +1,11 @@
 using System.Diagnostics;
 using AppSistemaReservasRestaurente.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppSistemaReservasRestaurente.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

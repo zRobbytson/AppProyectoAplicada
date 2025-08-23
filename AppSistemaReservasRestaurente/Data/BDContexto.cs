@@ -1,9 +1,11 @@
 ﻿using AppSistemaReservasRestaurente.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppSistemaReservasRestaurente.Data
 {
-    public class BDContexto : DbContext
+    public class BDContexto : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public BDContexto(DbContextOptions<BDContexto> options)
             : base(options)
@@ -14,30 +16,37 @@ namespace AppSistemaReservasRestaurente.Data
         public DbSet<Mesa> Mesas { get; set; } = default!;
         public DbSet<Horario> Horarios { get; set; } = default!;
         public DbSet<Reserva> Reservas { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Mesa>()
-                .HasIndex(m => m.Numero)
-                .IsUnique();
+            // --- Relación Usuario - Cliente (1:1) ---
+            builder.Entity<Cliente>()
+                .HasOne(c => c.Usuario)
+                .WithOne(u => u.Cliente)
+                .HasForeignKey<Cliente>(c => c.ID_Usuario)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // --- Relación Reserva - Cliente ---
             builder.Entity<Reserva>()
                 .HasOne(r => r.Cliente)
                 .WithMany(c => c.Reservas)
-                .HasForeignKey(r => r.ClienteId)
+                .HasForeignKey(r => r.ID_Cliente)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // --- Relación Reserva - Mesa ---
             builder.Entity<Reserva>()
                 .HasOne(r => r.Mesa)
                 .WithMany(m => m.Reservas)
-                .HasForeignKey(r => r.MesaId)
+                .HasForeignKey(r => r.ID_Mesa)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // --- Relación Reserva - Horario ---
             builder.Entity<Reserva>()
                 .HasOne(r => r.Horario)
                 .WithMany(h => h.Reservas)
-                .HasForeignKey(r => r.HorarioId)
+                .HasForeignKey(r => r.ID_Horario)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

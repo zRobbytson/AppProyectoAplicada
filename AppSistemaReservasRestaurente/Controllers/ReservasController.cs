@@ -76,9 +76,27 @@ namespace AppSistemaReservasRestaurente.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            // Llenamos los combos para Mesa y Horario
-            ViewData["ID_Mesa"] = new SelectList(_context.Mesas, "ID_Mesa", "Zona");
-            ViewData["ID_Horario"] = new SelectList(_context.Horarios, "ID_Horario", "Hora_Inicio");
+            // 🔹 Llenamos el combo de Mesas con descripción detallada
+            ViewData["ID_Mesa"] = new SelectList(
+                _context.Mesas.Select(m => new
+                {
+                    m.ID_Mesa,
+                    Descripcion = "Mesa " + m.ID_Mesa + " (" + m.Zona + " - " + m.Capacidad + " personas)"
+                }),
+                "ID_Mesa",
+                "Descripcion"
+            );
+
+            // 🔹 Llenamos el combo de Horarios en formato 07:00 - 08:00
+            ViewData["ID_Horario"] = new SelectList(
+                _context.Horarios.Select(h => new
+                {
+                    h.ID_Horario,
+                    Descripcion = h.Hora_Inicio.ToString().Substring(0, 5) + " - " + h.Hora_Final.ToString().Substring(0, 5)
+                }),
+                "ID_Horario",
+                "Descripcion"
+            );
 
             // Mandamos los datos del cliente a la vista
             ViewBag.Cliente = cliente;
@@ -86,6 +104,7 @@ namespace AppSistemaReservasRestaurente.Controllers
 
             return View();
         }
+
 
         // POST: Reservas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -107,15 +126,19 @@ namespace AppSistemaReservasRestaurente.Controllers
         //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Reserva,ID_Mesa,ID_Horario,Fecha,Cantidad_Personas,Estado")] Reserva reserva)
+        public async Task<IActionResult> Create([Bind("ID_Reserva,ID_Mesa,ID_Horario,Fecha,Cantidad_Personas")] Reserva reserva)
         {
             var user = await _userManager.GetUserAsync(User);
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ID_Usuario == user.Id);
+            if (user == null) return Challenge();
 
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ID_Usuario == user.Id);
             if (cliente == null) return RedirectToAction("Error", "Home");
 
             // Forzamos que la reserva quede vinculada al cliente logueado
             reserva.ID_Cliente = cliente.ID_Cliente;
+
+            // 👇 Siempre asignamos un estado por defecto
+            reserva.Estado = "Pendiente";
 
             if (ModelState.IsValid)
             {

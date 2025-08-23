@@ -34,8 +34,24 @@ namespace AppSistemaReservasRestaurente.Data
                     };
 
                     var result = await userManager.CreateAsync(adminUser, "Admin1234!");
+                    //if (result.Succeeded)
+                    //    await userManager.AddToRoleAsync(adminUser, "Administrador");
                     if (result.Succeeded)
+                    {
                         await userManager.AddToRoleAsync(adminUser, "Administrador");
+
+                        // 👉 Crear registro en tabla Clientes
+                        var cliente = new Cliente
+                        {
+                            Nombre_Cliente = "Administrador",
+                            Telefono = "987654321",
+                            DNI = "12345678",
+                            ID_Usuario = adminUser.Id // FK con AspNetUsers
+                        };
+
+                        context.Clientes.Add(cliente);
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 // 🔹 Crear usuario Cliente

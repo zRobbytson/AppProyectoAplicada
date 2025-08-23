@@ -105,7 +105,7 @@ namespace AppSistemaReservasRestaurente.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ID_Usuario")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre_Cliente")
@@ -117,7 +117,7 @@ namespace AppSistemaReservasRestaurente.Migrations
 
                     b.HasKey("ID_Cliente");
 
-                    b.HasIndex("ID_Usuario")
+                    b.HasIndex("Id")
                         .IsUnique();
 
                     b.ToTable("Clientes");
@@ -337,7 +337,7 @@ namespace AppSistemaReservasRestaurente.Migrations
                 {
                     b.HasOne("AppSistemaReservasRestaurente.Models.ApplicationUser", "Usuario")
                         .WithOne("Cliente")
-                        .HasForeignKey("AppSistemaReservasRestaurente.Models.Cliente", "ID_Usuario")
+                        .HasForeignKey("AppSistemaReservasRestaurente.Models.Cliente", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

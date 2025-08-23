@@ -25,6 +25,9 @@ public class Program
             options.Password.RequireLowercase = false;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequiredLength = 4;
+
+            // ❌ QUITA la confirmación de cuenta
+            options.SignIn.RequireConfirmedAccount = false;
         })
         .AddEntityFrameworkStores<BDContexto>()
         .AddDefaultTokenProviders();

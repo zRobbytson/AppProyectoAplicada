@@ -26,6 +26,43 @@ namespace AppSistemaReservasRestaurente.Controllers
         {
             return View(await _context.Horarios.ToListAsync());
         }
+        [HttpGet]
+        public async Task<IActionResult> GetReservas(DateTime fecha, string zona)
+        {
+            // Validar zona → rango de mesas
+            var rangos = new Dictionary<string, (int min, int max)>
+            {
+                ["salon-principal"] = (1, 8),
+                ["terraza"] = (9, 16),
+                ["balcon"] = (17, 20)
+            };
+
+            if (!rangos.TryGetValue(zona ?? "", out var r))
+                return Json(Array.Empty<object>());
+
+            var datos = await _context.Reservas
+                .Include(x => x.Mesa)
+                .Include(x => x.Horario)
+                .Include(x => x.Cliente)
+                .Where(x =>
+                    x.Fecha.Date == fecha.Date &&
+                    x.Mesa.ID_Mesa >= r.min && x.Mesa.ID_Mesa <= r.max)
+                .Select(x => new
+                {
+                    // Hora en formato "HH:mm"
+                    hora = x.Horario.Hora_Inicio.ToString("HH:mm"),
+                    mesa = x.Mesa.ID_Mesa,
+                    nombreCliente = x.Cliente.Nombre_Cliente,
+                    cantidadPersonas = x.Cantidad_Personas,
+                    telefono = x.Cliente.Telefono,
+                    email = "", // si luego agregas email en Cliente, lo colocas aquí
+                    codigo = x.ID_Reserva,
+                    estado = x.Estado // Confirmado | Pendiente | Cancelada
+                })
+                .ToListAsync();
+
+            return Json(datos);
+        }
 
         // GET: Horarios/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -155,5 +192,7 @@ namespace AppSistemaReservasRestaurente.Controllers
         {
             return _context.Horarios.Any(e => e.ID_Horario == id);
         }
+       
+
     }
 }

@@ -1,35 +1,4 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-.custom-panel {
-    background-color: rgb(97, 94, 252, 0.20); /*Negro con 60% opacidad */
-    backdrop-filter: blur(5px); /* Opcional: desenfoque elegante detrás */
-    color: chartreuse;
-    /*border-radius: 12px;*/
-    /*padding: 2rem;*/
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    font-weight: bold; /* <- Esto pone todo el texto en negrita */
-}
-.schedule-table {
+ï»¿.schedule-table {
     font-size: 0.9rem;
     border-collapse: separate;
     border-spacing: 2px;

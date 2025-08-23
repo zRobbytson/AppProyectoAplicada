@@ -286,7 +286,7 @@ namespace AppSistemaReservasRestaurente.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_ID_Usuario",
                 table: "Clientes",
-                column: "ID_Usuario",
+                column: "Id",
                 unique: true);
 
             migrationBuilder.CreateIndex(

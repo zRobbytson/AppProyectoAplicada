@@ -25,7 +25,7 @@ namespace AppSistemaReservasRestaurente.Data
             builder.Entity<Cliente>()
                 .HasOne(c => c.Usuario)
                 .WithOne(u => u.Cliente)
-                .HasForeignKey<Cliente>(c => c.ID_Usuario)
+                .HasForeignKey<Cliente>(c => c.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // --- Relación Reserva - Cliente ---

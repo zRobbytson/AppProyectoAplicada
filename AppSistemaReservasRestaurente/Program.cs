@@ -30,6 +30,7 @@ public class Program
             options.SignIn.RequireConfirmedAccount = false;
         })
         .AddEntityFrameworkStores<BDContexto>()
+        .AddDefaultUI()
         .AddDefaultTokenProviders();
 
         // 🔹 Configuración de cookies (ruta del login/logout)

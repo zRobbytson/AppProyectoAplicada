@@ -68,7 +68,7 @@ namespace AppSistemaReservasRestaurente.Controllers
 
             // Obtenemos el cliente asociado
             var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(c => c.ID_Usuario == user.Id);
+                .FirstOrDefaultAsync(c => c.Id == user.Id);
 
             if (cliente == null)
             {
@@ -131,7 +131,7 @@ namespace AppSistemaReservasRestaurente.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Challenge();
 
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.ID_Usuario == user.Id);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Id == user.Id);
             if (cliente == null) return RedirectToAction("Error", "Home");
 
             // Forzamos que la reserva quede vinculada al cliente logueado
@@ -146,7 +146,28 @@ namespace AppSistemaReservasRestaurente.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ID_Mesa"] = new SelectList(
+                _context.Mesas.Select(m => new
+                {
+                    m.ID_Mesa,
+                    Descripcion = "Mesa " + m.ID_Mesa + " (" + m.Zona + " - " + m.Capacidad + " personas)"
+                }),
+                "ID_Mesa",
+                "Descripcion"
+            );
 
+            // 🔹 Llenamos el combo de Horarios en formato 07:00 - 08:00
+            ViewData["ID_Horario"] = new SelectList(
+                _context.Horarios.Select(h => new
+                {
+                    h.ID_Horario,
+                    Descripcion = h.Hora_Inicio.ToString().Substring(0, 5) + " - " + h.Hora_Final.ToString().Substring(0, 5)
+                }),
+                "ID_Horario",
+                "Descripcion"
+            );
+            ViewBag.Cliente = cliente;
+            ViewBag.Correo = user.Email;
             return View(reserva);
         }
 

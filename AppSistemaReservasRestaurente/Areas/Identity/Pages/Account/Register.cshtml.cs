@@ -143,7 +143,7 @@ namespace AppSistemaReservasRestaurente.Areas.Identity.Pages.Account
                         Nombre_Cliente = Input.Nombre,   // Lo agregas en el modelo Input
                         Telefono = Input.Telefono,       // idem
                         DNI = Input.DNI,                 // idem
-                        ID_Usuario = int.Parse(await _userManager.GetUserIdAsync(user)) // vincula con Identity
+                        Id = int.Parse(await _userManager.GetUserIdAsync(user)) // vincula con Identity
                     };
 
                     _context.Clientes.Add(cliente);

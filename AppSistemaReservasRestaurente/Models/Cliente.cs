@@ -11,7 +11,7 @@ namespace AppSistemaReservasRestaurente.Models
         public string DNI { get; set; } = string.Empty;
 
         // Relación con Usuario
-        public int ID_Usuario { get; set; }
+        public int Id { get; set; }
         public ApplicationUser? Usuario { get; set; }
 
         // Relación con Reservas

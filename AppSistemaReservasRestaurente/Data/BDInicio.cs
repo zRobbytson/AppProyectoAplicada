@@ -46,7 +46,7 @@ namespace AppSistemaReservasRestaurente.Data
                             Nombre_Cliente = "Administrador",
                             Telefono = "987654321",
                             DNI = "12345678",
-                            ID_Usuario = adminUser.Id // FK con AspNetUsers
+                            Id = adminUser.Id // FK con AspNetUsers
                         };
 
                         context.Clientes.Add(cliente);
@@ -77,7 +77,7 @@ namespace AppSistemaReservasRestaurente.Data
                             Nombre_Cliente = "Cliente de Prueba",
                             Telefono = "987654321",
                             DNI = "12345678",
-                            ID_Usuario = clienteUser.Id // FK con AspNetUsers
+                            Id = clienteUser.Id // FK con AspNetUsers
                         };
 
                         context.Clientes.Add(cliente);

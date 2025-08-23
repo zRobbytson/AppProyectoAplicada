@@ -9,13 +9,13 @@ namespace AppSistemaReservasRestaurente.Models
 
         // Relaciones (FKs)
         public int ID_Cliente { get; set; }
-        public Cliente Cliente { get; set; } = default!;
+        public Cliente? Cliente { get; set; } = default!;
 
         public int ID_Mesa { get; set; }
-        public Mesa Mesa { get; set; } = default!;
+        public Mesa? Mesa { get; set; } = default!;
 
         public int ID_Horario { get; set; }
-        public Horario Horario { get; set; } = default!;
+        public Horario? Horario { get; set; } = default!;
 
         // Otros atributos
         public DateTime Fecha { get; set; }           // datetime

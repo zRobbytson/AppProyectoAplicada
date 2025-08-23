@@ -195,14 +195,14 @@ namespace AppSistemaReservasRestaurente.Migrations
                     Nombre_Cliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DNI = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ID_Usuario = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.ID_Cliente);
                     table.ForeignKey(
-                        name: "FK_Clientes_AspNetUsers_ID_Usuario",
-                        column: x => x.ID_Usuario,
+                        name: "FK_Clientes_AspNetUsers_Id",
+                        column: x => x.Id,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -284,7 +284,7 @@ namespace AppSistemaReservasRestaurente.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clientes_ID_Usuario",
+                name: "IX_Clientes_Id",
                 table: "Clientes",
                 column: "Id",
                 unique: true);

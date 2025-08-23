@@ -1,4 +1,633 @@
 ﻿@{
+    ViewData["Title"] = "La Maison d'Androssa Restaurant";
+}
+
+    <style>
+        :root {
+            --primary-color: #6b4e71;
+            --secondary-color: #8b6d93;
+            --accent-color: #d4b5d9;
+            --text-dark: #2c2c2c;
+            --text-light: #6c757d;
+            --bg-light: #f8f4f6;
+            --gradient-bg: linear-gradient(135deg, #6b4e71 0%, #8b6d93 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Sección Hero */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(rgba(107, 78, 113, 0.8), rgba(139, 109, 147, 0.8)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f5f5f5" width="1200" height="800"/><g fill="%23ddd"><rect x="0" y="0" width="400" height="267"/><rect x="400" y="0" width="400" height="267"/><rect x="800" y="0" width="400" height="267"/><rect x="0" y="267" width="400" height="266"/><rect x="400" y="267" width="400" height="266"/><rect x="800" y="267" width="400" height="266"/><rect x="0" y="533" width="400" height="267"/><rect x="400" y="533" width="400" height="267"/><rect x="800" y="533" width="400" height="267"/></g></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .logo-container {
+            margin: 2rem 0;
+            opacity: 0.9;
+        }
+
+        .logo-image {
+            width: 200px;
+            height: 200px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 15px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            border: 3px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-buttons {
+            margin-top: 3rem;
+        }
+
+        .btn-primary-custom {
+            background: var(--gradient-bg);
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 10px;
+            box-shadow: 0 5px 15px rgba(107, 78, 113, 0.3);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(107, 78, 113, 0.4);
+            background: linear-gradient(135deg, #8b6d93 0%, #6b4e71 100%);
+        }
+
+        .btn-outline-custom {
+            border: 2px solid white;
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            background: transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 10px;
+        }
+
+        .btn-outline-custom:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,255,255,0.3);
+        }
+
+        /* Sección Platos Destacados */
+        .featured-section {
+            padding: 100px 0;
+            background: var(--bg-light);
+            position: relative;
+        }
+
+        .featured-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--bg-light));
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gradient-bg);
+            border-radius: 2px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #8b7355, #a69080);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-image::after {
+            content: '🍽️';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            opacity: 0.8;
+        }
+
+        .product-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .btn-menu {
+            background: var(--gradient-bg);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-menu:hover {
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(107, 78, 113, 0.3);
+        }
+
+        /* Sección Sobre Nosotros */
+        .about-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .about-image {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><rect fill="%23333" width="600" height="400"/><g fill="%23555"><circle cx="150" cy="100" r="20"/><circle cx="450" cy="100" r="20"/><circle cx="300" cy="200" r="30"/><circle cx="100" cy="300" r="15"/><circle cx="500" cy="300" r="15"/></g></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            height: 400px;
+            position: relative;
+        }
+
+        .about-text {
+            padding-left: 50px;
+        }
+
+        .about-title {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .about-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .highlight-text {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer-section {
+            background: var(--primary-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-brand {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .footer-info h5 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .footer-info p {
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .logo-image {
+                width: 150px;
+                height: 150px;
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .about-text {
+                padding-left: 0;
+                margin-top: 30px;
+            }
+
+            .about-title {
+                font-size: 2.2rem;
+                text-align: center;
+            }
+
+            .cta-buttons {
+                text-align: center;
+            }
+
+            .btn-primary-custom,
+            .btn-outline-custom {
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+            }
+        }
+
+        /* Animaciones personalizadas */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-up.aos-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scale-up {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s ease;
+        }
+
+        .scale-up.aos-animate {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slide-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-left.aos-animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-right.aos-animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+
+    <!-- Sección Hero -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="hero-content">
+                        <h1 class="hero-title" data-aos="fade-down" data-aos-duration="1000">
+                            Bienvenido a
+                        </h1>
+                        <h2 class="hero-subtitle" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200">
+                            <em>La Maison<br>d'Androssa</em><br>
+                            <span style="font-size: 1.2rem; font-weight: 300;">Restaurant</span>
+                        </h2>
+
+                        <div class="logo-container" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="400">
+                            <div class="logo-image">
+                                <i class="fas fa-home"></i>
+                            </div>
+                        </div>
+
+                        <div class="cta-buttons" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+                        <a href="// Línea 540-544: Cambiar por tu enlace real
+button.href = 'https://drive.google.com/file/d/19Chp1Jx6ANSJ4XKEg5TJ1lAY2s6-mzqX/view';" target="_blank" class="btn btn-primary-custom">
+                                <i class="fas fa-utensils me-2"></i>Ver Carta
+                            </a>
+                            <a href="/Reserva" class="btn btn-outline-custom">
+                                <i class="fas fa-calendar-check me-2"></i>Reservar Mesa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Platos Destacados -->
+    <section class="featured-section" id="platos-destacados">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="section-title" data-aos="fade-up" data-aos-duration="800">
+                        Platos Destacados
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <div class="product-card">
+                        <div class="product-image"></div>
+                        <div class="product-content">
+                            <h3 class="product-name">Nombre del producto</h3>
+                            <p class="product-price">USD 25.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div class="product-card">
+                        <div class="product-image"></div>
+                        <div class="product-content">
+                            <h3 class="product-name">Nombre del producto</h3>
+                            <p class="product-price">USD 25.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <div class="product-card">
+                        <div class="product-image"></div>
+                        <div class="product-content">
+                            <h3 class="product-name">Nombre del producto</h3>
+                            <p class="product-price">USD 25.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                    <a href="https://drive.google.com/your-menu-link" target="_blank" class="btn-menu">
+                        <i class="fas fa-book-open me-2"></i>Ver Carta Completa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Sobre Nosotros -->
+    <section class="about-section" id="sobre-nosotros">
+        <div class="container">
+            <div class="row about-content">
+                <div class="col-lg-6" data-aos="slide-right" data-aos-duration="1000">
+                    <div class="about-image"></div>
+                </div>
+                <div class="col-lg-6" data-aos="slide-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="about-text">
+                        <h2 class="about-title">Sobre Nosotros</h2>
+                        <p class="about-description">
+                            En <span class="highlight-text">La Maison d'Androssa</span> creemos que comer es celebrar.
+                            Por eso, cada plato refleja nuestra pasión por la cocina y nuestro compromiso con tu disfrute.
+                        </p>
+                        <p class="about-description">
+                            Un rincón donde la tradición abraza la innovación,<br>
+                            y cada visita se convierte en pura emoción.
+                        </p>
+                        <div class="mt-4">
+                            <a href="/Reserva" class="btn-menu">
+                                <i class="fas fa-calendar-plus me-2"></i>Hacer Reserva
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800">
+                    <div class="footer-brand">La Maison d'Androssa</div>
+                    <div class="footer-logo">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div class="footer-info">
+                        <h5><i class="fas fa-map-marker-alt me-2"></i>Ubicación</h5>
+                        <p>Jr. Los Aromas 325, Urb. San Antonio,</p>
+                        <p>Cajamarca – Perú</p>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                    <div class="footer-info">
+                        <h5><i class="fas fa-envelope me-2"></i>Contacto</h5>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope"></i>contacto@lamaisondandrossa.pe</p>
+                            <p><i class="fas fa-phone"></i>+51 (076) 345 678</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0" style="opacity: 0.8;">
+                        &copy; 2025 La Maison d'Androssa. Todos los derechos reservados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        // Inicializar AOS (Animate On Scroll)
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+
+        // Smooth scrolling para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Efectos de parallax para el hero
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-section');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Agregar efecto hover a las tarjetas de productos
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Cambiar el enlace del botón "Ver Carta" aquí:
+        const menuButtons = document.querySelectorAll('a[href*="drive.google.com"]');
+        menuButtons.forEach(button => {
+            // Reemplaza esta URL con tu enlace real de Google Drive
+        button.href = 'https://drive.google.com/file/d/19Chp1Jx6ANSJ4XKEg5TJ1lAY2s6-mzqX/view';
+        });
+    </script>
+
+
+
+@* @{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +635,4 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+ *@

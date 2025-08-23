@@ -138,7 +138,7 @@ namespace AppSistemaReservasRestaurente.Controllers
             reserva.ID_Cliente = cliente.ID_Cliente;
 
             // 👇 Siempre asignamos un estado por defecto
-            reserva.Estado = "Pendiente";
+            reserva.Estado = "Confirmado";
 
             if (ModelState.IsValid)
             {

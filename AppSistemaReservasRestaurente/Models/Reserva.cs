@@ -20,6 +20,6 @@ namespace AppSistemaReservasRestaurente.Models
         // Otros atributos
         public DateTime Fecha { get; set; }           // datetime
         public int Cantidad_Personas { get; set; }     // int
-        public string Estado { get; set; } = "Pendiente"; // varchar(20) (Pendiente, Confirmada, Cancelada)
+        public string Estado { get; set; } = "Confirmado"; // varchar(20) (Pendiente, Confirmada, Cancelada)
     }
 }

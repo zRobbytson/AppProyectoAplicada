@@ -48,17 +48,17 @@ namespace AppSistemaReservasRestaurente.Controllers
                     x.Fecha.Date == fecha.Date &&
                     x.Mesa.ID_Mesa >= r.min && x.Mesa.ID_Mesa <= r.max)
                 .Select(x => new
-                {
-                    // Hora en formato "HH:mm"
-                    hora = x.Horario.Hora_Inicio.ToString("HH:mm"),
-                    mesa = x.Mesa.ID_Mesa,
-                    nombreCliente = x.Cliente.Nombre_Cliente,
-                    cantidadPersonas = x.Cantidad_Personas,
-                    telefono = x.Cliente.Telefono,
-                    email = "", // si luego agregas email en Cliente, lo colocas aquí
-                    codigo = x.ID_Reserva,
-                    estado = x.Estado // Confirmado | Pendiente | Cancelada
-                })
+                    {
+                        hora = x.Horario.Hora_Inicio.ToString("HH:mm"),
+                        mesa = x.Mesa.ID_Mesa,
+                        nombreCliente = x.Cliente.Nombre_Cliente,
+                        cantidadPersonas = x.Cantidad_Personas,
+                        telefono = x.Cliente.Telefono,
+                        dni = x.Cliente.DNI,   // 👈 aquí está el DNI
+                        codigo = x.ID_Reserva,
+                        estado = x.Estado
+                    })
+
                 .ToListAsync();
 
             return Json(datos);

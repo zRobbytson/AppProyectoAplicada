@@ -1,65 +1,82 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registrar";
 }
 
-<h1>@ViewData["Title"]</h1>
+<style>
+    /* Panel de Mesas adaptado a Login/Register */
+    .custom-panel-mesas {
+        background-color: rgba(19, 15, 90, 0.35);
+        backdrop-filter: blur(6px);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem auto;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+        font-weight: bold;
+    }
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Cree una nueva cuenta</h4>
-            <hr />
+    .small-panel {
+        max-width: 700px; /* 👈 mismo tamaño que los CRUDs */
+        margin: 2rem auto;
+    }
+</style>
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="custom-panel-mesas small-panel text-light">
+    <h1 class="text-center">@ViewData["Title"]</h1>
 
-            <!-- Nombre Completo -->
-            <div class="form-group">
-                <label asp-for="Input.Nombre" class="control-label"></label>
-                <input asp-for="Input.Nombre" class="form-control" />
-                <span asp-validation-for="Input.Nombre" class="text-danger"></span>
-            </div>
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <h4>Cree una nueva cuenta</h4>
+        <hr />
 
-            <!-- DNI -->
-            <div class="form-group">
-                <label asp-for="Input.DNI" class="control-label"></label>
-                <input asp-for="Input.DNI" class="form-control" />
-                <span asp-validation-for="Input.DNI" class="text-danger"></span>
-            </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Teléfono -->
-            <div class="form-group">
-                <label asp-for="Input.Telefono" class="control-label"></label>
-                <input asp-for="Input.Telefono" class="form-control" />
-                <span asp-validation-for="Input.Telefono" class="text-danger"></span>
-            </div>
+        <!-- Nombre Completo -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Nombre"></label>
+            <input asp-for="Input.Nombre" class="form-control" />
+            <span asp-validation-for="Input.Nombre" class="text-danger"></span>
+        </div>
 
-            <!-- Email -->
-            <div class="form-group">
-                <label asp-for="Input.Email" class="control-label"></label>
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
+        <!-- DNI -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.DNI"></label>
+            <input asp-for="Input.DNI" class="form-control" />
+            <span asp-validation-for="Input.DNI" class="text-danger"></span>
+        </div>
 
-            <!-- Password -->
-            <div class="form-group">
-                <label asp-for="Input.Password" class="control-label"></label>
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
+        <!-- Teléfono -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Telefono"></label>
+            <input asp-for="Input.Telefono" class="form-control" />
+            <span asp-validation-for="Input.Telefono" class="text-danger"></span>
+        </div>
 
-            <!-- Confirm Password -->
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword" class="control-label"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
+        <!-- Email -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
 
-            <button type="submit" class="btn btn-primary">Registrar</button>
-        </form>
-    </div>
+        <!-- Password -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Registrar</button>
+    </form>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

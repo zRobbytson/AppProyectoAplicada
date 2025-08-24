@@ -1,0 +1,41 @@
+﻿/* Panel de Mesas */
+.custom-panel-mesas {
+    background-color: rgba(19, 15, 90, 0.35);
+    backdrop-filter: blur(6px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem auto;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+}
+
+/* Versión más pequeña para CRUD */
+.small-panel {
+    max-width: 700px; /* 👈 más angosto */
+    margin: 2rem auto;
+}
+
+/* Tabla Mesas */
+.custom-tablem {
+    background-color: transparent !important;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .custom-tablem th {
+        background-color: rgba(255, 255, 255, 0.18) !important;
+        color: #ffffff !important;
+        border: 1px solid #ffffff !important;
+        text-align: center;
+    }
+
+    .custom-tablem td {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+        border: 1px solid #ffffff !important;
+        text-align: center;
+    }
+
+    .custom-tablem tr:hover td {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+    }

@@ -1,41 +1,39 @@
 ﻿@model IEnumerable<AppSistemaReservasRestaurente.Models.Mesa>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gestión de Mesas";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacidad)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Zona)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacidad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Zona)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_Mesa">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_Mesa">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_Mesa">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="custom-container">
+    <div class="custom-panel-mesas">
+        <h2 class="custom-title text-light text-center">Gestión de Mesas</h2>
+        <p class="text-center mb-4">
+            <a asp-action="Create" class="btn btn-success btn-lg">➕ Crear Nueva Mesa</a>
+        </p>
+        <table class="custom-tablem">
+            <thead>
+                <tr>
+                    <th>N° Mesa</th>
+                    <th>@Html.DisplayNameFor(model => model.Capacidad)</th>
+                    <th>@Html.DisplayNameFor(model => model.Zona)</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ID_Mesa</td>
+                        <td>@item.Capacidad</td>
+                        <td>@item.Zona</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ID_Mesa" class="btn btn-warning btn-sm">✏️ Editar</a>
+                            <a asp-action="Details" asp-route-id="@item.ID_Mesa" class="btn btn-info btn-sm">🔍 Detalles</a>
+                            <a asp-action="Delete" asp-route-id="@item.ID_Mesa" class="btn btn-danger btn-sm">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

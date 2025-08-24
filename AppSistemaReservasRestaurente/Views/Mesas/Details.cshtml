@@ -1,30 +1,18 @@
 ﻿@model AppSistemaReservasRestaurente.Models.Mesa
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles Mesa";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Mesa</h4>
+<div class="custom-panel-mesas small-panel">
+    <h2 class="text-light text-center">🔍 Detalles de Mesa</h2>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Capacidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Capacidad)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Zona)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Zona)
-        </dd>
+    <dl class="row text-light">
+        <dt class="col-sm-2">Capacidad</dt>
+        <dd class="col-sm-10">@Model.Capacidad</dd>
+        <dt class="col-sm-2">Zona</dt>
+        <dd class="col-sm-10">@Model.Zona</dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID_Mesa">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.ID_Mesa" class="btn btn-warning">✏️ Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
 </div>

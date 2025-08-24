@@ -1,39 +1,31 @@
 ﻿@model AppSistemaReservasRestaurente.Models.Mesa
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Mesa";
 }
 
-<h1>Edit</h1>
-
-<h4>Mesa</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID_Mesa" />
-            <div class="form-group">
-                <label asp-for="Capacidad" class="control-label"></label>
-                <input asp-for="Capacidad" class="form-control" />
-                <span asp-validation-for="Capacidad" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Zona" class="control-label"></label>
-                <input asp-for="Zona" class="form-control" />
-                <span asp-validation-for="Zona" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="custom-panel-mesas small-panel">
+    <h2 class="text-light text-center">✏️ Editar Mesa</h2>
+    <hr />
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="ID_Mesa" />
+        <div class="form-group">
+            <label asp-for="Capacidad" class="control-label text-light"></label>
+            <input asp-for="Capacidad" class="form-control" />
+            <span asp-validation-for="Capacidad" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Zona" class="control-label text-light"></label>
+            <input asp-for="Zona" class="form-control" />
+            <span asp-validation-for="Zona" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

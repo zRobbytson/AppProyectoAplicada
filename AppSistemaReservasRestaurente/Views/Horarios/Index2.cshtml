@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<AppSistemaReservasRestaurente.Models.Horario>
+
 @{
+    ViewData["Title"] = "Listado de Horarios";
 }
+
+<div class="custom-container">
+    <div class="custom-panel-horarios">
+        <h2 class="custom-title text-light text-center">Gestión de Horarios</h2>
+
+        <p class="text-center mb-4">
+            <a asp-action="Create" class="btn btn-success btn-lg">➕ Crear Nuevo Horario</a>
+        </p>
+
+        <table class="table custom-tableh">
+            <thead>
+                <tr>
+                    <th >@Html.DisplayNameFor(model => model.ID_Horario)</th>
+                    <th>@Html.DisplayNameFor(model => model.Hora_Inicio)</th>
+                    <th>@Html.DisplayNameFor(model => model.Hora_Final)</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ID_Horario</td>
+                        <td>@item.Hora_Inicio.ToString("HH:mm")</td>
+                        <td>@item.Hora_Final.ToString("HH:mm")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ID_Horario" class="btn btn-warning btn-sm">✏️ Editar</a>
+                            <a asp-action="Details" asp-route-id="@item.ID_Horario" class="btn btn-info btn-sm">🔍 Detalles</a>
+                            <a asp-action="Delete" asp-route-id="@item.ID_Horario" class="btn btn-danger btn-sm">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

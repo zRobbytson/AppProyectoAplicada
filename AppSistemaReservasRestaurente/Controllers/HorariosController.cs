@@ -26,6 +26,15 @@ namespace AppSistemaReservasRestaurente.Controllers
         {
             return View(await _context.Horarios.ToListAsync());
         }
+
+        // GET: Horarios/Index2
+        public async Task<IActionResult> Index2()
+        {
+            var horarios = await _context.Horarios.ToListAsync();
+            return View(horarios);
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> GetReservas(DateTime fecha, string zona)
         {

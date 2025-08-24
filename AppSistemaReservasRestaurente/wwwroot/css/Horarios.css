@@ -1,5 +1,6 @@
-﻿.custom-panel-horarios {
-    background-color: rgba(97, 94, 252, 0.15); /* similar al custom-panel */
+﻿/* Panel de horarios */
+.custom-panel-horarios {
+    background-color: rgba(13, 11, 116, 0.35);
     backdrop-filter: blur(5px);
     border-radius: 15px;
     padding: 2rem;
@@ -8,17 +9,44 @@
     font-weight: bold;
 }
 
-/* Encabezado de tabla más claro */
-.custom-table th {
-    background-color: rgba(255, 255, 255, 0.15); /* Blanco transparente */
-    color: #ffffff;
-    border: 1px solid #4e84ff;
-    text-align: center;
+/* Quitar fondo blanco que pone Bootstrap */
+.custom-tableh {
+    background-color: transparent !important;
+    border-collapse: collapse;
+    width: 100%;
 }
 
-/* Filas con blanco opaco */
-.custom-table td {
-    background-color: rgba(0, 191, 255, 0.08);
-    color: rgba(255, 255, 255, 0.85); /* Blanco medio opaco */
-    text-align: center;
+    /* Encabezado: blanco translúcido con texto blanco */
+    .custom-tableh th {
+        background-color: rgba(255, 255, 255, 0.30) !important;
+        
+        border: 1px solid #ffffff; /* bordes blancos */
+        text-align: center;
+        padding: 10px;
+    }
+.custom-panel-horarios .custom-tableh th {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important; /* 🔥 fuerza el blanco puro */
+    border: 1px solid #ffffff !important;
 }
+
+.custom-panel-horarios .custom-tableh td {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    border: 1px solid #ffffff !important;
+}
+
+    /* Filas: texto blanco opaco + bordes blancos */
+    .custom-tableh td {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: rgba(255, 255, 255, 0.75); /* blanco opaco */
+        border: 1px solid #ffffff; /* bordes blancos */
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Hover: más contraste */
+    .custom-tableh tr:hover td {
+        background-color: rgba(255, 255, 255, 0.12) !important;
+        color: #ffffff; /* al pasar el mouse se ve más claro */
+    }

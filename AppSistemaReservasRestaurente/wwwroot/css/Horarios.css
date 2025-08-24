@@ -1,147 +1,24 @@
-﻿.schedule-table {
-    font-size: 0.9rem;
-    border-collapse: separate;
-    border-spacing: 2px;
-}
-
-    .schedule-table th, .schedule-table td {
-        text-align: center;
-        vertical-align: middle;
-        padding: 8px 4px;
-        border: 1px solid #dee2e6;
-        min-width: 80px;
-    }
-
-.mesa-libre {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    cursor: pointer;
-}
-
-.mesa-pendiente {
-    background-color: #b3e5fc;
-    color: #0277bd;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.mesa-completado {
-    background-color: #1976d2;
-    color: white;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.mesa-no-asistio {
-    background-color: #fff3cd;
-    color: #856404;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.mesa-seleccionado {
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
+﻿.custom-panel-horarios {
+    background-color: rgba(97, 94, 252, 0.15); /* similar al custom-panel */
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
     font-weight: bold;
 }
 
-.time-column {
-    background-color: #e9ecef;
-    font-weight: bold;
-    min-width: 60px;
+/* Encabezado de tabla más claro */
+.custom-table th {
+    background-color: rgba(255, 255, 255, 0.15); /* Blanco transparente */
+    color: #ffffff;
+    border: 1px solid #4e84ff;
+    text-align: center;
 }
 
-.header-mesa {
-    background-color: #6c757d;
-    color: white;
-    font-weight: bold;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1050;
-    display: none;
-}
-
-.detail-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 1051;
-    max-width: 500px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.btn-action {
-    margin: 2px;
-    font-size: 0.85rem;
-    padding: 6px 12px;
-}
-
-.reservation-info {
-    background-color: #f8f9fa;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.status-pendiente {
-    background-color: #b3e5fc;
-    color: #0277bd;
-}
-
-.status-completado {
-    background-color: #1976d2;
-    color: white;
-}
-
-.status-no-asistio {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.calendar-input {
-    max-width: 200px;
-}
-
-@@media (max-width: 768px) {
-    .schedule-table {
-        font-size: 0.75rem;
-    }
-
-        .schedule-table th, .schedule-table td {
-            padding: 4px 2px;
-            min-width: 60px;
-        }
-
-    .detail-modal {
-        width: 95%;
-        margin: 10px;
-    }
-
-    .btn-action {
-        font-size: 0.75rem;
-        padding: 4px 8px;
-        margin: 1px;
-    }
+/* Filas con blanco opaco */
+.custom-table td {
+    background-color: rgba(0, 191, 255, 0.08);
+    color: rgba(255, 255, 255, 0.85); /* Blanco medio opaco */
+    text-align: center;
 }

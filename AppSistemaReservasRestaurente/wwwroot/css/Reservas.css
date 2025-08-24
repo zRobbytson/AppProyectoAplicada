@@ -37,19 +37,19 @@
     box-shadow: 0 0 35px rgba(0, 0, 0, 0.6);
 }
 
-/* Estilo de cabecera de tabla */
+/* Cabecera de la tabla */
 .custom-table th {
-    background-color: rgba(173, 216, 230, 0.3); /* celeste claro */
-    color: white;
-    border: 1px solid #4e84ff;
-    text-align: center;
+    background-color: rgba(255, 255, 255, 0.15); /* Blanco translúcido */
+    color: #ffffff; /* Blanco brillante */
     font-weight: bold;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Estilo de celdas */
+/* Filas del cuerpo */
 .custom-table td {
-    background-color: rgba(0, 191, 255, 0.1); /* celeste tenue */
-    color: #d7dcff;
+    background-color: rgba(255, 255, 255, 0.05); /* Muy tenue, no blanco */
+    color: rgba(255, 255, 255, 0.7); /* Blanco opaco */
     text-align: center;
     vertical-align: middle;
 }

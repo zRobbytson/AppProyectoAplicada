@@ -4,25 +4,17 @@
     ViewBag.Title = "Reservas Restaurante";
 }
 
-<div class="container-fluid min-vh-100" style="background-color:#e6d6f0;">
-    <div class="row">
-        <!-- BARRA LATERAL -->
-        <div class="col-lg-2 col-md-3 text-white min-vh-100 p-3 d-flex flex-column align-items-center" style="background-color: rgba(102,51,153,0.8);">
-            <div class="mb-4 text-center">
-                <img src="~/images/Logo.png" alt="Logo Restaurante" class="img-fluid mb-2 rounded-circle border border-light" style="max-width: 100px;">
-                <h5 class="fw-bold">𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝’𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚</h5>
-            </div>
-
-            
-        </div>
-
+<div class="custom-panel-reservas ">
+    <div class="row justify-content-center">
         <!-- CONTENIDO PRINCIPAL -->
-        <div class="col-lg-10 col-md-9 p-4">
-            <h2 class="mb-4 fw-bold text-dark">Reserva tu espacio</h2>
+        <div class="col-lg-10 p-4">
+            <!-- Título principal -->
+            <h1 class="fw-bold text-white text-center mb-3">𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝’𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚</h1>
+            <h2 class="mb-4 fw-bold text-white text-center">Reserva tu espacio</h2>
 
             <!-- FORMULARIO INICIAL -->
-            <div class="card text-dark shadow-sm mb-4" style="background-color: rgba(153,102,204,0.3);">
-                <div class="card-body">
+            <div class="card shadow-sm mb-4" style="background-color: rgba(102,51,153,0.4); border-radius: 15px;">
+                <div class="card-body text-white">
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label fw-bold">Fecha</label>
@@ -42,7 +34,6 @@
                                     }
                                 }
                             </select>
-
                         </div>
 
                         <div class="col-md-3">
@@ -54,8 +45,8 @@
                                 <option value="Balcón">Balcón</option>
                             </select>
                         </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <button type="button" class="btn btn-dark w-100" onclick="buscarMesas()">
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-light w-100 fw-bold" onclick="buscarMesas()">
                                 <i class="bi bi-search me-1"></i> Buscar
                             </button>
                         </div>
@@ -64,9 +55,10 @@
             </div>
 
             <!-- CROQUIS DE MESAS -->
-            <div id="panelMesas" class="mb-4 position-relative" style="min-height:400px; display:none; background-color: rgba(204,153,255,0.2); border-radius:10px;">
-                <h5 class="fw-bold text-dark mb-3">Selecciona tu mesa</h5>
-                <div id="contenedorMesas" class="d-flex flex-wrap gap-3"></div>
+            <div id="panelMesas" class="mb-4 p-3"
+                 style="min-height:400px; display:none; background-color: rgba(153,102,204,0.3); border-radius:15px;">
+                <h5 class="fw-bold text-white mb-3 text-center">Selecciona tu mesa</h5>
+                <div id="contenedorMesas" class="d-flex flex-wrap justify-content-center gap-3"></div>
             </div>
         </div>
     </div>
@@ -75,51 +67,44 @@
 <!-- MODAL DE CONFIRMACIÓN -->
 <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" style="background-color: rgba(102,51,153,0.9); color: #fff;">
+        <div class="modal-content" style="background-color: rgba(102,51,153,0.9); color: #fff; border-radius:15px;">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmación de Reserva</h5>
+                <h5 class="modal-title fw-bold" id="modalConfirmacionLabel">Confirmación de Reserva</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form asp-action="Create" method="post">
-                    <!-- Cliente oculto -->
                     <input type="hidden" asp-for="ID_Cliente" value="@ViewBag.Cliente.ID_Cliente" />
                     <input type="hidden" asp-for="ID_Mesa" id="inputMesa" />
                     <input type="hidden" asp-for="ID_Horario" id="inputHorario" />
                     <input type="hidden" asp-for="Fecha" id="inputFecha" />
                     <input type="hidden" asp-for="Estado" value="Pendiente" />
 
-                    <!-- Nombre Cliente -->
                     <div class="mb-2">
                         <label class="form-label">Nombre</label>
                         <input class="form-control" value="@ViewBag.Cliente.Nombre_Cliente" readonly />
                     </div>
 
-                    <!-- Teléfono -->
                     <div class="mb-2">
                         <label class="form-label">Teléfono</label>
                         <input class="form-control" value="@ViewBag.Cliente.Telefono" readonly />
                     </div>
 
-                    <!-- Correo -->
                     <div class="mb-2">
                         <label class="form-label">Correo</label>
                         <input class="form-control" value="@ViewBag.Correo" readonly />
                     </div>
 
-                    <!-- DNI -->
                     <div class="mb-2">
                         <label class="form-label">DNI</label>
                         <input class="form-control" value="@ViewBag.Cliente.DNI" readonly />
                     </div>
 
-                    <!-- Cantidad Personas -->
                     <div class="mb-2">
                         <label asp-for="Cantidad_Personas" class="form-label">Cantidad Personas</label>
                         <input asp-for="Cantidad_Personas" class="form-control" />
                     </div>
 
-                    <!-- Detalles elegidos -->
                     <hr class="border-light">
                     <p><strong>Zona:</strong> <span id="resZona">-</span></p>
                     <p><strong>Fecha:</strong> <span id="resFecha">-</span></p>
@@ -127,7 +112,7 @@
                     <p><strong>Mesa:</strong> <span id="resMesa">-</span></p>
 
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-light text-dark w-100">Confirmar Reserva</button>
+                        <button type="submit" class="btn btn-light text-dark fw-bold w-100">Confirmar Reserva</button>
                     </div>
                 </form>
             </div>
@@ -137,56 +122,87 @@
 
 <!-- ESTILOS -->
 <style>
+    /* Botón de mesa con imagen adentro */
     .mesa-card {
-        width: 120px;
-        height: 120px;
+        width: 130px;
+        padding: 10px;
         border: 3px solid #660066;
-        border-radius: 10px;
+        border-radius: 12px;
         background: #fff;
         display: flex;
+        flex-direction: column; /* imagen arriba, texto abajo */
         align-items: center;
-        justify-content: center;
+        gap: 6px;
         cursor: pointer;
-        transition: transform .3s, box-shadow .3s;
+        transition: transform .25s, box-shadow .25s, border-color .25s;
+        text-align: center;
     }
 
-        .mesa-card:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 12px rgba(102,0,102,.6);
+        .mesa-card img.mesa-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            pointer-events: none; /* para que el click sea del botón */
         }
 
-        .mesa-card.ocupada {
-            background: #ccc;
+        .mesa-card span.mesa-caption {
+            font-weight: 700;
+            color: #330033;
+            font-size: .95rem;
+        }
+
+        .mesa-card:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 12px rgba(102,0,102,.5);
+        }
+
+        .mesa-card.ocupada,
+        .mesa-card:disabled {
+            background: #eee;
             cursor: not-allowed;
-            opacity: .6;
+            opacity: .7;
+            box-shadow: none;
         }
 
         .mesa-card.seleccionada {
-            border: 3px solid #330033;
-            box-shadow: 0 0 15px rgba(51,0,51,.8);
+            border-color: #330033;
+            box-shadow: 0 0 15px rgba(51,0,51,.7);
         }
 </style>
 
+
 <!-- SCRIPT -->
 <script>
-    let mesaSeleccionada = null;
+      let mesaSeleccionada = null;
     let idHorario = document.getElementById("hora").value;
 
+    // 👇 base para las imágenes (Razor resuelve ~/)
+    const baseImages = '@Url.Content("~/imagenes/")';
 
-    function mostrarPanel() {
+
+    // 👇 imagen por zona
+        const zonaImg = {
+        "Salón Principal": "mesa4.png",
+        "Terraza": "mesa8.png",
+        "Balcón": "mesa6.png"
+    };
+
+
+
+       function mostrarPanel() {
         document.getElementById("panelMesas").style.display = "block";
     }
 
-        function buscarMesas() {
+          function buscarMesas() {
         const fecha = document.getElementById("fecha").value;
-        const hora = document.getElementById("hora").value;
-        const zona = document.getElementById("zona").value;
+        const hora  = document.getElementById("hora").value;
+        const zona  = document.getElementById("zona").value;
+
         if (!fecha || !hora || !zona) {
             alert("⚠️ Selecciona fecha, hora y zona antes de continuar.");
             return;
         }
 
-        // Llamada al backend
         fetch(`/Reservas/GetMesasLibres?fecha=${fecha}&idHorario=${hora}&zona=${zona}`)
             .then(res => res.json())
             .then(mesas => {
@@ -194,37 +210,66 @@
                 const contenedor = document.getElementById("contenedorMesas");
                 contenedor.innerHTML = "";
 
-                mesas.forEach(m => {
-                    const mesaDiv = document.createElement("div");
-                    mesaDiv.className = "mesa-card " + (m.ocupada ? "ocupada" : "");
-                        mesaDiv.textContent = "Mesa " + (m.idMesa ?? m.id_Mesa ?? m.ID_Mesa);
-                        mesaDiv.addEventListener("click", () => seleccionarMesa(m.idMesa ?? m.id_Mesa ?? m.ID_Mesa, fecha, hora, zona));
+                // imagen según zona seleccionada
+                const imgSrc = baseImages + (zonaImg[zona] ?? "mesa4.png");
 
-                    contenedor.appendChild(mesaDiv);
+                mesas.forEach(m => {
+                    const num = m.idMesa ?? m.id_Mesa ?? m.ID_Mesa;
+
+                    // botón de mesa
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "mesa-card btn " + (m.ocupada ? "ocupada" : "");
+                    btn.dataset.mesa = num; // para seleccionarla luego
+
+                    // imagen
+                    const img = document.createElement("img");
+                    img.className = "mesa-img";
+                    img.src = imgSrc;
+                    img.alt = `Mesa ${num} - ${zona}`;
+
+                    // etiqueta "Mesa N" debajo
+                    const caption = document.createElement("span");
+                    caption.className = "mesa-caption";
+                    caption.textContent = `Mesa ${num}`;
+
+                    btn.appendChild(img);
+                    btn.appendChild(caption);
+
+                    if (!m.ocupada) {
+                        btn.addEventListener("click", () => seleccionarMesa(num, fecha, hora, zona));
+                    } else {
+                        btn.disabled = true;
+                    }
+
+                    contenedor.appendChild(btn);
                 });
             });
     }
 
 
-        function seleccionarMesa(numMesa, fecha, hora, zona) {
-        // Marcar selección
-        document.querySelectorAll(".mesa-card").forEach(m => m.classList.remove("seleccionada"));
-        const mesa = [...document.querySelectorAll(".mesa-card")].find(m => m.textContent.includes(numMesa));
-        mesa.classList.add("seleccionada");
+           function seleccionarMesa(numMesa, fecha, hora, zona) {
+        // Quitar selección anterior
+        document.querySelectorAll(".mesa-card").forEach(b => b.classList.remove("seleccionada"));
+
+        // Marcar la mesa por data-attribute
+        const btnSel = document.querySelector(`.mesa-card[data-mesa="${numMesa}"]`);
+        if (btnSel) btnSel.classList.add("seleccionada");
 
         mesaSeleccionada = numMesa;
 
         // Llenar datos en el modal
-        document.getElementById("resZona").textContent = zona;
+        document.getElementById("resZona").textContent  = zona;
         document.getElementById("resFecha").textContent = fecha;
-        document.getElementById("resHora").textContent = hora;
-        document.getElementById("resMesa").textContent = "Mesa " + numMesa;
+        document.getElementById("resHora").textContent  = hora;
+        document.getElementById("resMesa").textContent  = "Mesa " + numMesa;
 
-        document.getElementById("inputMesa").value = numMesa;
-        document.getElementById("inputHorario").value = hora;  // ojo: aquí tienes que mapearlo al ID real
-        document.getElementById("inputFecha").value = fecha;
+        document.getElementById("inputMesa").value     = numMesa;
+        document.getElementById("inputHorario").value  = hora;   // (si hace falta, mapear al ID real en backend)
+        document.getElementById("inputFecha").value    = fecha;
 
         new bootstrap.Modal(document.getElementById('modalConfirmacion')).show();
     }
+</script>
 
 </script>

@@ -1,5 +1,6 @@
 using AppSistemaReservasRestaurente.Data;
 using AppSistemaReservasRestaurente.Models;
+using AppSistemaReservasRestaurente.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,9 @@ public class Program
         .AddEntityFrameworkStores<BDContexto>()
         .AddDefaultUI()
         .AddDefaultTokenProviders();
+
+        // 🔹 Registro del servicio de correo
+        builder.Services.AddScoped<IEmailService, EmailService>();
 
         // 🔹 Configuración de cookies (ruta del login/logout)
         builder.Services.ConfigureApplicationCookie(options =>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppSistemaReservasRestaurente.Data;
 using AppSistemaReservasRestaurente.Models;
+using AppSistemaReservasRestaurente.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -17,11 +18,13 @@ namespace AppSistemaReservasRestaurente.Controllers
     {
         private readonly BDContexto _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailService _emailService;
 
-        public ReservasController(BDContexto context, UserManager<ApplicationUser> userManager)
+        public ReservasController(BDContexto context, UserManager<ApplicationUser> userManager, IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         // GET: Reservas
@@ -230,6 +233,19 @@ namespace AppSistemaReservasRestaurente.Controllers
             {
                 _context.Add(reserva);
                 await _context.SaveChangesAsync();
+                
+                // Enviar correo de confirmación
+                try
+                {
+                    await _emailService.EnviarCorreoReservaAsync(user.Email, cliente.Nombre_Cliente, reserva);
+                }
+                catch (Exception ex)
+                {
+                    // Log del error pero no interrumpir el flujo
+                    // La reserva ya fue creada exitosamente
+                    Console.WriteLine($"Error enviando correo: {ex.Message}");
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
 

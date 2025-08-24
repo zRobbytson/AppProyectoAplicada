@@ -23,14 +23,15 @@
         /* Sección Hero */
         .hero-section {
             min-height: 100vh;
-            background: linear-gradient(rgba(107, 78, 113, 0.8), rgba(139, 109, 147, 0.8)),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f5f5f5" width="1200" height="800"/><g fill="%23ddd"><rect x="0" y="0" width="400" height="267"/><rect x="400" y="0" width="400" height="267"/><rect x="800" y="0" width="400" height="267"/><rect x="0" y="267" width="400" height="266"/><rect x="400" y="267" width="400" height="266"/><rect x="800" y="267" width="400" height="266"/><rect x="0" y="533" width="400" height="267"/><rect x="400" y="533" width="400" height="267"/><rect x="800" y="533" width="400" height="267"/></g></svg>');
-            background-size: cover;
+        background: linear-gradient(rgba(107, 78, 113, 0.8), rgba(139, 109, 147, 0.8)), 
+        url('/imagenes/brackround.jpg');
+        background-size: cover;
             background-position: center;
             background-attachment: fixed;
             display: flex;
             align-items: center;
             position: relative;
+            border-radius: 3%;
         }
 
         .hero-content {
@@ -59,20 +60,7 @@
             opacity: 0.9;
         }
 
-        .logo-image {
-            width: 200px;
-            height: 200px;
-            background: rgba(0,0,0,0.8);
-            border-radius: 15px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-            border: 3px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(10px);
-        }
+        
 
         .cta-buttons {
             margin-top: 3rem;
@@ -122,7 +110,8 @@
         /* Sección Platos Destacados */
         .featured-section {
             padding: 100px 0;
-            background: var(--bg-light);
+       
+       background: var(--bg-light);
             position: relative;
         }
 
@@ -246,15 +235,7 @@
             min-height: 500px;
         }
 
-        .about-image {
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><rect fill="%23333" width="600" height="400"/><g fill="%23555"><circle cx="150" cy="100" r="20"/><circle cx="450" cy="100" r="20"/><circle cx="300" cy="200" r="30"/><circle cx="100" cy="300" r="15"/><circle cx="500" cy="300" r="15"/></g></svg>');
-            background-size: cover;
-            background-position: center;
-            border-radius: 20px;
-            height: 400px;
-            position: relative;
-        }
+        
 
         .about-text {
             padding-left: 50px;
@@ -287,25 +268,13 @@
         }
 
         .footer-brand {
-            font-size: 2.5rem;
+            font-size: 16px;
             font-weight: 300;
             margin-bottom: 30px;
             text-align: center;
         }
 
-        .footer-logo {
-            width: 100px;
-            height: 100px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            margin: 0 auto 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
+        
 
         .footer-info {
             text-align: center;
@@ -343,6 +312,7 @@
                 height: 150px;
                 font-size: 2rem;
             }
+
 
             .section-title {
                 font-size: 2.5rem;
@@ -423,26 +393,32 @@
             height:50%;
             width: 100%;
         }
+        .logo{
+            width:auto;
+            height: 150px;
+            align-content:center;
+            border-radius:10px;
+        }
     </style>
 
     <!-- Sección Hero -->
     <section class="hero-section">
+
+
         <div class="container">
             <div class="row">
                 <div class="col-12">       
                     <div class="hero-content">
                         <h1 class="hero-title" data-aos="fade-down" data-aos-duration="1000">
-                            Bienvenido a
+                        𝐁𝐢𝐞𝐧𝐯𝐞𝐧𝐢𝐝𝐨 𝐚
                         </h1>
                         <h2 class="hero-subtitle" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="200">
-                            <em>La Maison<br>d'Androssa</em><br>
-                            <span style="font-size: 1.2rem; font-weight: 300;">Restaurant</span>
+                        𓊈 𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝'𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚 𓊉<br>
+                        <span style="font-size: 1.2rem; font-weight: 300;"> ═ 𝚁𝚎𝚜𝚝𝚊𝚞𝚛𝚊𝚗𝚝 ═ </span>
                         </h2>
 
                         <div class="logo-container" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="400">
-                            <div class="logo-image">
-                                <i class="fas fa-home"></i>
-                            </div>
+                            <img class="logo" src="~/imagenes/Logo.png" alt="Logo" />
                         </div>
 
                         <div class="cta-buttons" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
@@ -465,7 +441,7 @@
             <div class="row">
                 <div class="col-12">
                     <h2 class="section-title" data-aos="fade-up" data-aos-duration="800">
-                        Platos Destacados
+                    𝐏𝐋𝐀𝐓𝐎𝐒 𝐃𝐄𝐒𝐓𝐀𝐂𝐀𝐃𝐎𝐒
                     </h2>
                 </div>
             </div>
@@ -473,10 +449,10 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                     <div class="product-card">
                         <div>
-                        <img src="~/imagenes/CORDON BLEU DE POLLO.jpg" alt="Bleu de Pollo" title="CORDON BLEU DE POLLO" />
+                        <img src="~/imagenes/CORDON BLEU DE POLLO.jpg" alt="Bleu de Pollo" />
                         </div>
                         <div class="product-content">
-                            <h3 class="product-name">CORDON BLEU DE POLLO</h3>
+                        <h3 class="product-name">𝐂𝐨𝐫𝐝𝐨𝐧 𝐁𝐥𝐞𝐮 𝐝𝐞 𝐏𝐨𝐥𝐥𝐨</h3>
                             <p class="product-price">S/. 35.00</p>
                         </div>
                     </div>
@@ -484,11 +460,11 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
                     <div class="product-card">
                         <div>
-                            <img src="~/imagenes/lasaña de carne.jpg" alt="Lasana de Carne" title="Lasaña de Carne"/>
+                        <img src="~/imagenes/lasaña de carne.jpg" alt="lasanaCarne" />
 
                         </div>
                         <div class="product-content">
-                            <h3 class="product-name">LASAÑA DE CARNE</h3>
+                        <h3 class="product-name">𝐋𝐚𝐬𝐚ñ𝐚 𝐝𝐞 𝐂𝐚𝐫𝐧𝐞</h3>
                             <p class="product-price">S/. 26.00</p>
                         </div>
                     </div>
@@ -499,7 +475,7 @@
                         <img src="~/imagenes/MEDALLÓN DE LOMO FINO EN SALSA DE CHAMPIÑONES.jpg" alt="Medallon de Lomo Fino" title="Medallon de Lomo Fino" />
                         </div>
                         <div class="product-content">
-                            <h3 class="product-name">MEDALLÓN DE LOMO FINO EN SALSA DE CHAMPIÑONES</h3>
+                        <h3 class="product-name">𝐌𝐞𝐝𝐚𝐥𝐥ón 𝐝𝐞 𝐋𝐨𝐦𝐨 𝐅𝐢𝐧𝐨 𝐞𝐧 𝐒𝐚𝐥𝐬𝐚 𝐝𝐞 𝐂𝐡𝐚𝐦𝐩𝐢ñ𝐨𝐧𝐞𝐬</h3>
                             <p class="product-price">S/. 38.00</p>
                         </div>
                     </div>
@@ -526,14 +502,14 @@
                 </div>
                 <div class="col-lg-6" data-aos="slide-left" data-aos-duration="1000" data-aos-delay="200">
                     <div class="about-text">
-                        <h2 class="about-title">Sobre Nosotros</h2>
+                    <h2 class="about-title">𝐒𝐎𝐁𝐑𝐄 𝐍𝐎𝐒𝐎𝐓𝐑𝐎𝐒</h2>
                         <p class="about-description">
-                            En <span class="highlight-text">La Maison d'Androssa</span> creemos que comer es celebrar.
-                            Por eso, cada plato refleja nuestra pasión por la cocina y nuestro compromiso con tu disfrute.
+                        𝐄𝐧 <span class="highlight-text">𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝'𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚</span> 𝐜𝐫𝐞𝐞𝐦𝐨𝐬 𝐪𝐮𝐞 𝐜𝐨𝐦𝐞𝐫 𝐞𝐬 𝐜𝐞𝐥𝐞𝐛𝐫𝐚𝐫.
+                        𝐏𝐨𝐫 𝐞𝐬𝐨, 𝐜𝐚𝐝𝐚 𝐩𝐥𝐚𝐭𝐨 𝐫𝐞𝐟𝐥𝐞𝐣𝐚 𝐧𝐮𝐞𝐬𝐭𝐫𝐚 𝐩𝐚𝐬𝐢ó𝐧 𝐩𝐨𝐫 𝐥𝐚 𝐜𝐨𝐜𝐢𝐧𝐚 𝐲 𝐧𝐮𝐞𝐬𝐭𝐫𝐨 𝐜𝐨𝐦𝐩𝐫𝐨𝐦𝐢𝐬𝐨 𝐜𝐨𝐧 𝐭𝐮 𝐝𝐢𝐬𝐟𝐫𝐮𝐭𝐞.
                         </p>
                         <p class="about-description">
-                            Un rincón donde la tradición abraza la innovación,<br>
-                            y cada visita se convierte en pura emoción.
+                        𝐔𝐧 𝐫𝐢𝐧𝐜ó𝐧 𝐝𝐨𝐧𝐝𝐞 𝐥𝐚 𝐭𝐫𝐚𝐝𝐢𝐜𝐢ó𝐧 𝐚𝐛𝐫𝐚𝐳𝐚 𝐥𝐚 𝐢𝐧𝐧𝐨𝐯𝐚𝐜𝐢ó𝐧,<br>
+                            𝐲 𝐜𝐚𝐝𝐚 𝐯𝐢𝐬𝐢𝐭𝐚 𝐬𝐞 𝐜𝐨𝐧𝐯𝐢𝐞𝐫𝐭𝐞 𝐞𝐧 𝐩𝐮𝐫𝐚 𝐞𝐦𝐨𝐜𝐢ó𝐧.
                         </p>
                         <div class="mt-4">
                         <a href="https://localhost:7267/Reservas" class="btn-menu">
@@ -550,25 +526,26 @@
     <footer class="footer-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800">
-                    <div class="footer-brand">La Maison d'Androssa</div>
-                    <div class="footer-logo">
-                        <i class="fas fa-home"></i>
-                    </div>
-                </div>
+            <div class="col-lg-4 text-center" data-aos="fade-up" data-aos-duration="800">
+
+                <img class="logo" src="~/imagenes/logo.png" alt="Logo" style="max-width:150px; height:auto;" />
+
+                <div class="footer-brand">𒆜 𓊈𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝'𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚𓊉 𒆜 </div>
+            </div>
+
                 <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
                     <div class="footer-info">
-                        <h5><i class="fas fa-map-marker-alt me-2"></i>Ubicación</h5>
-                        <p>Jr. Los Aromas 325, Urb. San Antonio,</p>
-                        <p>Cajamarca – Perú</p>
+                    <h5><i class="fas fa-map-marker-alt me-2"></i>𝐔𝐛𝐢𝐜𝐚𝐝𝐨𝐬 𝐞𝐧 </h5>
+                    <p>𝙹𝚛. 𝙻𝚘𝚜 𝙰𝚛𝚘𝚖𝚊𝚜 𝟹𝟸𝟻, 𝚄𝚛𝚋. 𝚂𝚊𝚗 𝙰𝚗𝚝𝚘𝚗𝚒𝚘</p>
+                    <p>🇨 🇦 🇯 🇦 🇲 🇦 🇷 🇨 🇦  – 🇵 🇪 🇷 🇺 </p>
                     </div>
                 </div>
                 <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
                     <div class="footer-info">
-                        <h5><i class="fas fa-envelope me-2"></i>Contacto</h5>
+                    <h5><i class="fas fa-envelope me-2"></i> 𝐂𝐨𝐧𝐭𝐚𝐜𝐭𝐨</h5>
                         <div class="contact-info">
-                            <p><i class="fas fa-envelope"></i>contacto@lamaisondandrossa.pe</p>
-                            <p><i class="fas fa-phone"></i>+51 (076) 345 678</p>
+                        <p><i class="fas fa-envelope"></i> 𝚌𝚘𝚗𝚝𝚊𝚌𝚝𝚘@@𝚕𝚊𝚖𝚊𝚒𝚜𝚘𝚗𝚍𝚊𝚗𝚍𝚛𝚘𝚜𝚜𝚊.𝚙𝚎</p>
+                        <p><i class="fas fa-phone"></i>+𝟻𝟷 (𝟶𝟽𝟼) 𝟹𝟺𝟻 𝟼𝟽</p>
                         </div>
                     </div>
                 </div>
@@ -635,6 +612,8 @@
         button.href = 'https://drive.google.com/file/d/19Chp1Jx6ANSJ4XKEg5TJ1lAY2s6-mzqX/view';
         });
     </script>
+<br />
+<br />
 
 
 

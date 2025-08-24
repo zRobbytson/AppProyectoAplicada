@@ -1,127 +1,206 @@
-﻿/* =========================
-   🎨 Panel de Horarios
-   ========================= */
-.custom-panel-horarios {
-    background-color: rgba(19, 15, 90, 0.35); /* mismo tono que Mesas */
-    backdrop-filter: blur(6px);
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 2rem auto;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-    font-weight: bold;
+﻿body {
+    background: linear-gradient(135deg, #2e005f, #12002f);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
 }
 
-    /* Versión más pequeña para CRUD (Create, Edit, Delete, Details) */
-    .custom-panel-horarios.small-panel {
-        max-width: 750px; /* 👈 más angosto que index */
-        margin: 2rem auto;
-    }
+.horarios-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
 
-/* =========================
-   🎨 Tabla de Horarios
-   ========================= */
-.custom-tableh {
-    background-color: transparent !important;
-    border-collapse: collapse;
+.horarios-card {
+    background: rgba(40, 10, 70, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    padding: 25px;
     width: 100%;
+    max-width: 1100px;
 }
 
-    .custom-tableh th {
-        background-color: rgba(255, 255, 255, 0.18) !important;
-        color: #ffffff !important;
-        border: 1px solid #ffffff !important;
-        text-align: center;
-        padding: 10px;
+.title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Filtros */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-item {
+    flex: 1;
+    min-width: 220px;
+}
+
+.filters label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #fff; /* ahora en blanco */
+}
+
+
+.filters input,
+.filters select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* Centrar el botón con el resto de filtros */
+.btn-exit {
+    display: block;
+    margin: 0 auto; /* centra horizontal */
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #ADD8E6;
+    color: white;
+    border: none;
+    transition: 0.3s;
+}
+
+
+    .btn-exit:hover {
+        background: #2e005f;
     }
 
-    .custom-tableh td {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        color: rgba(255, 255, 255, 0.85) !important;
-        border: 1px solid #ffffff !important;
-        text-align: center;
-        padding: 8px;
-    }
+/* Tabla */
+.table-wrapper {
+    overflow-x: auto;
+}
 
-    .custom-tableh tr:hover td {
-        background-color: rgba(255, 255, 255, 0.15) !important;
-        color: #ffffff !important;
-    }
-
-/* =========================
-   🎨 Tabla Exclusiva de Horarios (tablahorariosindex)
-   ========================= */
-#tablahorariosindex {
+#tablaHorarios {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
-    background: rgba(40, 10, 70, 0.55);
-    border-radius: 15px;
-    overflow: hidden;
 }
 
-    #tablahorariosindex th,
-    #tablahorariosindex td {
+    #tablaHorarios th, #tablaHorarios td {
         padding: 12px;
-        border: 1px solid rgba(255,255,255,0.25);
-        color: white !important;
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
     }
 
-    #tablahorariosindex th {
-        background: rgba(255,255,255,0.18);
-        font-weight: bold;
+    #tablaHorarios th {
+        background: rgba(255,255,255,0.1);
     }
 
-    #tablahorariosindex td {
-        background: rgba(255,255,255,0.05);
-        color: rgba(255,255,255,0.85);
+.mesa-libre {
+    background: rgba(0,255,0,0.1);
+}
+
+.mesa-pendiente {
+    background: rgba(255,255,0,0.2);
+}
+
+.mesa-completado {
+    background: rgba(0,200,255,0.2);
+}
+
+.mesa-no-asistio {
+    background: rgba(255,0,0,0.2);
+}
+
+/* Cuando la mesa libre está seleccionada */
+.mesa-seleccionado {
+    background: #ADD8E6 !important; /* celeste bebé */
+    border: 2px solid #fff;
+}
+
+
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.detail-modal {
+    background: linear-gradient(145deg, #3b0a64, #1b0033);
+    padding: 20px;
+    border-radius: 20px;
+    width: 500px;
+    max-width: 95%;
+    color: #fff;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+    .modal-actions .btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
     }
 
-    #tablahorariosindex tr:hover td {
-        background: rgba(255,255,255,0.15);
-        color: #ffffff !important;
-    }
+.success {
+    background: #4CAF50;
+}
 
-    /* =========================
-   🎨 Estados de las Mesas en Horarios
-   ========================= */
-    #tablahorariosindex .mesa-libre {
-        background: rgba(0,255,0,0.12) !important;
-    }
+.warning {
+    background: #FFC107;
+    color: #000;
+}
 
-    #tablahorariosindex .mesa-pendiente {
-        background: rgba(255,255,0,0.25) !important;
-    }
+.info {
+    color: lightblue;
+}
 
-    #tablahorariosindex .mesa-completado {
-        background: rgba(0,200,255,0.25) !important;
-    }
+.danger {
+    background: #F44336;
+}
 
-    #tablahorariosindex .mesa-no-asistio {
-        background: rgba(255,0,0,0.25) !important;
-    }
+.modal-actions .btn:hover {
+    opacity: 0.8;
+}
+/* Select desplegado transparente */
+.filters select option {
+    background: rgba(40, 10, 70, 0.9);
+    color: #fff;
+}
 
-    #tablahorariosindex .mesa-seleccionado {
-        background: #ADD8E6 !important;
-        border: 2px solid #fff;
-    }
-    #tablahorariosindex th {
-        background: rgba(255,255,255,0.18) !important;
-        color: #ffffff !important;
-        border: 1px solid #ffffff !important;
-    }
-
-    #tablahorariosindex td {
-        background: rgba(255,255,255,0.05) !important;
-        color: rgba(255,255,255,0.85) !important;
-        border: 1px solid #ffffff !important;
-    }
-
-.custom-panel-horas {
-    background-color: rgba(19, 15, 90, 0.35);
-    backdrop-filter: blur(6px);
-    border-radius: 15px;
-    padding: 2rem;
-    margin: 2rem auto;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-    font-weight: bold;
+.zona-view {
+    color: white;
 }

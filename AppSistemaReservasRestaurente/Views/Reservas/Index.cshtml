@@ -5,14 +5,15 @@
 }
 
 <div class="custom-container">
-    <h2 class="custom-title">Listado de Reservas</h2>
-
-    <div class="text-center mb-3">
-        <a asp-action="Create" class="btn btn-success btn-lg">➕ Nueva Reserva</a>
-    </div>
-
+    
     <!-- Panel exclusivo -->
     <div class="custom-panel-reservas">
+        <h2 class="custom-title">Listado de Reservas</h2>
+
+        <div class="text-center mb-3">
+            <a asp-action="Create" class="btn btn-success btn-lg">➕ Nueva Reserva</a>
+        </div>
+
         <div class="table-responsive">
             <table class="table custom-table">
                 <thead>
@@ -48,3 +49,98 @@
         </div>
     </div>
 </div>
+<style>
+    /* Contenedor principal */
+    .custom-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+    }
+
+    /* Título */
+    .custom-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+
+    /* Panel de reservas */
+    .custom-panel-reservas {
+        background: rgba(40, 10, 70, 0.7); /* Transparente */
+        border-radius: 20px;
+        padding: 20px;
+        width: 100%;
+        max-width: 1100px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    /* Botón Nueva Reserva */
+    .btn-success {
+        background: rgba(255,255,255,0.5);
+        border: none;
+        color: #000 !important;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .btn-success:hover {
+            background-color: #5dbcd2 !important; /* celeste un poco más oscuro */
+        }
+
+    /* Tabla */
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        background: rgba(255,255,255,0.05); /* Transparente */
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+        .custom-table td {
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .custom-table th {
+            background: rgba(255,255,255,0.1);
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Acciones botones */
+        .custom-table .btn {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .custom-table .btn-warning {
+            background: rgba(40, 10, 70, 0.6);
+            border: none;
+            color: yellow;
+        }
+
+        .custom-table .btn-info {
+            background: rgba(40, 10, 70, 0.6);
+            border: none;
+            color: #5dbcd2;
+        }
+
+        .custom-table .btn-danger {
+            background: rgba(40, 10, 70, 0.6);
+            border: none;
+            color: red;
+        }
+
+        .custom-table .btn:hover {
+            opacity: 0.85;
+        }
+</style>
+

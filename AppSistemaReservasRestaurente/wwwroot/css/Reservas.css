@@ -1,0 +1,55 @@
+﻿.gestion-panel {
+    background-color: rgba(0, 0, 92, 0.40); /* azul transparente */
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 3rem auto;
+    max-width: 700px; /* 👈 tamaño centrado */
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+    text-align: center;
+}
+
+.gestion-title {
+    text-align: center;
+    color: white;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.gestion-subtitle {
+    color: #d7dcff;
+    margin-bottom: 2rem;
+}
+
+.gestion-btn {
+    min-width: 220px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+/* Panel exclusivo para la tabla de reservas */
+.custom-panel-reservas {
+    background-color: rgba(10, 10, 60, 0.5); /* Azul oscuro translúcido */
+    backdrop-filter: blur(6px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 1.5rem auto;
+    max-width: 1100px;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.6);
+}
+
+/* Estilo de cabecera de tabla */
+.custom-table th {
+    background-color: rgba(173, 216, 230, 0.3); /* celeste claro */
+    color: white;
+    border: 1px solid #4e84ff;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Estilo de celdas */
+.custom-table td {
+    background-color: rgba(0, 191, 255, 0.1); /* celeste tenue */
+    color: #d7dcff;
+    text-align: center;
+    vertical-align: middle;
+}

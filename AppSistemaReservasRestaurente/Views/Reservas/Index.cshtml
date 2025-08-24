@@ -1,65 +1,50 @@
 ﻿@model IEnumerable<AppSistemaReservasRestaurente.Models.Reserva>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reservas";
 }
 
-<h1>Index</h1>
+<div class="custom-container">
+    <h2 class="custom-title">Listado de Reservas</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Cliente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mesa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Horario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cantidad_Personas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.ID_Cliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mesa.ID_Mesa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Horario.ID_Horario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cantidad_Personas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID_Reserva">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID_Reserva">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID_Reserva">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="text-center mb-3">
+        <a asp-action="Create" class="btn btn-success btn-lg">➕ Nueva Reserva</a>
+    </div>
+
+    <!-- Nuevo panel específico para la tabla -->
+    <div class="custom-panel-reservas">
+        <div class="table-responsive">
+            <table class="table custom-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Mesa</th>
+                        <th>Horario</th>
+                        <th>Fecha</th>
+                        <th>Personas</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Cliente?.Nombre_Cliente</td>
+                            <td>@item.Mesa?.ID_Mesa</td>
+                            <td>@item.Horario?.Hora_Inicio.ToString("HH:mm")</td>
+                            <td>@item.Fecha.ToShortDateString()</td>
+                            <td>@item.Cantidad_Personas</td>
+                            <td>@item.Estado</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ID_Reserva" class="btn btn-warning btn-sm me-1">✏️ Editar</a>
+                                <a asp-action="Details" asp-route-id="@item.ID_Reserva" class="btn btn-info btn-sm me-1">🔍 Detalles</a>
+                                <a asp-action="Delete" asp-route-id="@item.ID_Reserva" class="btn btn-danger btn-sm">🗑️ Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

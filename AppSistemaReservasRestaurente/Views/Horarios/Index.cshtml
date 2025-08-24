@@ -7,19 +7,17 @@
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header text-white" style="background: linear-gradient(#4B365E, #29034F)">
-                    <h4 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Disponibilidad de Horarios</h4>
-                </div>
+            <div class="custom-panel-horas">
+                <h4 class="mb-0 text-light text-center"><i class="fas fa-calendar-alt me-2"></i>Disponibilidad de Horarios</h4>
                 <div class="card-body">
                     <!-- Controles de filtro -->
                     <div class="row mb-4">
                         <div class="col-md-6 col-lg-4 mb-3">
-                            <label for="fechaSelector" class="form-label fw-bold">Ver detalles del Día:</label>
+                            <label for="fechaSelector" class="form-label text-light fw-bold">Ver detalles del Día:</label>
                             <input type="date" id="fechaSelector" class="form-control calendar-input" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                         </div>
                         <div class="col-md-6 col-lg-4 mb-3">
-                            <label for="zonaSelector" class="form-label fw-bold">Zona del Restaurante:</label>
+                            <label for="zonaSelector" class="form-label fw-bold text-light">Zona del Restaurante:</label>
                             <select id="zonaSelector" class="form-select">
                                 <option value="salon-principal">Salón Principal</option>
                                 <option value="terraza">Terraza</option>
@@ -34,21 +32,23 @@
                     </div>
 
                     <!-- Vista actual de la zona -->
-                    <div class="mb-3">
+                    <div class="mb-3 text-light">
                         <h5 id="vistaZona" class="text-muted">VISTA DEL SALÓN PRINCIPAL DEL RESTAURANTE</h5>
                     </div>
 
                     <!-- Tabla de horarios -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="tablaHorarios">
-                            <thead>
-                                <tr id="headerMesas">
-                                    <th class="time-column">Hora</th>
-                                </tr>
-                            </thead>
-                            <tbody id="horarioTable"></tbody>
-                        </table>
-                    </div>
+                    <!-- Tabla de horarios -->
+<div class="table-wrapper">
+    <table class="table table-bordered" id="tablahorariosindex">
+        <thead>
+            <tr id="headerMesas">
+                <th class="time-column">Hora</th>
+            </tr>
+        </thead>
+        <tbody id="horarioTable"></tbody>
+    </table>
+</div>
+
 
                     <!-- Botón Ver Detalles -->
                     @*  <div class="text-center mt-3">

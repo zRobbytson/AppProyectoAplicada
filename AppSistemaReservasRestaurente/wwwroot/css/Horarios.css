@@ -1,52 +1,127 @@
-﻿/* Panel de horarios */
+﻿/* =========================
+   🎨 Panel de Horarios
+   ========================= */
 .custom-panel-horarios {
-    background-color: rgba(13, 11, 116, 0.35);
-    backdrop-filter: blur(5px);
+    background-color: rgba(19, 15, 90, 0.35); /* mismo tono que Mesas */
+    backdrop-filter: blur(6px);
     border-radius: 15px;
     padding: 2rem;
-    margin-top: 1.5rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    margin: 2rem auto;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
     font-weight: bold;
 }
 
-/* Quitar fondo blanco que pone Bootstrap */
+    /* Versión más pequeña para CRUD (Create, Edit, Delete, Details) */
+    .custom-panel-horarios.small-panel {
+        max-width: 750px; /* 👈 más angosto que index */
+        margin: 2rem auto;
+    }
+
+/* =========================
+   🎨 Tabla de Horarios
+   ========================= */
 .custom-tableh {
     background-color: transparent !important;
     border-collapse: collapse;
     width: 100%;
 }
 
-    /* Encabezado: blanco translúcido con texto blanco */
     .custom-tableh th {
-        background-color: rgba(255, 255, 255, 0.30) !important;
-        
-        border: 1px solid #ffffff; /* bordes blancos */
+        background-color: rgba(255, 255, 255, 0.18) !important;
+        color: #ffffff !important;
+        border: 1px solid #ffffff !important;
         text-align: center;
         padding: 10px;
     }
-.custom-panel-horarios .custom-tableh th {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important; /* 🔥 fuerza el blanco puro */
-    border: 1px solid #ffffff !important;
-}
 
-.custom-panel-horarios .custom-tableh td {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: rgba(255, 255, 255, 0.75) !important;
-    border: 1px solid #ffffff !important;
-}
-
-    /* Filas: texto blanco opaco + bordes blancos */
     .custom-tableh td {
         background-color: rgba(255, 255, 255, 0.05) !important;
-        color: rgba(255, 255, 255, 0.75); /* blanco opaco */
-        border: 1px solid #ffffff; /* bordes blancos */
+        color: rgba(255, 255, 255, 0.85) !important;
+        border: 1px solid #ffffff !important;
         text-align: center;
         padding: 8px;
     }
 
-    /* Hover: más contraste */
     .custom-tableh tr:hover td {
-        background-color: rgba(255, 255, 255, 0.12) !important;
-        color: #ffffff; /* al pasar el mouse se ve más claro */
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
     }
+
+/* =========================
+   🎨 Tabla Exclusiva de Horarios (tablahorariosindex)
+   ========================= */
+#tablahorariosindex {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    background: rgba(40, 10, 70, 0.55);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+    #tablahorariosindex th,
+    #tablahorariosindex td {
+        padding: 12px;
+        border: 1px solid rgba(255,255,255,0.25);
+        color: white !important;
+    }
+
+    #tablahorariosindex th {
+        background: rgba(255,255,255,0.18);
+        font-weight: bold;
+    }
+
+    #tablahorariosindex td {
+        background: rgba(255,255,255,0.05);
+        color: rgba(255,255,255,0.85);
+    }
+
+    #tablahorariosindex tr:hover td {
+        background: rgba(255,255,255,0.15);
+        color: #ffffff !important;
+    }
+
+    /* =========================
+   🎨 Estados de las Mesas en Horarios
+   ========================= */
+    #tablahorariosindex .mesa-libre {
+        background: rgba(0,255,0,0.12) !important;
+    }
+
+    #tablahorariosindex .mesa-pendiente {
+        background: rgba(255,255,0,0.25) !important;
+    }
+
+    #tablahorariosindex .mesa-completado {
+        background: rgba(0,200,255,0.25) !important;
+    }
+
+    #tablahorariosindex .mesa-no-asistio {
+        background: rgba(255,0,0,0.25) !important;
+    }
+
+    #tablahorariosindex .mesa-seleccionado {
+        background: #ADD8E6 !important;
+        border: 2px solid #fff;
+    }
+    #tablahorariosindex th {
+        background: rgba(255,255,255,0.18) !important;
+        color: #ffffff !important;
+        border: 1px solid #ffffff !important;
+    }
+
+    #tablahorariosindex td {
+        background: rgba(255,255,255,0.05) !important;
+        color: rgba(255,255,255,0.85) !important;
+        border: 1px solid #ffffff !important;
+    }
+
+.custom-panel-horas {
+    background-color: rgba(19, 15, 90, 0.35);
+    backdrop-filter: blur(6px);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem auto;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+}

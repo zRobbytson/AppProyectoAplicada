@@ -10,7 +10,10 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Servicios
+
         builder.Services.AddControllersWithViews();
+         
+
 
         // 🔹 Conexión a la BD
         builder.Services.AddDbContext<BDContexto>(options =>

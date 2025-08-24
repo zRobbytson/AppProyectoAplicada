@@ -1,7 +1,10 @@
-﻿namespace AppSistemaReservasRestaurente.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AppSistemaReservasRestaurente.Models
 {
     public class ReservaHorarioVM
     {
+        
         public string Hora { get; set; }
         public int Mesa { get; set; }
         public string NombreCliente { get; set; }

@@ -1,86 +1,234 @@
 ﻿@model AppSistemaReservasRestaurente.Models.Reserva
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Reservas Restaurante";
 }
 
-<h1>Create</h1>
-
-<h4>Reserva</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <!-- ID Cliente (oculto) -->
-            <input type="hidden" asp-for="ID_Cliente" value="@ViewBag.Cliente.ID_Cliente" />
-
-            <!-- Nombre Cliente -->
-            <div class="form-group">
-                <label>Nombre</label>
-                <input class="form-control" value="@ViewBag.Cliente.Nombre_Cliente" readonly />
+<div class="container-fluid min-vh-100" style="background-color:#e6d6f0;">
+    <div class="row">
+        <!-- BARRA LATERAL -->
+        <div class="col-lg-2 col-md-3 text-white min-vh-100 p-3 d-flex flex-column align-items-center" style="background-color: rgba(102,51,153,0.8);">
+            <div class="mb-4 text-center">
+                <img src="~/images/logo.png" alt="Logo Restaurante" class="img-fluid mb-2 rounded-circle border border-light" style="max-width: 100px;">
+                <h5 class="fw-bold">𝐋𝐚 𝐌𝐚𝐢𝐬𝐨𝐧 𝐝’𝐀𝐧𝐝𝐫𝐨𝐬𝐬𝐚</h5>
             </div>
 
-            <!-- Teléfono -->
-            <div class="form-group">
-                <label>Teléfono</label>
-                <input class="form-control" value="@ViewBag.Cliente.Telefono" readonly />
+            <div class="d-flex flex-column gap-3 mt-3 w-100">
+                <button class="btn btn-outline-light w-100 d-flex align-items-center justify-content-center" onclick="mostrarPanel()">
+                    <i class="bi bi-search me-2"></i> Nueva Reserva
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="col-lg-10 col-md-9 p-4">
+            <h2 class="mb-4 fw-bold text-dark">Reserva tu espacio</h2>
+
+            <!-- FORMULARIO INICIAL -->
+            <div class="card text-dark shadow-sm mb-4" style="background-color: rgba(153,102,204,0.3);">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Fecha</label>
+                            <input id="fecha" type="date" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Hora</label>
+                            <select id="hora" class="form-select">
+                                <option value="">Selecciona hora</option>
+                                @if (ViewBag.Horarios != null)
+                                {
+                                    foreach (var h in ViewBag.Horarios as List<AppSistemaReservasRestaurente.Models.Horario>)
+                                    {
+                                        <option value="@h.ID_Horario">
+                                            @h.Hora_Inicio.ToString("HH:mm") - @h.Hora_Final.ToString("HH:mm")
+                                        </option>
+                                    }
+                                }
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Zona</label>
+                            <select id="zona" class="form-select">
+                                <option value="">Selecciona zona</option>
+                                <option value="Salón Principal">Salón Principal</option>
+                                <option value="Terraza">Terraza</option>
+                                <option value="Balcón">Balcón</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-dark w-100" onclick="buscarMesas()">
+                                <i class="bi bi-search me-1"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Correo -->
-            <div class="form-group">
-                <label>Correo</label>
-                <input class="form-control" value="@ViewBag.Correo" readonly />
+            <!-- CROQUIS DE MESAS -->
+            <div id="panelMesas" class="mb-4 position-relative" style="min-height:400px; display:none; background-color: rgba(204,153,255,0.2); border-radius:10px;">
+                <h5 class="fw-bold text-dark mb-3">Selecciona tu mesa</h5>
+                <div id="contenedorMesas" class="d-flex flex-wrap gap-3"></div>
             </div>
-
-            <!-- DNI -->
-            <div class="form-group">
-                <label>DNI</label>
-                <input class="form-control" value="@ViewBag.Cliente.DNI" readonly />
-            </div>
-
-            <!-- Mesa -->
-            <div class="form-group">
-                <label asp-for="ID_Mesa" class="control-label"></label>
-                <select asp-for="ID_Mesa" class="form-control" asp-items="ViewBag.ID_Mesa"></select>
-            </div>
-
-            <!-- Horario -->
-            <div class="form-group">
-                <label asp-for="ID_Horario" class="control-label"></label>
-                <select asp-for="ID_Horario" class="form-control" asp-items="ViewBag.ID_Horario"></select>
-            </div>
-
-            <!-- Fecha -->
-            <div class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input asp-for="Fecha" class="form-control" type="date" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
-            </div>
-
-            <!-- Cantidad Personas -->
-            <div class="form-group">
-                <label asp-for="Cantidad_Personas" class="control-label"></label>
-                <input asp-for="Cantidad_Personas" class="form-control" />
-                <span asp-validation-for="Cantidad_Personas" class="text-danger"></span>
-            </div>
-
-            <!-- Estado -->
-            <input type="hidden" asp-for="Estado" value="Pendiente" />
-
-            <div class="form-group">
-                <input type="submit" value="Confirmar Reserva" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
+<!-- MODAL DE CONFIRMACIÓN -->
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: rgba(102,51,153,0.9); color: #fff;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmación de Reserva</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" method="post">
+                    <!-- Cliente oculto -->
+                    <input type="hidden" asp-for="ID_Cliente" value="@ViewBag.Cliente.ID_Cliente" />
+                    <input type="hidden" asp-for="ID_Mesa" id="inputMesa" />
+                    <input type="hidden" asp-for="ID_Horario" id="inputHorario" />
+                    <input type="hidden" asp-for="Fecha" id="inputFecha" />
+                    <input type="hidden" asp-for="Estado" value="Pendiente" />
 
-<div>
-    <a asp-action="Index">Back to List</a>
+                    <!-- Nombre Cliente -->
+                    <div class="mb-2">
+                        <label class="form-label">Nombre</label>
+                        <input class="form-control" value="@ViewBag.Cliente.Nombre_Cliente" readonly />
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="mb-2">
+                        <label class="form-label">Teléfono</label>
+                        <input class="form-control" value="@ViewBag.Cliente.Telefono" readonly />
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="mb-2">
+                        <label class="form-label">Correo</label>
+                        <input class="form-control" value="@ViewBag.Correo" readonly />
+                    </div>
+
+                    <!-- DNI -->
+                    <div class="mb-2">
+                        <label class="form-label">DNI</label>
+                        <input class="form-control" value="@ViewBag.Cliente.DNI" readonly />
+                    </div>
+
+                    <!-- Cantidad Personas -->
+                    <div class="mb-2">
+                        <label asp-for="Cantidad_Personas" class="form-label">Cantidad Personas</label>
+                        <input asp-for="Cantidad_Personas" class="form-control" />
+                    </div>
+
+                    <!-- Detalles elegidos -->
+                    <hr class="border-light">
+                    <p><strong>Zona:</strong> <span id="resZona">-</span></p>
+                    <p><strong>Fecha:</strong> <span id="resFecha">-</span></p>
+                    <p><strong>Hora:</strong> <span id="resHora">-</span></p>
+                    <p><strong>Mesa:</strong> <span id="resMesa">-</span></p>
+
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-light text-dark w-100">Confirmar Reserva</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<!-- ESTILOS -->
+<style>
+    .mesa-card {
+        width: 120px;
+        height: 120px;
+        border: 3px solid #660066;
+        border-radius: 10px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform .3s, box-shadow .3s;
+    }
+
+        .mesa-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(102,0,102,.6);
+        }
+
+        .mesa-card.ocupada {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: .6;
+        }
+
+        .mesa-card.seleccionada {
+            border: 3px solid #330033;
+            box-shadow: 0 0 15px rgba(51,0,51,.8);
+        }
+</style>
+
+<!-- SCRIPT -->
+<script>
+    let mesaSeleccionada = null;
+    let idHorario = document.getElementById("hora").value;
+
+
+    function mostrarPanel() {
+        document.getElementById("panelMesas").style.display = "block";
+    }
+
+        function buscarMesas() {
+        const fecha = document.getElementById("fecha").value;
+        const hora = document.getElementById("hora").value;
+        const zona = document.getElementById("zona").value;
+        if (!fecha || !hora || !zona) {
+            alert("⚠️ Selecciona fecha, hora y zona antes de continuar.");
+            return;
+        }
+
+        // Llamada al backend
+        fetch(`/Reservas/GetMesasLibres?fecha=${fecha}&idHorario=${hora}&zona=${zona}`)
+            .then(res => res.json())
+            .then(mesas => {
+                mostrarPanel();
+                const contenedor = document.getElementById("contenedorMesas");
+                contenedor.innerHTML = "";
+
+                mesas.forEach(m => {
+                    const mesaDiv = document.createElement("div");
+                    mesaDiv.className = "mesa-card " + (m.ocupada ? "ocupada" : "");
+                        mesaDiv.textContent = "Mesa " + (m.idMesa ?? m.id_Mesa ?? m.ID_Mesa);
+                        mesaDiv.addEventListener("click", () => seleccionarMesa(m.idMesa ?? m.id_Mesa ?? m.ID_Mesa, fecha, hora, zona));
+
+                    contenedor.appendChild(mesaDiv);
+                });
+            });
+    }
+
+
+        function seleccionarMesa(numMesa, fecha, hora, zona) {
+        // Marcar selección
+        document.querySelectorAll(".mesa-card").forEach(m => m.classList.remove("seleccionada"));
+        const mesa = [...document.querySelectorAll(".mesa-card")].find(m => m.textContent.includes(numMesa));
+        mesa.classList.add("seleccionada");
+
+        mesaSeleccionada = numMesa;
+
+        // Llenar datos en el modal
+        document.getElementById("resZona").textContent = zona;
+        document.getElementById("resFecha").textContent = fecha;
+        document.getElementById("resHora").textContent = hora;
+        document.getElementById("resMesa").textContent = "Mesa " + numMesa;
+
+        document.getElementById("inputMesa").value = numMesa;
+        document.getElementById("inputHorario").value = hora;  // ojo: aquí tienes que mapearlo al ID real
+        document.getElementById("inputFecha").value = fecha;
+
+        new bootstrap.Modal(document.getElementById('modalConfirmacion')).show();
+    }
+
+</script>

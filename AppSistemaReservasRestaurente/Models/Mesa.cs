@@ -13,6 +13,7 @@ namespace AppSistemaReservasRestaurente.Models
 
         [Required(ErrorMessage = "La zona es obligatoria")]
         [StringLength(50, ErrorMessage = "La zona no puede superar los 50 caracteres")]
+        [MaxLength(50)]
         public string Zona { get; set; } = "";
 
         public ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();

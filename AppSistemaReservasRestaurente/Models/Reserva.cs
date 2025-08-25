@@ -27,6 +27,7 @@ namespace AppSistemaReservasRestaurente.Models
 
         [Required(ErrorMessage = "El estado es obligatorio")]
         [StringLength(20, ErrorMessage = "El estado no puede superar los 20 caracteres")]
+        [MaxLength(20)]
         public string Estado { get; set; } = "Confirmado";
     }
 }

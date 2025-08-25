@@ -8,14 +8,17 @@ namespace AppSistemaReservasRestaurente.Models
         public int ID_Cliente { get; set; }
 
         [Required(ErrorMessage = "El nombre es obligatorio")]
+        [MaxLength(100)]
         [StringLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres")]
         public string Nombre_Cliente { get; set; } = string.Empty;
 
-        [StringLength(15, ErrorMessage = "El teléfono no puede superar los 15 caracteres")]
+        [MaxLength(9)]
+        [StringLength(9, ErrorMessage = "El teléfono no puede superar los 9 caracteres")]
         public string? Telefono { get; set; }
 
         [Required(ErrorMessage = "El DNI es obligatorio")]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "El DNI debe tener exactamente 8 caracteres")]
+        [MaxLength(8)]
         public string DNI { get; set; } = string.Empty;
 
         // Relación con Usuario

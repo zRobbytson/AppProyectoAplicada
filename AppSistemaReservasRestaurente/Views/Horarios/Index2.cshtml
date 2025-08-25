@@ -5,17 +5,17 @@
 }
 
 <div class="custom-container">
-    <div class="custom-panel-horarios">
-        <h2 class="custom-title text-light text-center">Gestión de Horarios</h2>
+    <div class="custom-panel-horarios-lista">
+        <h2 class="custom-title text-light text-center mb-4">Gestión de Horarios</h2>
 
         <p class="text-center mb-4">
             <a asp-action="Create" class="btn btn-success btn-lg">➕ Crear Nuevo Horario</a>
         </p>
 
-        <table class="table custom-tableh">
+        <table class="table custom-table-horarios">
             <thead>
                 <tr>
-                    <th >@Html.DisplayNameFor(model => model.ID_Horario)</th>
+                    <th>N°</th>
                     <th>@Html.DisplayNameFor(model => model.Hora_Inicio)</th>
                     <th>@Html.DisplayNameFor(model => model.Hora_Final)</th>
                     <th>Opciones</th>
@@ -39,3 +39,45 @@
         </table>
     </div>
 </div>
+
+<!-- 🎨 ESTILOS ESPECÍFICOS -->
+<style>
+    /* Panel exclusivo para horarios */
+    .custom-panel-horarios-lista {
+        background-color: rgba(19, 15, 90, 0.35);
+        backdrop-filter: blur(6px);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem auto;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+        font-weight: bold;
+    }
+
+    /* Tabla exclusiva para horarios */
+    .custom-table-horarios {
+        background-color: transparent !important;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        /* Encabezado */
+        .custom-table-horarios th {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            color: #fff !important;
+            border: 1px solid #ffffff;
+            text-align: center;
+        }
+
+        /* Filas */
+        .custom-table-horarios td {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hover filas */
+        .custom-table-horarios tr:hover td {
+            background-color: rgba(255, 255, 255, 0.12) !important;
+        }
+</style>

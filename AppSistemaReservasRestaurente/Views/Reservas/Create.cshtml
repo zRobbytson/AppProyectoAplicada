@@ -172,31 +172,36 @@
 
 
 <!-- SCRIPT -->
+<!-- SCRIPT -->
 <script>
-      let mesaSeleccionada = null;
+    let mesaSeleccionada = null;
     let idHorario = document.getElementById("hora").value;
 
     // 👇 base para las imágenes (Razor resuelve ~/)
     const baseImages = '@Url.Content("~/imagenes/")';
 
-
     // 👇 imagen por zona
-        const zonaImg = {
+    const zonaImg = {
         "Salón Principal": "mesa4.png",
         "Terraza": "mesa8.png",
         "Balcón": "mesa6.png"
     };
 
+    // 👇 capacidad por zona
+    const zonaCapacidad = {
+        "Salón Principal": 4,
+        "Balcón": 6,
+        "Terraza": 8
+    };
 
-
-       function mostrarPanel() {
+    function mostrarPanel() {
         document.getElementById("panelMesas").style.display = "block";
     }
 
-          function buscarMesas() {
+    function buscarMesas() {
         const fecha = document.getElementById("fecha").value;
-        const hora  = document.getElementById("hora").value;
-        const zona  = document.getElementById("zona").value;
+        const hora = document.getElementById("hora").value;
+        const zona = document.getElementById("zona").value;
 
         if (!fecha || !hora || !zona) {
             alert("⚠️ Selecciona fecha, hora y zona antes de continuar.");
@@ -210,8 +215,9 @@
                 const contenedor = document.getElementById("contenedorMesas");
                 contenedor.innerHTML = "";
 
-                // imagen según zona seleccionada
+                // imagen y capacidad según zona seleccionada
                 const imgSrc = baseImages + (zonaImg[zona] ?? "mesa4.png");
+                const capacidad = zonaCapacidad[zona] ?? 4;
 
                 mesas.forEach(m => {
                     const num = m.idMesa ?? m.id_Mesa ?? m.ID_Mesa;
@@ -219,8 +225,9 @@
                     // botón de mesa
                     const btn = document.createElement("button");
                     btn.type = "button";
-                    btn.className = "mesa-card btn " + (m.ocupada ? "ocupada" : "");
-                    btn.dataset.mesa = num; // para seleccionarla luego
+                    btn.className = "mesa-card btn position-relative " + (m.ocupada ? "ocupada" : "");
+                    btn.dataset.mesa = num;
+                    btn.dataset.capacidad = capacidad;
 
                     // imagen
                     const img = document.createElement("img");
@@ -228,16 +235,22 @@
                     img.src = imgSrc;
                     img.alt = `Mesa ${num} - ${zona}`;
 
-                    // etiqueta "Mesa N" debajo
+                    // etiqueta "Mesa N"
                     const caption = document.createElement("span");
                     caption.className = "mesa-caption";
                     caption.textContent = `Mesa ${num}`;
 
+                    // badge con capacidad
+                    const badge = document.createElement("span");
+                    badge.className = "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary";
+                    badge.textContent = `${capacidad} pers.`;
+
                     btn.appendChild(img);
                     btn.appendChild(caption);
+                    btn.appendChild(badge);
 
                     if (!m.ocupada) {
-                        btn.addEventListener("click", () => seleccionarMesa(num, fecha, hora, zona));
+                        btn.addEventListener("click", () => seleccionarMesa(num, fecha, hora, zona, capacidad));
                     } else {
                         btn.disabled = true;
                     }
@@ -247,8 +260,7 @@
             });
     }
 
-
-           function seleccionarMesa(numMesa, fecha, hora, zona) {
+    function seleccionarMesa(numMesa, fecha, hora, zona, capacidad) {
         // Quitar selección anterior
         document.querySelectorAll(".mesa-card").forEach(b => b.classList.remove("seleccionada"));
 
@@ -259,17 +271,22 @@
         mesaSeleccionada = numMesa;
 
         // Llenar datos en el modal
-        document.getElementById("resZona").textContent  = zona;
+        document.getElementById("resZona").textContent = zona;
         document.getElementById("resFecha").textContent = fecha;
-        document.getElementById("resHora").textContent  = hora;
-        document.getElementById("resMesa").textContent  = "Mesa " + numMesa;
+        document.getElementById("resHora").textContent = hora;
+        document.getElementById("resMesa").textContent = "Mesa " + numMesa;
 
-        document.getElementById("inputMesa").value     = numMesa;
-        document.getElementById("inputHorario").value  = hora;   // (si hace falta, mapear al ID real en backend)
-        document.getElementById("inputFecha").value    = fecha;
+        document.getElementById("inputMesa").value = numMesa;
+        document.getElementById("inputHorario").value = hora;
+        document.getElementById("inputFecha").value = fecha;
+
+        // 👇 Validación de capacidad: poner max en el input
+        const inputCantidad = document.querySelector("[name='Cantidad_Personas']");
+        if (inputCantidad) {
+            inputCantidad.setAttribute("max", capacidad);
+            inputCantidad.value = ""; // limpio para evitar error anterior
+        }
 
         new bootstrap.Modal(document.getElementById('modalConfirmacion')).show();
     }
-</script>
-
 </script>

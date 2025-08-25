@@ -18,8 +18,15 @@ namespace AppSistemaReservasRestaurente.Models
         public Horario? Horario { get; set; } = default!;
 
         // Otros atributos
-        public DateTime Fecha { get; set; }           // datetime
-        public int Cantidad_Personas { get; set; }     // int
-        public string Estado { get; set; } = "Confirmado"; // varchar(20) (Pendiente, Confirmada, Cancelada)
+        [Required(ErrorMessage = "La fecha es obligatoria")]
+        public DateTime Fecha { get; set; }
+
+        [Required(ErrorMessage = "La cantidad de personas es obligatoria")]
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad de personas debe ser mayor que 0")]
+        public int Cantidad_Personas { get; set; }
+
+        [Required(ErrorMessage = "El estado es obligatorio")]
+        [StringLength(20, ErrorMessage = "El estado no puede superar los 20 caracteres")]
+        public string Estado { get; set; } = "Confirmado";
     }
 }

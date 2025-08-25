@@ -51,7 +51,9 @@
     <header>
         <nav class="navbar custom-panel navbar-expand-sm">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">SISTEMA DE RESERVAS</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    𝐋A MAISON D'ANDROSSA'
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -59,29 +61,27 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="/Reservas/Create">Reservas</a>
+                            <a class="nav-link" href="/Reservas/Create">Reservas</a>
                         </li>
 
                         @if (User.IsInRole("Administrador"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="/Horarios">Horarios</a>
+                                <a class="nav-link" href="/Horarios">Horarios</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="/Reservas">Registro</a>
+                                <a class="nav-link" href="/Reservas">Registro</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="/Gestionar/Index">Gestionar</a>
+                                <a class="nav-link" href="/Gestionar/Index">Gestionar</a>
                             </li>
                         }
                     </ul>
 
-
-                    <ul class="navbar-nav text-light">
+                    <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -92,15 +92,40 @@
                         }
                         else
                         {
-                            <li class="nav-item"><a class="nav-link" href="/Identity/Account/Login">Iniciar Sesion</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/Identity/Account/Login">Iniciar Sesión</a></li>
                             <li class="nav-item"><a class="nav-link" href="/Identity/Account/Register">Registrarse</a></li>
                         }
                     </ul>
-
                 </div>
             </div>
         </nav>
     </header>
+
+    <style>
+        /* Navbar (puede ser transparente u oscura como la tengas) */
+        .navbar.custom-panel {
+            background-color: rgba(19, 15, 90, 0.35); /* tu mismo estilo */
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Texto siempre blanco */
+        .navbar .nav-link,
+        .navbar .navbar-brand,
+        .navbar .btn-link.nav-link {
+            color: #ffffff !important;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+            /* Hover → un blanco más opaco (gris claro) */
+            .navbar .nav-link:hover,
+            .navbar .navbar-brand:hover,
+            .navbar .btn-link.nav-link:hover {
+                color: #cccccc !important; /* gris claro */
+            }
+    </style>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

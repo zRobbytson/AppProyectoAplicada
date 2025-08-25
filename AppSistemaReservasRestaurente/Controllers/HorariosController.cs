@@ -63,7 +63,7 @@ namespace AppSistemaReservasRestaurente.Controllers
                         nombreCliente = x.Cliente.Nombre_Cliente,
                         cantidadPersonas = x.Cantidad_Personas,
                         telefono = x.Cliente.Telefono,
-                        dni = x.Cliente.DNI,   // 👈 aquí está el DNI
+                        dni = x.Cliente.DNI,  
                         codigo = x.ID_Reserva,
                         estado = x.Estado
                     })

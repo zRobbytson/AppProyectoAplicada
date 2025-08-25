@@ -57,7 +57,7 @@ namespace AppSistemaReservasRestaurente.Controllers
             var mesasLibres = await _context.Mesas
             .Where(m => m.Zona == zona)
             .Select(m => new {
-                IdMesa = m.ID_Mesa,   // 🔹 nombre uniforme
+                IdMesa = m.ID_Mesa,  
                 Capacidad = m.Capacidad,
                 Zona = m.Zona,
                 Ocupada = mesasOcupadas.Contains(m.ID_Mesa)
